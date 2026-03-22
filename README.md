@@ -39,7 +39,7 @@ O projeto segue uma abordagem incremental, com gestão ágil por meio de Kanban,
 
 📁 data/ -> Bases de dados utilizadas
 
-📁 scripts/ -> Scripts auxiliares (quando aplicável)
+📁 scripts/ -> Scripts auxiliares
 
 
 ---
