@@ -37,9 +37,9 @@ Não fazem parte do escopo atual o desenvolvimento de uma interface gráfica, a 
 
 O projeto encontra-se na etapa de **desenvolvimento do modelo relacional**.
 
-Antes da definição final das tabelas, chaves primárias, chaves estrangeiras e cardinalidades, está sendo realizado o entendimento dos arquivos de origem. O notebook de validação é utilizado para identificar as entidades presentes no dataset, examinar seus atributos e verificar se sua estrutura está de acordo com os requisitos e as regras de negócio documentados.
+Antes da definição final das tabelas, chaves primárias, chaves estrangeiras e cardinalidades, está sendo realizado o entendimento dos arquivos de origem. O notebook de validação identifica as entidades presentes no dataset, examina seus atributos e verifica se sua estrutura está de acordo com os requisitos e as regras de negócio documentados.
 
-As próximas atividades previstas incluem:
+As próximas atividades previstas são:
 
 1. Validar entidades, atributos, chaves e relacionamentos;
 2. Concluir o modelo conceitual;
@@ -49,32 +49,54 @@ As próximas atividades previstas incluem:
 6. Carregar e validar os dados no banco;
 7. Desenvolver consultas e indicadores de desempenho logístico.
 
-## Estrutura do projeto
-
-A estrutura do repositório ainda está em definição e poderá evoluir conforme o avanço da modelagem.
+## Estrutura do repositório
 
 ```text
 .
 ├── data/
-│   └── raw/                  # Arquivos CSV originais do dataset Olist
-├── docs/                     # Documentação e análise de requisitos
+│   ├── README.md
+│   └── raw/                         # CSVs originais, não versionados
+├── docs/
+│   └── requirements/                # Análise e documentação de requisitos
+├── models/
+│   ├── conceptual/                  # Modelo conceitual e MER
+│   ├── logical/                     # Modelo lógico relacional
+│   └── physical/                    # Modelo físico do banco de dados
 ├── notebooks/
-│   └── data_understanding/   # Exploração e validação das entidades
-├── main.py                   # Ponto de entrada inicial do projeto
-├── pyproject.toml            # Configuração do projeto Python
-├── LICENSE
+│   └── data_understanding/          # Exploração e validação dos dados
+├── .python-version
+├── pyproject.toml                   # Metadados e dependências do projeto
+├── uv.lock                          # Versões reproduzíveis das dependências
 └── README.md
 ```
 
-Novos diretórios destinados aos modelos de dados, scripts SQL e processos de carga serão adicionados quando esses artefatos forem desenvolvidos.
+A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. Diretórios de scripts SQL, testes e resultados serão adicionados quando houver conteúdo correspondente.
 
-## Fonte dos dados
+## Configuração do ambiente
 
-O projeto utiliza o [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), conjunto de dados público com informações sobre pedidos realizados em diferentes marketplaces brasileiros.
+O projeto utiliza [uv](https://docs.astral.sh/uv/) para gerenciar a versão do Python, o ambiente virtual e as dependências.
+
+Com o uv instalado, sincronize o ambiente:
+
+```bash
+uv sync
+```
+
+Para abrir os notebooks:
+
+```bash
+uv run jupyter lab
+```
+
+## Dados
+
+Os CSVs não são armazenados no Git. Consulte [data/README.md](data/README.md) para baixar o dataset e preparar o diretório `data/raw/`.
+
+Fonte: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
 ## Metodologia
 
-O desenvolvimento segue uma abordagem incremental, com refinamento contínuo dos requisitos e evolução progressiva da modelagem. O fluxo planejado é:
+O desenvolvimento segue uma abordagem incremental, com refinamento contínuo dos requisitos e evolução progressiva da modelagem:
 
 ```text
 Análise de requisitos
