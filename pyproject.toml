@@ -1,7 +1,7 @@
 [project]
-name = "ecommerce-logistics-data-model"
+name = "ecommerce-analytics-data-model"
 version = "0.1.0"
-description = "Modelo relacional para análise de desempenho logístico com dados do e-commerce Olist."
+description = "Modelo relacional para análises multidimensionais de e-commerce com dados públicos da Olist."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
