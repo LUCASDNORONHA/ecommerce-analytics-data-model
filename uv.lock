@@ -440,7 +440,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ecommerce-logistics-data-model"
+name = "ecommerce-analytics-data-model"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
