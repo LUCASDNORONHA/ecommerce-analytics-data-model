@@ -23,6 +23,9 @@ htmlcov/
 # Jupyter
 .ipynb_checkpoints/
 
+# Local Jupytext sources
+scripts/
+
 # Editors and operating systems
 .idea/
 .vscode/

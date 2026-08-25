@@ -63,14 +63,15 @@ As próximas atividades previstas são:
 │   ├── logical/                     # Modelo lógico relacional
 │   └── physical/                    # Modelo físico do banco de dados
 ├── notebooks/
-│   └── data_understanding/          # Exploração e validação dos dados
+│   └── data_understanding/          # Notebooks de exploração e validação
+├── scripts/                         # Fontes Jupytext locais, não versionadas
 ├── .python-version
 ├── pyproject.toml                   # Metadados e dependências do projeto
 ├── uv.lock                          # Versões reproduzíveis das dependências
 └── README.md
 ```
 
-A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. Diretórios de scripts SQL, testes e resultados serão adicionados quando houver conteúdo correspondente.
+A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git; os notebooks sincronizados em `notebooks/` são os artefatos versionados e entregues com o projeto.
 
 ## Configuração do ambiente
 
@@ -87,6 +88,26 @@ Para abrir os notebooks:
 ```bash
 uv run jupyter lab
 ```
+
+### Fluxo de trabalho com Jupytext
+
+Os notebooks possuem uma representação pareada em Python no formato `py:percent`. O desenvolvimento é feito localmente nos arquivos de `scripts/`, usando células `# %%` no VS Code.
+
+Após alterar um script, sincronize seu notebook correspondente:
+
+```bash
+uv run jupytext --sync scripts/data_understanding/01_validacao_entidades.py
+```
+
+O pareamento mantém a seguinte correspondência:
+
+```text
+scripts/data_understanding/<arquivo>.py
+                    ↕ Jupytext
+notebooks/data_understanding/<arquivo>.ipynb
+```
+
+Somente o arquivo `.ipynb` deve ser incluído nos commits.
 
 ## Dados
 
