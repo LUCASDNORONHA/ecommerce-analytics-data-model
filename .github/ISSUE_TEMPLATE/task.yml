@@ -1,0 +1,54 @@
+name: Tarefa
+description: Planejar uma entrega rastreável do projeto
+title: "[M00-00] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: Preencha o resultado esperado antes de iniciar o desenvolvimento.
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Por que esta tarefa é necessária?
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+      description: Qual resultado verificável deve ser entregue?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo
+      description: Liste o que será feito e, se necessário, o que não faz parte desta tarefa.
+      placeholder: |-
+        - [ ] Atividade 1
+        - [ ] Atividade 2
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceitação
+      description: Use condições objetivas que permitam validar a conclusão.
+      placeholder: |-
+        - [ ] Critério 1
+        - [ ] Critério 2
+    validations:
+      required: true
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Artefatos esperados
+      description: Informe os arquivos, diagramas ou documentos que serão entregues.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependências e observações
+      description: Relacione issues bloqueadoras, decisões pendentes ou riscos conhecidos.
