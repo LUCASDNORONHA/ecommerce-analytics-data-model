@@ -2,7 +2,7 @@
 
 ## Objetivo do projeto
 
-Este repositório desenvolve um modelo de dados relacional para analisar o desempenho logístico de um e-commerce usando o Brazilian E-Commerce Public Dataset by Olist.
+Este repositório desenvolve um modelo de dados relacional para sustentar análises multidimensionais de e-commerce usando o Brazilian E-Commerce Public Dataset by Olist. O modelo integra dados de clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização, permitindo análises comerciais, comportamentais, financeiras, geográficas e relacionadas ao processo de entrega.
 
 O trabalho evolui pelas milestones M01 a M06: análise de requisitos, modelagem conceitual, modelagem lógica, modelagem física, carga de dados e análise. Consulte o GitHub Project nº 6 antes de iniciar uma tarefa. No momento, a milestone ativa é M02 — Modelagem Conceitual.
 
