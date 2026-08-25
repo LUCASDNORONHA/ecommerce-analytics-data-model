@@ -1,0 +1,41 @@
+name: Qualidade
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validar projeto
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Instalar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+
+      - name: Sincronizar ambiente
+        run: uv sync --locked --all-groups
+
+      - name: Validar lockfile
+        run: uv lock --check
+
+      - name: Validar notebooks Jupytext
+        run: uv run jupytext --to py:percent --test 'notebooks/**/*.ipynb'

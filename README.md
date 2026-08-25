@@ -35,13 +35,11 @@ Não fazem parte do escopo atual o desenvolvimento de uma interface gráfica, a 
 
 ## Etapa atual
 
-O projeto encontra-se na etapa de **desenvolvimento do modelo relacional**.
-
-Antes da definição final das tabelas, chaves primárias, chaves estrangeiras e cardinalidades, está sendo realizado o entendimento dos arquivos de origem. O notebook de validação identifica as entidades presentes no dataset, examina seus atributos e verifica se sua estrutura está de acordo com os requisitos e as regras de negócio documentados.
+O projeto encontra-se na fase de **modelagem conceitual**. A identificação das entidades e a validação dos atributos foram concluídas; a próxima entrega é a definição das chaves primárias conceituais.
 
 As próximas atividades previstas são:
 
-1. Validar entidades, atributos, chaves e relacionamentos;
+1. Definir chaves primárias, relacionamentos e cardinalidades;
 2. Concluir o modelo conceitual;
 3. Desenvolver o modelo lógico relacional;
 4. Definir tipos de dados e restrições de integridade;
@@ -132,6 +130,8 @@ Modelo físico e implementação
         ↓
 Consultas e análises
 ```
+
+O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), e o fluxo de contribuição está em [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Autor
 
