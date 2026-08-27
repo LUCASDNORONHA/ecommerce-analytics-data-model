@@ -40,41 +40,47 @@ O projeto contempla a modelagem de dados relacionados a:
 
 Não fazem parte do escopo atual o desenvolvimento de uma plataforma transacional de e-commerce, o processamento em tempo real, o gerenciamento operacional de estoque, o rastreamento físico de pedidos ou a gestão de transportadoras, veículos, motoristas e rotas. Também não são utilizados dados pessoais sensíveis ou informações que permitam a identificação direta dos consumidores.
 
-## Etapa atual
-
-O projeto encontra-se na fase de **modelagem conceitual**. A identificação das entidades e a validação dos atributos foram concluídas; a próxima entrega é a definição das chaves primárias conceituais.
-
-As próximas atividades previstas são:
-
-1. Definir chaves primárias, relacionamentos e cardinalidades;
-2. Concluir o modelo conceitual;
-3. Desenvolver o modelo lógico relacional;
-4. Definir tipos de dados e restrições de integridade;
-5. Implementar o modelo físico em um SGBD relacional;
-6. Carregar e validar os dados no banco;
-7. Desenvolver consultas e análises sobre as diferentes dimensões do e-commerce.
-
-## Estrutura do repositório
-
-```text
 .
 ├── data/
 │   ├── README.md
 │   └── raw/                         # CSVs originais, não versionados
+│
 ├── docs/
-│   └── requirements/                # Análise e documentação de requisitos
+│   ├── requirements/                # Análise e documentação de requisitos
+│   └── modeling/
+│       ├── conceptual/              # Documentação da modelagem conceitual
+│       │   ├── conceptual_model.tex
+│       │   ├── conceptual_model.pdf
+│       │   └── mer/                 # MER editável e exportado
+│       ├── logical/                 # Documentação da modelagem lógica
+│       └── physics/                 # Documentação da modelagem física
+│
 ├── models/
-│   ├── conceptual/                  # Modelo conceitual e MER
-│   ├── logical/                     # Modelo lógico relacional
-│   └── physical/                    # Modelo físico do banco de dados
+│   ├── README.md
+│   ├── conceptual/                  # Artefatos técnicos do modelo conceitual
+│   ├── logical/                     # Artefatos técnicos do modelo lógico
+│   └── physical/                    # Artefatos técnicos do modelo físico
+│
 ├── notebooks/
-│   └── data_understanding/          # Notebooks de exploração e validação
+│   └── data-modeling/               # Validações e evidências de modelagem
+│       ├── 01_validacao_entidades.ipynb
+│       ├── 02_validacao_atributos.ipynb
+│       ├── 03_validacao_relacionamentos.ipynb
+│       ├── 04_validacao_cardinalidades.ipynb
+│       └── 05_validacao_prefixo_cep.ipynb
+│
 ├── scripts/                         # Fontes Jupytext locais, não versionadas
+│
+├── .github/
+├── .gitignore
 ├── .python-version
+├── AGENTS.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
 ├── pyproject.toml                   # Metadados e dependências do projeto
-├── uv.lock                          # Versões reproduzíveis das dependências
-└── README.md
-```
+└── uv.lock                          # Dependências com versões reproduzíveis
+
 
 A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git; os notebooks sincronizados em `notebooks/` são os artefatos versionados e entregues com o projeto.
 
