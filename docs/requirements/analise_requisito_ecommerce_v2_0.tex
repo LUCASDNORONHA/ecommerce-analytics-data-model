@@ -1,0 +1,736 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---------------------------
+% Pacotes essenciais
+% ---------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage[table]{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+
+% ---------------------------
+% Paleta de Cores Profissional
+% ---------------------------
+\definecolor{AzulCorporativo}{RGB}{0, 82, 155}
+\definecolor{AzulPetroleo}{RGB}{23, 104, 133}
+\definecolor{CinzaEscuro}{RGB}{64, 64, 64}
+\definecolor{LaranjaDestaque}{RGB}{230, 115, 0}
+
+% ---------------------------
+% Configuração de Links (Hyperref)
+% ---------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=AzulPetroleo,
+    urlcolor=AzulCorporativo,
+    citecolor=LaranjaDestaque,
+    pdftitle={Análise de Requisitos},
+    pdfauthor={Lucas Dias Noronha}
+}
+
+% ---------------------------
+% Configuração de Títulos (Titlesec)
+% ---------------------------
+\titleformat{\section}
+{\color{AzulCorporativo}\normalfont\Large\bfseries}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\color{AzulPetroleo}\normalfont\large\bfseries}
+{\thesubsection}{1em}{}
+
+% ---------------------------
+% Configuração de página e Cabeçalho
+% ---------------------------
+\geometry{
+    left=3cm,
+    right=2cm,
+    top=3cm,
+    bottom=2cm,
+    headheight=45pt
+}
+
+\onehalfspacing
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancyhead[C]{%
+    \colorbox{AzulCorporativo}{%
+        \makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{%
+            \textcolor{white}{\textbf{\ \ Análise de Requisitos}}%
+        }%
+    }%
+}
+
+\fancyfoot[C]{\color{CinzaEscuro}\thepage}
+
+% ---------------------------
+% Variáveis do documento
+% ---------------------------
+\newcommand{\projeto}{Modelo Analítico de Dados para E-commerce}
+\newcommand{\autor}{Lucas Dias Noronha}
+\newcommand{\data}{\today}
+\newcommand{\versao}{2.0}
+
+% ---------------------------
+% Início do documento
+% ---------------------------
+\begin{document}
+
+% ==========================================
+% PÁGINA 1: CAPA
+% ==========================================
+\thispagestyle{empty}
+
+\vspace*{\fill}
+
+\begin{center}
+    {\Huge \textcolor{AzulCorporativo}{\textbf{Análise de Requisitos}}}\\[0.5cm]
+    {\Large \textcolor{AzulPetroleo}{\projeto}}
+\end{center}
+
+\vspace*{\fill}
+
+\noindent
+\textbf{\textcolor{AzulCorporativo}{Versão:}} \versao
+\hfill
+\textbf{\textcolor{AzulCorporativo}{Data:}} \data
+
+\newpage
+
+% ==========================================
+% PÁGINA 2: HISTÓRICO DE REVISÕES
+% ==========================================
+\thispagestyle{empty}
+
+\section*{Histórico de Revisões}
+\addcontentsline{toc}{section}{Histórico de Revisões}
+
+\vspace{0.5cm}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabularx}{\textwidth}{|c|c|X|l|}
+\hline
+\rowcolor{AzulCorporativo}
+\textcolor{white}{\textbf{Versão}} &
+\textcolor{white}{\textbf{Data}} &
+\textcolor{white}{\textbf{Descrição das Alterações}} &
+\textcolor{white}{\textbf{Autor}} \\ \hline
+
+1.0 & 23 de Março de 2026 &
+Criação do documento e definição do problema de negócio e requisitos iniciais. &
+\autor \\ \hline
+
+1.1 & 27 de Abril de 2026 &
+Definição do escopo e processos contemplados pelo sistema. &
+\autor \\ \hline
+
+1.2 & 28 de Abril de 2026 &
+Identificação dos stakeholders e definição dos perfis de usuários e interessados no sistema. &
+\autor \\ \hline
+
+1.3 & 1 de Maio de 2026 &
+Conclusão do documento de requisitos, após revisão de coerência, consolidação das informações e padronização do conteúdo. &
+\autor \\ \hline
+
+2.0 & 25 de Agosto de 2026 &
+Revisão do escopo do projeto, anteriormente orientado à análise de desempenho logístico, para a construção de um modelo de dados relacional destinado a análises multidimensionais de e-commerce. Revisão do problema de negócio, escopo, requisitos, operações sobre os dados, stakeholders e critérios de aceitação. &
+\autor \\ \hline
+
+\end{tabularx}
+\end{center}
+
+\newpage
+
+% ==========================================
+% PÁGINA 3: SUMÁRIO
+% ==========================================
+\tableofcontents
+
+\newpage
+
+% ==========================================
+% CONTEÚDO TÉCNICO
+% ==========================================
+
+\section{Introdução}
+
+Este documento apresenta a análise de requisitos para a construção de um modelo de dados relacional destinado à exploração e análise de dados de comércio eletrônico. O projeto utiliza como fonte o conjunto de dados público \textit{Brazilian E-Commerce Public Dataset by Olist}, composto por informações relacionadas a pedidos, clientes, produtos, vendedores, pagamentos, avaliações e localização geográfica.
+
+O objetivo consiste em estruturar e integrar essas diferentes entidades em um banco de dados relacional consistente, preservando suas relações de negócio e proporcionando uma base adequada para consultas e análises multidimensionais.
+
+A solução proposta não se restringe a uma única perspectiva do comércio eletrônico. A estrutura deverá permitir análises comerciais, comportamentais, geográficas, financeiras e relacionadas ao processo de entrega, conforme as informações disponíveis no conjunto de dados.
+
+A análise de requisitos contempla a definição do problema, a delimitação do domínio, a identificação das entidades e relacionamentos, os requisitos necessários à construção da base analítica e os critérios que orientarão as etapas posteriores de modelagem lógica e física.
+
+% ---------------------------
+\section{Problema de Negócio}
+
+\subsection{Definição do Problema}
+
+Os dados de uma operação de comércio eletrônico representam diferentes dimensões do negócio, incluindo clientes, pedidos, produtos, vendedores, pagamentos, avaliações e entregas. Quando essas informações se encontram distribuídas entre diferentes conjuntos de dados, sua utilização para análises integradas exige a compreensão e estruturação adequada das relações existentes entre as entidades.
+
+O problema abordado pelo projeto consiste, portanto, na necessidade de transformar dados relacionais provenientes de diferentes arquivos em uma estrutura de banco de dados consistente e preparada para exploração analítica.
+
+\subsection{Descrição do Problema}
+
+O dataset utilizado no projeto é disponibilizado por meio de múltiplos arquivos, cada um representando diferentes entidades e aspectos do ecossistema de e-commerce. Embora existam identificadores que possibilitem o relacionamento entre esses dados, sua utilização analítica depende da correta definição de entidades, cardinalidades, chaves, restrições e regras de integridade.
+
+A ausência de uma estrutura integrada dificulta consultas que dependem simultaneamente de diferentes dimensões do negócio, como a relação entre clientes e pedidos, produtos e vendedores, pagamentos e vendas, localização geográfica e entregas, ou avaliações e experiência de compra.
+
+O projeto busca solucionar essa necessidade por meio da construção de um modelo relacional capaz de consolidar essas informações e fornecer uma base estruturada para análises posteriores.
+
+\subsection{Impactos}
+
+A ausência de uma estrutura integrada pode resultar em:
+
+\begin{itemize}
+    \item dificuldade na realização de análises que envolvam múltiplas entidades;
+    \item maior complexidade na preparação dos dados para consultas analíticas;
+    \item risco de inconsistências decorrentes de relacionamentos inadequados;
+    \item dificuldade na reprodução e validação das análises;
+    \item baixa reutilização dos dados entre diferentes perspectivas analíticas;
+    \item aumento do esforço necessário para transformar os dados brutos em informações úteis para tomada de decisão.
+\end{itemize}
+
+% ---------------------------
+\section{Escopo do Sistema}
+
+O projeto contempla a construção de um modelo de dados relacional destinado à integração, organização e exploração analítica dos dados públicos de comércio eletrônico disponibilizados pela Olist.
+
+O modelo deverá representar as principais entidades do domínio e preservar os relacionamentos necessários para permitir análises integradas sobre diferentes dimensões do e-commerce.
+
+Estão incluídos no escopo:
+
+\begin{itemize}
+    \item estruturação das entidades e relacionamentos presentes no dataset;
+    \item definição de chaves primárias e estrangeiras;
+    \item aplicação de regras de integridade referencial;
+    \item tratamento e padronização dos dados necessários à carga;
+    \item integração dos diferentes conjuntos de dados em banco relacional;
+    \item armazenamento de informações relacionadas a clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização;
+    \item suporte a consultas analíticas envolvendo múltiplas entidades;
+    \item suporte a análises comerciais, de clientes, produtos, vendedores, pagamentos, avaliações, localização geográfica e entregas;
+    \item disponibilização da base para utilização por ferramentas de análise de dados e Business Intelligence.
+\end{itemize}
+
+Estão fora do escopo:
+
+\begin{itemize}
+    \item desenvolvimento de uma plataforma transacional de e-commerce;
+    \item desenvolvimento de funcionalidades de compra ou venda de produtos;
+    \item gerenciamento operacional de estoque;
+    \item gestão de transportadoras, veículos, motoristas ou rotas;
+    \item rastreamento físico de pedidos em tempo real;
+    \item processamento de transações financeiras;
+    \item atualização dos dados em tempo real;
+    \item utilização de informações não disponibilizadas pelo dataset;
+    \item utilização de dados pessoais sensíveis ou informações que permitam identificação direta dos consumidores.
+\end{itemize}
+
+% ---------------------------
+\section{Levantamento de Requisitos}
+
+\subsection{Finalidade do Sistema}
+
+A solução tem por finalidade estruturar, integrar e disponibilizar os dados do ecossistema de e-commerce representado pelo dataset da Olist em um banco de dados relacional preparado para exploração analítica.
+
+A estrutura deverá possibilitar a realização de consultas que relacionem diferentes dimensões do negócio, permitindo investigar características de vendas, clientes, produtos, vendedores, pagamentos, avaliações, distribuição geográfica e processo de entrega.
+
+O banco de dados constitui, portanto, a camada estruturada sobre a qual serão desenvolvidas análises exploratórias, diagnósticas, relatórios, indicadores e demais produtos analíticos.
+
+% ---------------------------
+\subsection{Delimitação do Domínio}
+
+A solução abrangerá as entidades Cliente, Pedido, Item do Pedido, Produto, Vendedor, Pagamento, Avaliação e Geolocalização, conforme disponibilizadas no dataset utilizado.
+
+Serão considerados atributos necessários à representação das relações comerciais e analíticas existentes entre essas entidades, incluindo identificadores, informações temporais, valores financeiros, características dos produtos, avaliações e informações geográficas agregadas.
+
+A geolocalização será utilizada para complementar as informações territoriais associadas aos prefixos de CEP de clientes e vendedores, possibilitando análises espaciais e estimativas de distância geográfica.
+
+Ficam explicitamente excluídos do escopo:
+
+\begin{itemize}
+    \item dados pessoais diretamente identificáveis;
+    \item dados sensíveis;
+    \item endereços completos;
+    \item informações operacionais de transportadoras;
+    \item dados de veículos, motoristas ou rotas efetivamente percorridas;
+    \item informações de estoque não disponibilizadas;
+    \item quaisquer informações externas não incorporadas formalmente ao projeto.
+\end{itemize}
+
+% ---------------------------
+\subsection{Entidades Principais}
+
+\begin{itemize}
+    \item Cliente
+    \item Pedido
+    \item Item do Pedido
+    \item Produto
+    \item Vendedor
+    \item Pagamento
+    \item Avaliação
+    \item Geolocalização
+\end{itemize}
+
+% ---------------------------
+\subsection{Atributos}
+
+\begin{itemize}
+    \item \textbf{Cliente:} id\_cliente, id\_cliente\_unico, prefixo\_cep, cidade, estado
+
+    \item \textbf{Pedido:} id\_pedido, id\_cliente, status, data\_compra, data\_aprovacao, data\_envio\_transportador, data\_entrega, data\_estimada
+
+    \item \textbf{Item do Pedido:} id\_pedido, id\_item, id\_produto, id\_vendedor, data\_limite\_envio, preco, valor\_frete
+
+    \item \textbf{Produto:} id\_produto, categoria, comprimento\_nome, comprimento\_descricao, quantidade\_fotos, peso, comprimento, altura, largura
+
+    \item \textbf{Vendedor:} id\_vendedor, prefixo\_cep, cidade, estado
+
+    \item \textbf{Pagamento:} id\_pedido, sequencial\_pagamento, tipo\_pagamento, parcelas, valor
+
+    \item \textbf{Avaliação:} id\_avaliacao, id\_pedido, nota, data\_criacao, data\_resposta
+
+    \item \textbf{Geolocalização:} prefixo\_cep, latitude, longitude, cidade, estado
+\end{itemize}
+
+% ---------------------------
+\subsection{Relacionamentos}
+
+\textbf{Entidades}: Cliente, Pedido, Item do Pedido, Produto, Vendedor, Pagamento, Avaliação, Geolocalização
+
+\textbf{Relacionamentos:}
+
+\begin{itemize}
+    \item Cliente realiza Pedido (1:N)
+    \item Pedido possui Item do Pedido (1:N)
+    \item Produto compõe Item do Pedido (1:N)
+    \item Vendedor fornece Item do Pedido (1:N)
+    \item Pedido gera Pagamento (1:N)
+    \item Pedido pode receber Avaliação (1:1)
+    \item Cliente pode ser associado a registros de Geolocalização por meio do prefixo de CEP
+    \item Vendedor pode ser associado a registros de Geolocalização por meio do prefixo de CEP
+\end{itemize}
+
+% ---------------------------
+\subsection{Requisitos Funcionais}
+
+Os requisitos funcionais descrevem as capacidades que a estrutura de dados deverá oferecer para possibilitar a integração e exploração analítica das informações.
+
+\begin{longtable}{|p{2cm}|p{12cm}|}
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{ID}} &
+    \textcolor{white}{\textbf{Descrição}} \\ \hline
+    \endfirsthead
+
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{ID}} &
+    \textcolor{white}{\textbf{Descrição}} \\ \hline
+    \endhead
+
+    RF01 & O modelo deve permitir a integração dos dados de clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização. \\
+
+    RF02 & O modelo deve permitir a recuperação do histórico de pedidos e suas respectivas informações relacionadas. \\
+
+    RF03 & O modelo deve permitir a análise de vendas segundo diferentes dimensões, incluindo período, produto, categoria, cliente, vendedor e localização geográfica. \\
+
+    RF04 & O modelo deve permitir a análise do comportamento de compra dos clientes a partir do histórico disponível. \\
+
+    RF05 & O modelo deve permitir a análise do desempenho comercial de produtos, categorias e vendedores. \\
+
+    RF06 & O modelo deve permitir a análise das formas, valores e condições de pagamento associadas aos pedidos. \\
+
+    RF07 & O modelo deve permitir relacionar avaliações dos clientes às demais informações dos respectivos pedidos. \\
+
+    RF08 & O modelo deve permitir analisar datas previstas e efetivas associadas ao processamento e à entrega dos pedidos. \\
+
+    RF09 & O modelo deve permitir análises geográficas utilizando informações de clientes e vendedores e, quando aplicável, coordenadas associadas aos prefixos de CEP. \\
+
+    RF10 & O modelo deve permitir consultas que combinem múltiplas entidades sem comprometer a integridade dos relacionamentos. \\
+
+    RF11 & O modelo deve permitir agregações e filtros por dimensões temporais, comerciais, geográficas e relacionadas aos pedidos. \\
+
+    RF12 & O modelo deve fornecer uma base estruturada para consumo por ferramentas de análise de dados e Business Intelligence. \\ \hline
+\end{longtable}
+
+% ---------------------------
+\subsection{Requisitos Não Funcionais}
+
+Os requisitos não funcionais descrevem restrições e qualidades que o sistema deve atender.
+
+\begin{longtable}{|p{2cm}|p{12cm}|}
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{ID}} &
+    \textcolor{white}{\textbf{Descrição}} \\ \hline
+    \endfirsthead
+
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{ID}} &
+    \textcolor{white}{\textbf{Descrição}} \\ \hline
+    \endhead
+
+    RNF01 & O sistema deve garantir a integridade e consistência dos dados armazenados. \\
+
+    RNF02 & O sistema deve assegurar a correta integração entre as diferentes entidades do modelo de dados. \\
+
+    RNF03 & O sistema deve permitir consultas com desempenho adequado para análise de dados. \\
+
+    RNF04 & O sistema deve ser estruturado de forma a facilitar escalabilidade, manutenção e extensão. \\
+
+    RNF05 & O sistema deve garantir padronização nos formatos de dados, especialmente datas, identificadores e atributos geográficos. \\
+
+    RNF06 & O sistema deve assegurar a rastreabilidade das informações ao longo do fluxo de ingestão e transformação dos dados. \\
+
+    RNF07 & O sistema deve ser projetado de forma a permitir fácil extensão para novas análises. \\
+
+    RNF08 & O sistema deve incorporar verificações de qualidade dos dados, incluindo duplicidades, valores ausentes e inconsistências de relacionamento. \\ \hline
+\end{longtable}
+
+% ---------------------------
+\section{Regras de Negócio}
+
+\begin{itemize}
+    \item Um cliente pode realizar múltiplos pedidos.
+    \item Cada pedido deve estar associado a um único cliente.
+    \item Um pedido deve possuir pelo menos um item quando houver registro correspondente na tabela de itens.
+    \item Cada item de pedido deve estar associado a um único produto.
+    \item Cada item de pedido deve estar associado a um único vendedor.
+    \item Um pedido pode possuir um ou mais registros de pagamento.
+    \item Um pedido pode possuir uma avaliação associada.
+    \item Um pedido não pode existir sem um cliente associado.
+    \item Um mesmo pedido pode conter itens fornecidos por vendedores distintos.
+    \item Informações geográficas de clientes e vendedores devem ser associadas por meio do prefixo de CEP, observadas as particularidades do dataset de geolocalização.
+    \item As análises devem respeitar a granularidade de cada entidade para evitar duplicações decorrentes de junções entre tabelas com cardinalidades diferentes.
+\end{itemize}
+
+% ---------------------------
+\section{Operações sobre os Dados}
+
+Considerando a natureza analítica do projeto, as operações sobre os dados não correspondem ao fluxo CRUD de uma aplicação transacional. O banco será construído a partir de dados históricos provenientes do dataset utilizado e terá como finalidade principal a integração, persistência e consulta das informações.
+
+\subsection{Extração}
+
+Os dados serão obtidos a partir dos arquivos que compõem o dataset original, preservando-se uma camada de dados brutos para rastreabilidade.
+
+\subsection{Transformação}
+
+Os dados poderão passar por operações de:
+
+\begin{itemize}
+    \item padronização de tipos;
+    \item tratamento de valores ausentes;
+    \item validação de identificadores;
+    \item adequação de datas;
+    \item verificação de duplicidades;
+    \item validação de relacionamentos;
+    \item preparação dos dados para carga no banco relacional.
+\end{itemize}
+
+\subsection{Carga}
+
+Os registros tratados serão carregados nas respectivas tabelas do banco de dados, respeitando dependências, chaves e restrições de integridade referencial.
+
+\subsection{Consulta}
+
+A principal forma de utilização da base será por meio de consultas analíticas, incluindo:
+
+\begin{itemize}
+    \item consultas envolvendo múltiplas entidades;
+    \item agregações temporais;
+    \item análises de vendas;
+    \item análises de clientes;
+    \item análises de produtos e categorias;
+    \item análises de vendedores;
+    \item análises de pagamentos;
+    \item análises de avaliações;
+    \item análises geográficas;
+    \item análises relacionadas ao processamento e à entrega dos pedidos.
+\end{itemize}
+
+% ---------------------------
+\section{Modelo de Dados (visão preliminar)}
+
+\subsection{Tipo de Banco de Dados}
+
+Considerando a natureza estruturada dos dados e a necessidade de manter relações consistentes entre entidades, o sistema será baseado em um modelo de dados relacional.
+
+A implementação física deverá utilizar um Sistema Gerenciador de Banco de Dados relacional compatível com os requisitos do projeto, sendo o PostgreSQL a tecnologia adotada para esta implementação.
+
+\subsection{Decisões Iniciais de Modelagem}
+
+\begin{itemize}
+    \item \textbf{Normalização:} o modelo será estruturado de forma normalizada, buscando reduzir redundâncias e preservar a consistência entre as entidades.
+
+    \item \textbf{Índices:} serão criados índices em atributos frequentemente utilizados em operações de junção e filtragem, como identificadores primários e estrangeiros.
+
+    \item \textbf{Integridade Referencial:} serão definidas chaves primárias e estrangeiras para assegurar a consistência entre as entidades relacionadas.
+
+    \item \textbf{Granularidade:} as tabelas deverão preservar a granularidade original das entidades, evitando consolidações que comprometam análises futuras.
+
+    \item \textbf{Escalabilidade:} a estrutura deverá permitir futuras extensões e inclusão de novas camadas analíticas sem necessidade de reconstrução integral do modelo.
+\end{itemize}
+
+% ---------------------------
+\section{Interfaces e Integrações}
+
+A estrutura deverá possibilitar o consumo dos dados por ferramentas utilizadas nas etapas de exploração, análise e visualização.
+
+\begin{itemize}
+    \item \textbf{SQL:} acesso ao banco relacional para realização de consultas, agregações e análises envolvendo as entidades modeladas.
+
+    \item \textbf{Python:} integração com bibliotecas de análise de dados para exploração, transformação complementar, validação e desenvolvimento de análises.
+
+    \item \textbf{Ferramentas de Business Intelligence:} possibilidade de conexão com ferramentas de visualização para construção de dashboards e relatórios analíticos.
+
+    \item \textbf{Arquivos estruturados:} utilização dos arquivos originais como fonte de dados e possibilidade de geração de conjuntos derivados para etapas específicas da análise.
+\end{itemize}
+
+% ---------------------------
+\section{Restrições e Premissas}
+
+\subsection{Restrições}
+
+\begin{itemize}
+    \item O sistema será limitado aos dados disponibilizados pelo dataset utilizado, salvo incorporação formal de novas fontes em versão futura.
+
+    \item Não serão considerados dados pessoais sensíveis ou diretamente identificáveis.
+
+    \item O sistema não contemplará, nesta versão, dados não estruturados extensos que não façam parte do escopo definido.
+
+    \item A modelagem será baseada em dados históricos, não contemplando atualização em tempo real.
+
+    \item Não serão realizadas análises operacionais de transportadoras, veículos, motoristas ou rotas, pois tais informações não estão presentes no dataset.
+
+    \item A geolocalização representa posições associadas a prefixos de CEP e não trajetos efetivamente percorridos pelos pedidos.
+\end{itemize}
+
+\subsection{Premissas}
+
+\begin{itemize}
+    \item Assume-se que o dataset disponibilizado pela Olist constitui a fonte primária de dados do projeto.
+
+    \item A qualidade, completude e consistência dos dados não serão presumidas, devendo ser verificadas durante as etapas de exploração, tratamento e carga.
+
+    \item Os identificadores disponibilizados serão avaliados quanto à unicidade e integridade antes de sua utilização como chaves no modelo.
+
+    \item O sistema será utilizado predominantemente para fins analíticos e de apoio à tomada de decisão.
+
+    \item O volume de dados é compatível com processamento e armazenamento em um Sistema Gerenciador de Banco de Dados relacional convencional.
+
+    \item As análises estarão limitadas às informações efetivamente representadas no dataset e às variáveis que possam ser derivadas delas de maneira metodologicamente justificável.
+\end{itemize}
+
+% ---------------------------
+\section{Critérios de Aceitação}
+
+O modelo será considerado adequado quando atender aos seguintes critérios:
+
+\begin{itemize}
+    \item As entidades definidas no escopo devem estar implementadas e relacionadas conforme o modelo lógico aprovado.
+
+    \item As chaves primárias e estrangeiras devem preservar a integridade referencial entre as entidades.
+
+    \item O processo de carga deve ser capaz de incorporar os dados necessários do dataset ao banco relacional.
+
+    \item Os registros carregados devem passar por verificações de qualidade, consistência, tipos e relacionamentos.
+
+    \item O banco deve permitir consultas envolvendo múltiplas entidades sem gerar relacionamentos incorretos ou duplicações decorrentes de junções inadequadas.
+
+    \item Deve ser possível realizar análises relacionadas a clientes, pedidos, vendas, produtos, vendedores, pagamentos, avaliações, localização geográfica e entregas.
+
+    \item O modelo deve ser capaz de processar o volume completo de dados definido para o projeto.
+
+    \item As principais consultas analíticas devem apresentar desempenho adequado ao volume de dados utilizado.
+
+    \item A estrutura deve possuir documentação suficiente para permitir a compreensão das entidades, atributos, relacionamentos e regras de negócio.
+\end{itemize}
+
+% ---------------------------
+\section{Dicionário de Dados}
+
+Abaixo está o detalhamento dos principais campos considerados para a modelagem do banco de dados, com base no dataset utilizado.
+
+\vspace{0.5cm}
+
+{\footnotesize
+\begin{longtable}{
+    |>{\raggedright\arraybackslash}p{6cm}
+    |>{\raggedright\arraybackslash}p{2cm}
+    |>{\raggedright\arraybackslash}p{7cm}|
+}
+\hline
+\rowcolor{AzulCorporativo}
+\textcolor{white}{\textbf{Campo}} &
+\textcolor{white}{\textbf{Tipo}} &
+\textcolor{white}{\textbf{Descrição}} \\ \hline
+\endfirsthead
+
+\hline
+\rowcolor{AzulCorporativo}
+\textcolor{white}{\textbf{Campo}} &
+\textcolor{white}{\textbf{Tipo}} &
+\textcolor{white}{\textbf{Descrição}} \\ \hline
+\endhead
+
+customer\_id & VARCHAR & Identificador do cliente associado ao pedido \\
+customer\_unique\_id & VARCHAR & Identificador persistente do cliente no dataset \\
+customer\_zip\_code\_prefix & INT & Prefixo do CEP do cliente \\
+customer\_city & VARCHAR & Cidade do cliente \\
+customer\_state & VARCHAR & Estado do cliente \\
+
+order\_id & VARCHAR & Identificador único do pedido \\
+order\_status & VARCHAR & Status do pedido \\
+order\_purchase\_timestamp & TIMESTAMP & Data e hora da compra \\
+order\_approved\_at & TIMESTAMP & Data e hora de aprovação do pedido \\
+order\_delivered\_carrier\_date & TIMESTAMP & Data de entrega do pedido ao transportador \\
+order\_delivered\_customer\_date & TIMESTAMP & Data de entrega do pedido ao cliente \\
+order\_estimated\_delivery\_date & TIMESTAMP & Data estimada de entrega \\
+
+order\_item\_id & INT & Número sequencial do item dentro do pedido \\
+shipping\_limit\_date & TIMESTAMP & Data limite de envio do item pelo vendedor \\
+price & NUMERIC & Preço do item \\
+freight\_value & NUMERIC & Valor de frete associado ao item \\
+
+product\_id & VARCHAR & Identificador único do produto \\
+product\_category\_name & VARCHAR & Categoria do produto \\
+product\_name\_length & INT & Comprimento do nome do produto \\
+product\_description\_length & INT & Comprimento da descrição do produto \\
+product\_photos\_qty & INT & Quantidade de fotos associadas ao produto \\
+product\_weight\_g & INT & Peso do produto em gramas \\
+product\_length\_cm & INT & Comprimento do produto em centímetros \\
+product\_height\_cm & INT & Altura do produto em centímetros \\
+product\_width\_cm & INT & Largura do produto em centímetros \\
+
+seller\_id & VARCHAR & Identificador do vendedor \\
+seller\_zip\_code\_prefix & INT & Prefixo do CEP do vendedor \\
+seller\_city & VARCHAR & Cidade do vendedor \\
+seller\_state & VARCHAR & Estado do vendedor \\
+
+payment\_sequential & INT & Sequência do pagamento no pedido \\
+payment\_type & VARCHAR & Tipo de pagamento \\
+payment\_installments & INT & Número de parcelas \\
+payment\_value & NUMERIC & Valor do pagamento \\
+
+review\_id & VARCHAR & Identificador da avaliação \\
+review\_score & INT & Nota da avaliação do pedido \\
+review\_creation\_date & TIMESTAMP & Data de criação da avaliação \\
+review\_answer\_timestamp & TIMESTAMP & Data e hora da resposta à avaliação \\
+
+geolocation\_zip\_code\_prefix & INT & Prefixo de CEP utilizado na base de geolocalização \\
+geolocation\_lat & NUMERIC & Latitude associada ao prefixo de CEP \\
+geolocation\_lng & NUMERIC & Longitude associada ao prefixo de CEP \\
+geolocation\_city & VARCHAR & Cidade associada ao registro de geolocalização \\
+geolocation\_state & VARCHAR & Estado associado ao registro de geolocalização \\ \hline
+
+\end{longtable}
+}
+
+% ---------------------------
+\section{Identificação de Stakeholders}
+
+Esta seção identifica os principais perfis interessados na estruturação e utilização das informações disponibilizadas pelo modelo analítico.
+
+\vspace{0.5cm}
+
+\begin{longtable}{|p{4cm}|p{4cm}|p{7cm}|}
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{Stakeholder}} &
+    \textcolor{white}{\textbf{Papel}} &
+    \textcolor{white}{\textbf{Interesse no Sistema}} \\ \hline
+    \endfirsthead
+
+    \hline
+    \rowcolor{AzulCorporativo}
+    \textcolor{white}{\textbf{Stakeholder}} &
+    \textcolor{white}{\textbf{Papel}} &
+    \textcolor{white}{\textbf{Interesse no Sistema}} \\ \hline
+    \endhead
+
+    Gestores de Negócio &
+    Tomadores de decisão &
+    Utilizar informações consolidadas para compreender desempenho comercial, comportamento dos clientes e demais dimensões relevantes do negócio. \\
+
+    Analistas de Dados &
+    Usuários analíticos &
+    Realizar consultas, análises exploratórias e diagnósticas e produzir indicadores e informações para apoio à decisão. \\
+
+    Profissionais de BI &
+    Consumidores da camada de dados &
+    Utilizar dados estruturados para construção de relatórios, indicadores e dashboards. \\
+
+    Engenharia de Dados / Administração de Banco de Dados &
+    Responsáveis pela estrutura de dados &
+    Assegurar qualidade, integridade, organização, desempenho e manutenção da estrutura relacional. \\
+
+    Áreas de Negócio &
+    Consumidores das análises &
+    Utilizar os resultados das análises para compreender clientes, vendas, produtos, vendedores, pagamentos, experiência de compra e entregas. \\ \hline
+\end{longtable}
+
+% ---------------------------
+\section{Considerações Finais}
+
+A análise de requisitos apresentada neste documento estabelece os fundamentos para a construção de um modelo de dados relacional destinado à integração e exploração analítica de informações de comércio eletrônico.
+
+A estrutura proposta busca representar de maneira consistente as diferentes entidades presentes no dataset da Olist, preservando seus relacionamentos e permitindo que informações de clientes, pedidos, produtos, vendedores, pagamentos, avaliações, geolocalização e entregas sejam analisadas de maneira integrada.
+
+Diferentemente de uma solução orientada exclusivamente ao desempenho logístico, o modelo possui caráter multidimensional. As informações relacionadas às entregas constituem uma das perspectivas possíveis de análise, juntamente com dimensões comerciais, comportamentais, financeiras, geográficas e relacionadas à experiência do cliente.
+
+A definição das regras de negócio, requisitos, restrições e critérios de aceitação contribui para assegurar coerência entre a estrutura relacional e sua finalidade analítica, além de estabelecer limites claros quanto às conclusões que podem ser obtidas a partir dos dados disponíveis.
+
+Dessa forma, o documento consolida as diretrizes que orientarão as etapas subsequentes de modelagem lógica, implementação física, carga dos dados e desenvolvimento das análises.
+
+% ---------------------------
+\clearpage
+\section{Referências}
+
+\begin{itemize}
+
+\item \textbf{Dataset Olist E-commerce} \\
+Disponível em: \url{https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce} \\
+Base pública contendo informações de pedidos, clientes, vendedores, pagamentos, avaliações, produtos e geolocalização no contexto do comércio eletrônico brasileiro.
+
+\item \textbf{Documentação do PostgreSQL} \\
+Disponível em: \url{https://www.postgresql.org/docs/} \\
+Referência oficial para modelagem relacional, tipos de dados, integridade referencial e implementação em banco de dados.
+
+\item \textbf{Documentação do DBeaver} \\
+Disponível em: \url{https://dbeaver.io/documentation/} \\
+Ferramenta utilizada para gerenciamento, consulta e visualização do banco de dados.
+
+\item \textbf{Elmasri, R.; Navathe, S.} \\
+\textit{Fundamentals of Database Systems}. \\
+Livro de referência para conceitos de modelagem de dados, normalização e projeto de bancos relacionais.
+
+\item \textbf{Silberschatz, A.; Korth, H.; Sudarshan, S.} \\
+\textit{Database System Concepts}. \\
+Obra clássica que fundamenta princípios teóricos de sistemas de banco de dados.
+
+\item \textbf{Date, C. J.} \\
+\textit{An Introduction to Database Systems}. \\
+Referência consolidada sobre teoria relacional e boas práticas em modelagem de dados.
+
+\end{itemize}
+
+\end{document}
