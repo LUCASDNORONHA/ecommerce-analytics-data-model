@@ -42,3 +42,20 @@ data/raw/*
 # Generated outputs
 outputs/*
 !outputs/.gitkeep
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.xdv
