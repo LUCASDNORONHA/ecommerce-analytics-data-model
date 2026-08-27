@@ -40,6 +40,7 @@ O projeto contempla a modelagem de dados relacionados a:
 
 Não fazem parte do escopo atual o desenvolvimento de uma plataforma transacional de e-commerce, o processamento em tempo real, o gerenciamento operacional de estoque, o rastreamento físico de pedidos ou a gestão de transportadoras, veículos, motoristas e rotas. Também não são utilizados dados pessoais sensíveis ou informações que permitam a identificação direta dos consumidores.
 
+```text
 .
 ├── data/
 │   ├── README.md
@@ -80,6 +81,7 @@ Não fazem parte do escopo atual o desenvolvimento de uma plataforma transaciona
 ├── README.md
 ├── pyproject.toml                   # Metadados e dependências do projeto
 └── uv.lock                          # Dependências com versões reproduzíveis
+```
 
 
 A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git; os notebooks sincronizados em `notebooks/` são os artefatos versionados e entregues com o projeto.
