@@ -1,0 +1,132 @@
+// Modelo lógico relacional consolidado.
+// Independente de SGBD; os tipos representam domínios lógicos.
+// O bloco `indexes` declara propriedades lógicas de chave primária e unicidade
+// exigidas pela sintaxe DBML, não uma estratégia de indexação física.
+
+Table cliente {
+  id_cliente identificador [not null]
+  id_cliente_unico identificador [not null]
+  prefixo_cep prefixo_postal [not null]
+  cidade texto [not null]
+  estado sigla_uf [not null]
+
+  indexes {
+    id_cliente [pk, name: 'pk_cliente']
+  }
+}
+
+Table pedido {
+  id_pedido identificador [not null]
+  id_cliente identificador [not null]
+  status_pedido texto [not null]
+  data_compra data_hora [not null]
+  data_aprovacao data_hora
+  data_envio_transportador data_hora
+  data_entrega data_hora
+  data_estimada data_hora [not null]
+
+  indexes {
+    id_pedido [pk, name: 'pk_pedido']
+    id_cliente [unique, name: 'uq_pedido_id_cliente']
+  }
+}
+
+Table item_pedido {
+  id_pedido identificador [not null]
+  id_item inteiro [not null]
+  id_produto identificador [not null]
+  id_vendedor identificador [not null]
+  data_limite_envio data_hora [not null]
+  preco_item valor_monetario [not null]
+  valor_frete valor_monetario [not null]
+
+  indexes {
+    (id_pedido, id_item) [pk, name: 'pk_item_pedido']
+  }
+}
+
+Table produto {
+  id_produto identificador [not null]
+  nome_categoria texto
+  comprimento_nome inteiro
+  comprimento_descricao inteiro
+  quantidade_fotos inteiro
+  peso_g inteiro
+  comprimento_cm inteiro
+  altura_cm inteiro
+  largura_cm inteiro
+
+  indexes {
+    id_produto [pk, name: 'pk_produto']
+  }
+}
+
+Table vendedor {
+  id_vendedor identificador [not null]
+  prefixo_cep prefixo_postal [not null]
+  cidade texto [not null]
+  estado sigla_uf [not null]
+
+  indexes {
+    id_vendedor [pk, name: 'pk_vendedor']
+  }
+}
+
+Table pagamento {
+  id_pedido identificador [not null]
+  sequencial_pagamento inteiro [not null]
+  tipo_pagamento texto [not null]
+  numero_parcelas inteiro [not null]
+  valor_pagamento valor_monetario [not null]
+
+  indexes {
+    (id_pedido, sequencial_pagamento) [pk, name: 'pk_pagamento']
+  }
+}
+
+Table avaliacao {
+  id_avaliacao identificador [not null]
+  id_pedido identificador [not null]
+  nota_avaliacao inteiro [not null]
+  data_criacao data_hora [not null]
+  data_resposta data_hora [not null]
+
+  indexes {
+    (id_avaliacao, id_pedido) [pk, name: 'pk_avaliacao']
+  }
+
+  Note: 'Cada ocorrencia pertence a exatamente um pedido; id_avaliacao isolado nao e unico na fonte.'
+}
+
+Table prefixo_cep {
+  prefixo_cep prefixo_postal [not null]
+
+  indexes {
+    prefixo_cep [pk, name: 'pk_prefixo_cep']
+  }
+}
+
+Table geolocalizacao {
+  id_geolocalizacao identificador [not null]
+  prefixo_cep prefixo_postal [not null]
+  latitude coordenada_geografica [not null]
+  longitude coordenada_geografica [not null]
+  cidade texto [not null]
+  estado sigla_uf [not null]
+
+  indexes {
+    id_geolocalizacao [pk, name: 'pk_geolocalizacao']
+  }
+}
+
+// Política lógica: exclusões de registros referenciados são restringidas e
+// alterações de identificadores não são propagadas automaticamente.
+Ref fk_cliente_prefixo_cep: cliente.prefixo_cep > prefixo_cep.prefixo_cep [delete: restrict, update: no action]
+Ref fk_pedido_cliente: pedido.id_cliente > cliente.id_cliente [delete: restrict, update: no action]
+Ref fk_item_pedido_pedido: item_pedido.id_pedido > pedido.id_pedido [delete: restrict, update: no action]
+Ref fk_item_pedido_produto: item_pedido.id_produto > produto.id_produto [delete: restrict, update: no action]
+Ref fk_item_pedido_vendedor: item_pedido.id_vendedor > vendedor.id_vendedor [delete: restrict, update: no action]
+Ref fk_vendedor_prefixo_cep: vendedor.prefixo_cep > prefixo_cep.prefixo_cep [delete: restrict, update: no action]
+Ref fk_pagamento_pedido: pagamento.id_pedido > pedido.id_pedido [delete: restrict, update: no action]
+Ref fk_avaliacao_pedido: avaliacao.id_pedido > pedido.id_pedido [delete: restrict, update: no action]
+Ref fk_geolocalizacao_prefixo_cep: geolocalizacao.prefixo_cep > prefixo_cep.prefixo_cep [delete: restrict, update: no action]

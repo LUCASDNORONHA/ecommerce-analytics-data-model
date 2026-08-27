@@ -1,0 +1,436 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{geometry,setspace,longtable,array,indentfirst,hyperref,enumitem,ragged2e}
+\usepackage[table]{xcolor}
+\usepackage{titlesec,fancyhdr}
+
+\definecolor{AzulCorporativo}{RGB}{0,82,155}
+\definecolor{AzulPetroleo}{RGB}{23,104,133}
+\definecolor{CinzaEscuro}{RGB}{64,64,64}
+\definecolor{LaranjaDestaque}{RGB}{230,115,0}
+\hypersetup{colorlinks=true,linkcolor=AzulPetroleo,urlcolor=AzulCorporativo,
+	citecolor=LaranjaDestaque,
+	pdftitle={Modelagem Lógica - Modelo Analítico de Dados para E-commerce},
+	pdfauthor={Lucas Dias Noronha}}
+\titleformat{\section}{\color{AzulCorporativo}\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\color{AzulPetroleo}\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\color{CinzaEscuro}\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\geometry{left=3cm,right=2cm,top=3cm,bottom=2cm,headheight=45pt}
+\onehalfspacing
+\setlength{\parskip}{0.35em}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{\colorbox{AzulCorporativo}{\makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{\textcolor{white}{\textbf{\ \ Modelagem Lógica}}}}}
+\fancyfoot[C]{\color{CinzaEscuro}\thepage}
+\newcommand{\projeto}{Modelo Analítico de Dados para E-commerce}
+\newcommand{\autor}{Lucas Dias Noronha}
+\newcommand{\dataDocumento}{\today}
+
+\begin{document}
+	\thispagestyle{empty}
+	\vspace*{\fill}
+	\begin{center}
+		{\Huge \textcolor{AzulCorporativo}{\textbf{Modelagem Lógica}}}\\[0.5cm]
+		{\Large \textcolor{AzulPetroleo}{\projeto}}\\[0.8cm]
+	\end{center}
+	\vspace*{\fill}
+	\noindent
+	\textbf{\textcolor{AzulCorporativo}{Autor:}} \autor
+	\hfill
+	\textbf{\textcolor{AzulCorporativo}{Data:}} \dataDocumento
+	\newpage
+	\setcounter{tocdepth}{1}
+	\tableofcontents
+	\newpage
+
+	\section{Introdução}
+	Este documento registra o desenvolvimento incremental do modelo lógico
+	relacional do projeto \textit{\projeto}, construído a partir do modelo
+	conceitual.
+
+	O modelo lógico converte as nove entidades conceituais em tabelas, define suas
+	chaves e relacionamentos, consolida a nomenclatura SQL, avalia a normalização
+	até a Terceira Forma Normal e valida a integridade referencial. O resultado
+	preserva semântica, granularidade e rastreabilidade e permanece independente de
+	decisões físicas do Sistema Gerenciador de Banco de Dados.
+
+	\section{Escopo da Etapa}
+	Esta etapa contempla:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item a correspondência entre entidades conceituais e tabelas lógicas;
+		\item a conversão dos atributos próprios das entidades em colunas;
+		\item a preservação da granularidade aprovada no modelo conceitual;
+		\item a definição de chaves primárias, chaves estrangeiras, nulabilidade e
+		restrições lógicas de unicidade;
+		\item a aplicação da convenção de nomenclatura SQL;
+		\item a avaliação da normalização até a Terceira Forma Normal;
+		\item a validação da integridade referencial e a revisão de redundâncias;
+		\item o registro de decisões, divergências identificadas e implicações para a futura modelagem física.
+	\end{itemize}
+
+	Permanecem fora do escopo os tipos específicos do PostgreSQL, índices físicos,
+	particionamento, estratégias de armazenamento e scripts DDL. Essas decisões
+	pertencem à modelagem física.
+
+	\section{Conversão de Entidades em Tabelas}
+	{\small
+		\renewcommand{\arraystretch}{1.35}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}p{8cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Entidade conceitual}} & \textcolor{white}{\textbf{Tabela lógica}} & \textcolor{white}{\textbf{Granularidade preservada}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Entidade conceitual}} & \textcolor{white}{\textbf{Tabela lógica}} & \textcolor{white}{\textbf{Granularidade preservada}} \\ \hline
+			\endhead
+			Cliente & \texttt{cliente} & Um registro de cliente associado a um pedido na origem. \\ \hline
+			Pedido & \texttt{pedido} & Um pedido. \\ \hline
+			Item do Pedido & \texttt{item\_pedido} & Um item sequencial dentro de um pedido. \\ \hline
+			Produto & \texttt{produto} & Um produto. \\ \hline
+			Vendedor & \texttt{vendedor} & Um vendedor. \\ \hline
+			Pagamento & \texttt{pagamento} & Uma ocorrência sequencial de pagamento dentro de um pedido. \\ \hline
+			Avaliação & \texttt{avaliacao} & Uma ocorrência de avaliação associada a um pedido. \\ \hline
+			Prefixo CEP & \texttt{prefixo\_cep} & Uma referência territorial agregada por prefixo de CEP. \\ \hline
+			Geolocalização & \texttt{geolocalizacao} & Uma observação geográfica associada a um prefixo de CEP. \\ \hline
+	\end{longtable}}
+
+	As nove entidades conceituais originaram nove tabelas lógicas. Não foi
+	necessária a criação, fusão ou eliminação de tabelas nesta etapa.
+
+	\section{Conversão dos Atributos em Colunas}
+	{\small
+		\renewcommand{\arraystretch}{1.35}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{3.1cm}|>{\raggedright\arraybackslash}p{11.3cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Colunas provenientes do modelo conceitual}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Colunas provenientes do modelo conceitual}} \\ \hline
+			\endhead
+			\texttt{cliente} & \texttt{id\_cliente}, \texttt{id\_cliente\_unico}, \texttt{cidade}, \texttt{estado}. \\ \hline
+			\texttt{pedido} & \texttt{id\_pedido}, \texttt{status\_pedido}, \texttt{data\_compra}, \texttt{data\_aprovacao}, \texttt{data\_envio\_transportador}, \texttt{data\_entrega}, \texttt{data\_estimada}. \\ \hline
+			\texttt{item\_pedido} & \texttt{id\_pedido}, \texttt{id\_item}, \texttt{preco\_item}, \texttt{valor\_frete}, \texttt{data\_limite\_envio}. \\ \hline
+			\texttt{produto} & \texttt{id\_produto}, \texttt{nome\_categoria}, \texttt{comprimento\_nome}, \texttt{comprimento\_descricao}, \texttt{quantidade\_fotos}, \texttt{peso\_g}, \texttt{comprimento\_cm}, \texttt{altura\_cm}, \texttt{largura\_cm}. \\ \hline
+			\texttt{vendedor} & \texttt{id\_vendedor}, \texttt{cidade}, \texttt{estado}. \\ \hline
+			\texttt{pagamento} & \texttt{id\_pedido}, \texttt{sequencial\_pagamento}, \texttt{tipo\_pagamento}, \texttt{numero\_parcelas}, \texttt{valor\_pagamento}. \\ \hline
+			\texttt{avaliacao} & \texttt{id\_avaliacao}, \texttt{id\_pedido}, \texttt{nota\_avaliacao}, \texttt{data\_criacao}, \texttt{data\_resposta}. \\ \hline
+			\texttt{prefixo\_cep} & \texttt{prefixo\_cep}. \\ \hline
+			\texttt{geolocalizacao} & \texttt{id\_geolocalizacao}, \texttt{latitude}, \texttt{longitude}, \texttt{cidade}, \texttt{estado}. \\ \hline
+	\end{longtable}}
+
+	\section{Decisões e Limites da Conversão}
+	\subsection{Atributos Próprios e Relacionamentos}
+	O MER conceitual representa relacionamentos como associações, e não como
+	atributos duplicados nas entidades participantes. Por isso, durante a conversão
+	inicial das entidades em tabelas não foram introduzidos antecipadamente:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item \texttt{id\_cliente} em \texttt{pedido};
+		\item \texttt{id\_produto} e \texttt{id\_vendedor} em \texttt{item\_pedido};
+		\item \texttt{prefixo\_cep} em \texttt{cliente}, \texttt{vendedor} e \texttt{geolocalizacao}.
+	\end{itemize}
+
+	Durante a conversão, essas colunas foram materializadas como chaves estrangeiras. O
+	atributo \texttt{id\_pedido}, já presente nas tabelas \texttt{item\_pedido},
+	\texttt{pagamento} e \texttt{avaliacao}, foi mantido por integrar seus
+	identificadores conceituais.
+
+	\subsection{Prefixo CEP}
+	A análise de requisitos original descrevia oito entidades e armazenava o
+	prefixo de CEP diretamente nas estruturas geográficas. Durante a modelagem conceitual, Prefixo CEP foi promovido a uma nona entidade, separando a
+	referência territorial agregada das múltiplas observações de geolocalização.
+	Esta conversão preserva o refinamento aprovado.
+
+	\subsection{Avaliação}
+	A relação Pedido--Avaliação foi inicialmente considerada 1:1 nos requisitos,
+	mas a validação empírica realizada durante a modelagem conceitual estabeleceu cardinalidade 1:N. A tabela
+	\texttt{avaliacao} mantém a granularidade de uma ocorrência identificada pelo
+	par conceitual \texttt{id\_avaliacao} e \texttt{id\_pedido}, posteriormente
+	preservado como chave primária lógica composta.
+
+	\subsection{Cliente e Pedido}
+	O modelo conceitual consolidado registra Cliente--Pedido como 1:1 porque o
+	identificador de cliente distingue a ocorrência associada ao pedido na origem. O
+	atributo longitudinal do consumidor pode repetir-se entre ocorrências. Nenhuma consolidação foi realizada.
+
+	\subsection{Domínios Lógicos}
+	O esquema técnico utiliza domínios descritivos, como \texttt{identificador},
+	\texttt{data\_hora}, \texttt{valor\_monetario} e
+	\texttt{coordenada\_geografica}. Eles comunicam a natureza lógica das colunas
+	sem escolher tipos ou recursos específicos do PostgreSQL. A definição física
+	permanece reservada à futura modelagem física.
+
+	No artefato DBML, o bloco \texttt{indexes} declara propriedades lógicas de
+	chave primária e unicidade exigidas pela sintaxe da ferramenta. Ele não
+	representa, nesta etapa, uma estratégia de indexação física.
+
+	\section{Definição das Chaves Primárias Lógicas}
+
+	\subsection{Critérios Adotados}
+
+	As chaves foram avaliadas quanto a unicidade, completude, estabilidade,
+	granularidade e aderência ao identificador conceitual. Chaves compostas foram
+	mantidas quando necessárias para distinguir ocorrências dentro do contexto do
+	pedido. A chave substituta de Geolocalização, definida durante a modelagem conceitual, deverá ser
+	gerada de forma estável durante a carga e não possui equivalente direto na
+	origem.
+
+	{\small
+		\renewcommand{\arraystretch}{1.4}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{2.7cm}|>{\raggedright\arraybackslash}p{5.8cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{3cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Chave primária lógica}} & \textcolor{white}{\textbf{Estrutura}} & \textcolor{white}{\textbf{Restrição}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Chave primária lógica}} & \textcolor{white}{\textbf{Estrutura}} & \textcolor{white}{\textbf{Restrição}} \\ \hline
+			\endhead
+			\texttt{cliente} & \texttt{id\_cliente} & Natural simples & \texttt{pk\_cliente} \\ \hline
+			\texttt{pedido} & \texttt{id\_pedido} & Natural simples & \texttt{pk\_pedido} \\ \hline
+			\texttt{item\_pedido} & \texttt{id\_pedido}, \texttt{id\_item} & Natural composta & \texttt{pk\_item\_pedido} \\ \hline
+			\texttt{produto} & \texttt{id\_produto} & Natural simples & \texttt{pk\_produto} \\ \hline
+			\texttt{vendedor} & \texttt{id\_vendedor} & Natural simples & \texttt{pk\_vendedor} \\ \hline
+			\texttt{pagamento} & \texttt{id\_pedido}, \texttt{sequencial\_pagamento} & Natural composta & \texttt{pk\_pagamento} \\ \hline
+			\texttt{avaliacao} & \texttt{id\_avaliacao}, \texttt{id\_pedido} & Natural composta & \texttt{pk\_avaliacao} \\ \hline
+			\texttt{prefixo\_cep} & \texttt{prefixo\_cep} & Natural simples & \texttt{pk\_prefixo\_cep} \\ \hline
+			\texttt{geolocalizacao} & \texttt{id\_geolocalizacao} & Substituta simples & \texttt{pk\_geolocalizacao} \\ \hline
+	\end{longtable}}
+
+	A validação nos CSVs confirmou ausência de nulos e duplicidades nas chaves. Em
+	Avaliação, os 99.224 pares formados pelos identificadores da avaliação e do
+	pedido são únicos. O identificador de avaliação isolado possui 98.410 valores
+	distintos e não é único na fonte.
+
+	\section{Definição das Chaves Estrangeiras}
+
+	Os relacionamentos do MER foram materializados por chaves estrangeiras. A
+	participação de cada tabela dependente é obrigatória; por isso, as colunas de
+	referência são logicamente não nulas. Exclusões em cascata não foram adotadas:
+	a política lógica é restringir a exclusão de registros referenciados e não
+	propagar atualizações de identificadores.
+
+	{\small
+		\renewcommand{\arraystretch}{1.4}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{4.6cm}|>{\raggedright\arraybackslash}p{5.2cm}|>{\raggedright\arraybackslash}p{4.8cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Restrição}} & \textcolor{white}{\textbf{Origem}} & \textcolor{white}{\textbf{Destino}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Restrição}} & \textcolor{white}{\textbf{Origem}} & \textcolor{white}{\textbf{Destino}} \\ \hline
+			\endhead
+			\texttt{fk\_cliente\_prefixo\_cep} & \texttt{cliente.prefixo\_cep} & \texttt{prefixo\_cep.prefixo\_cep} \\ \hline
+			\texttt{fk\_pedido\_cliente} & \texttt{pedido.id\_cliente} & \texttt{cliente.id\_cliente} \\ \hline
+			\texttt{fk\_item\_pedido\_pedido} & \texttt{item\_pedido.id\_pedido} & \texttt{pedido.id\_pedido} \\ \hline
+			\texttt{fk\_item\_pedido\_produto} & \texttt{item\_pedido.id\_produto} & \texttt{produto.id\_produto} \\ \hline
+			\texttt{fk\_item\_pedido\_vendedor} & \texttt{item\_pedido.id\_vendedor} & \texttt{vendedor.id\_vendedor} \\ \hline
+			\texttt{fk\_vendedor\_prefixo\_cep} & \texttt{vendedor.prefixo\_cep} & \texttt{prefixo\_cep.prefixo\_cep} \\ \hline
+			\texttt{fk\_pagamento\_pedido} & \texttt{pagamento.id\_pedido} & \texttt{pedido.id\_pedido} \\ \hline
+			\texttt{fk\_avaliacao\_pedido} & \texttt{avaliacao.id\_pedido} & \texttt{pedido.id\_pedido} \\ \hline
+			\texttt{fk\_geolocalizacao\_\allowbreak prefixo\_cep} & \texttt{geolocalizacao.prefixo\_cep} & \texttt{prefixo\_cep.prefixo\_cep} \\ \hline
+	\end{longtable}}
+
+	A relação Cliente--Pedido é materializada pela chave estrangeira obrigatória
+	\texttt{pedido.id\_\hspace{0pt}cliente} e pela restrição de unicidade
+	\texttt{uq\_pedido\_id\_\hspace{0pt}cliente}. Em conjunto, essas regras garantem que todo
+	Pedido referencie exatamente um Cliente e que cada Cliente seja referenciado
+	por, no máximo, um Pedido. Elas não garantem, isoladamente, que todo Cliente
+	possua um Pedido; a obrigatoriedade no sentido Cliente $\rightarrow$ Pedido
+	depende do processo de carga ou de validação adicional. Assim, o modelo
+	preserva o 1:1 observado nos registros carregados sem atribuir às restrições uma
+	garantia bidirecional que elas não impõem por si sós.
+
+	A cardinalidade preservada é Pedido 1:N Avaliação. Um pedido pode possuir zero
+	ou mais avaliações, enquanto cada ocorrência de avaliação pertence
+	obrigatoriamente a exatamente um pedido.
+
+	\section{Convenção de Nomenclatura SQL}
+
+	A convenção lógica utiliza caracteres ASCII e nomes em português, no singular.
+	A separação entre palavras segue o padrão \texttt{snake\_case}. Tabelas e
+	colunas não recebem prefixos técnicos nem abreviações não consolidadas.
+
+	\begin{itemize}[leftmargin=1.2cm]
+		\item chaves primárias: \texttt{pk\_}\textit{tabela};
+		\item chaves estrangeiras: \texttt{fk\_}\textit{origem}\texttt{\_}\textit{destino};
+		\item restrições de unicidade: \texttt{uq\_}\textit{tabela}\texttt{\_}\textit{atributos};
+		\item verificações de domínio: \texttt{ck\_}\textit{tabela}\texttt{\_}\textit{regra};
+		\item índices físicos: reservados à modelagem física, no padrão \texttt{ix\_}\textit{tabela}\texttt{\_}\textit{atributos}.
+	\end{itemize}
+
+	A convenção também qualifica nomes potencialmente ambíguos. Foram adotados
+	\texttt{status\_pedido}, \texttt{preco\_item}, \texttt{nome\_categoria} e
+	\texttt{nota\_avaliacao}. A acentuação permanece apenas na documentação. Nos
+	identificadores relacionais são usados \texttt{avaliacao} e
+	\texttt{geolocalizacao}.
+
+	\section{Normalização até a Terceira Forma Normal}
+
+	\subsection{Dependências Funcionais}
+
+	A avaliação considerou atributos atômicos, dependência da chave inteira e
+	ausência de dependências transitivas entre atributos não chave.
+
+	{\small
+		\renewcommand{\arraystretch}{1.4}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{2.7cm}|>{\raggedright\arraybackslash}p{8.4cm}|>{\raggedright\arraybackslash}p{3.0cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Determinante dos atributos não chave}} & \textcolor{white}{\textbf{Resultado}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Determinante dos atributos não chave}} & \textcolor{white}{\textbf{Resultado}} \\ \hline
+			\endhead
+			\texttt{cliente} & \texttt{id\_cliente} & 3FN \\ \hline
+			\texttt{pedido} & \texttt{id\_pedido} & 3FN \\ \hline
+			\texttt{item\_pedido} & \texttt{(id\_pedido, id\_item)} & 3FN \\ \hline
+			\texttt{produto} & \texttt{id\_produto} & 3FN \\ \hline
+			\texttt{vendedor} & \texttt{id\_vendedor} & 3FN \\ \hline
+			\texttt{pagamento} & \texttt{(id\_pedido, sequencial\_pagamento)} & 3FN \\ \hline
+			\texttt{avaliacao} & \texttt{(id\_avaliacao, id\_pedido)} & 3FN \\ \hline
+			\texttt{prefixo\_cep} & Não possui atributos não chave & 3FN \\ \hline
+			\texttt{geolocalizacao} & \texttt{id\_geolocalizacao} & 3FN \\ \hline
+	\end{longtable}}
+
+	\subsection{Identidade e Dependências de Avaliação}
+
+	O atributo \texttt{id\_avaliacao} isoladamente não é único na fonte. A
+	ocorrência de avaliação é identificada semanticamente pelo par
+	\texttt{(id\_avaliacao, id\_pedido)}, conforme validado durante a modelagem conceitual. O segundo
+	atributo também é uma chave estrangeira obrigatória para
+	\texttt{pedido.id\_pedido}.
+
+	A validação empírica encontrou 789 identificadores de avaliação associados a
+	mais de um pedido. Nota, data de criação e data de resposta repetem-se nesses
+	grupos. Essa coincidência é uma evidência empírica, mas não comprova a
+	dependência funcional semântica segundo a qual \texttt{id\_avaliacao}
+	determinaria \texttt{nota\_avaliacao}, \texttt{data\_criacao} e
+	\texttt{data\_resposta}. A repetição será tratada como possível anomalia ou limitação de identidade do conjunto de dados.
+
+	Como regra do domínio, os atributos descritivos da avaliação são considerados
+	funcionalmente dependentes da chave composta completa. A chave composta não foi
+	adotada para corrigir uma violação de normalização, mas para representar a
+	unicidade observada na fonte. Sob essa interpretação semântica, não há violação
+	reconhecida da 2FN, e \texttt{avaliacao} permanece em 2FN e 3FN. A decisão
+	preserva a granularidade e a cardinalidade validadas durante a modelagem
+	conceitual, sem alterá-la.
+
+	\subsection{Atributos Geográficos}
+
+	Não foi assumida a dependência \texttt{prefixo\_cep} $\rightarrow$
+	\texttt{(cidade, estado)}. Foram encontrados prefixos associados a múltiplos
+	pares de cidade e estado: 39 em Cliente, 49 em Vendedor e 8.559 em
+	Geolocalização. Cidade e estado permanecem, portanto, atributos das ocorrências
+	originais, evitando uma dependência funcional inexistente e uma consolidação
+	indevida.
+
+	\section{Validação da Integridade Referencial}
+
+	A entidade \texttt{prefixo\_cep} é formada pela união dos prefixos presentes em
+	Cliente, Vendedor e Geolocalização, totalizando 19.177 valores distintos. Essa
+	estratégia preserva os 157 prefixos de clientes e os sete de vendedores que não
+	possuem observações na fonte de geolocalização.
+
+	{\small
+		\renewcommand{\arraystretch}{1.25}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{5.5cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{3.6cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Referência validada}} & \textcolor{white}{\textbf{Nulos}} & \textcolor{white}{\textbf{Órfãos}} & \textcolor{white}{\textbf{Conclusão}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Referência validada}} & \textcolor{white}{\textbf{Nulos}} & \textcolor{white}{\textbf{Órfãos}} & \textcolor{white}{\textbf{Conclusão}} \\ \hline
+			\endhead
+			Pedido $\rightarrow$ Cliente & 0 & 0 & Válida, obrigatória e única \\ \hline
+			Item $\rightarrow$ Pedido & 0 & 0 & Válida e obrigatória \\ \hline
+			Item $\rightarrow$ Produto & 0 & 0 & Válida e obrigatória \\ \hline
+			Item $\rightarrow$ Vendedor & 0 & 0 & Válida e obrigatória \\ \hline
+			Pagamento $\rightarrow$ Pedido & 0 & 0 & Válida e obrigatória \\ \hline
+			Avaliação para Pedido & 0 & 0 & Válida e obrigatória \\ \hline
+			Cliente $\rightarrow$ Prefixo CEP & 0 & 0 & Válida pela união \\ \hline
+			Vendedor $\rightarrow$ Prefixo CEP & 0 & 0 & Válida pela união \\ \hline
+			Geolocalização $\rightarrow$ Prefixo CEP & 0 & 0 & Válida pela união \\ \hline
+	\end{longtable}}
+
+	As verificações demonstram cobertura referencial integral. As regras lógicas
+	\texttt{NOT NULL} aplicadas às FKs representam a participação obrigatória do
+	lado dependente. Como política lógica, o DBML especifica
+	\texttt{ON DELETE RESTRICT} e \texttt{ON UPDATE NO ACTION}: registros
+	referenciados não são excluídos e alterações de identificadores não são
+	propagadas automaticamente. A tradução dessas regras para os mecanismos
+	específicos do PostgreSQL será confirmada durante a modelagem física.
+
+	\section{Revisão de Redundâncias}
+
+	A revisão final não identificou redundâncias indevidas remanescentes. Foram
+	mantidas apenas repetições semanticamente necessárias:
+
+	\begin{itemize}[leftmargin=1.2cm]
+		\item cidade e estado em Cliente, Vendedor e Geolocalização, pois o prefixo de
+		CEP não os determina univocamente nos dados;
+		\item \texttt{id\_cliente\_unico} em Cliente, pois representa a identidade
+		longitudinal do consumidor e não substitui a ocorrência \texttt{id\_cliente};
+		\item identificadores propagados como FKs, necessários para materializar os
+		relacionamentos e não considerados redundância descritiva.
+	\end{itemize}
+
+	A repetição de nota e datas para um mesmo identificador de avaliação foi
+	mantida como possível anomalia ou limitação de identidade da fonte, pois não
+	constitui uma dependência funcional semântica confirmada. A tradução de
+	categorias continua fora do modelo central, conforme
+	a decisão conceitual que a classificou como estrutura auxiliar de tratamento.
+	Não foram introduzidos índices, particionamento ou desnormalização preventiva.
+
+	\section{Modelo Lógico Consolidado}
+
+	{\small
+		\renewcommand{\arraystretch}{1.25}
+		\begin{longtable}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}p{3.7cm}|}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{PK}} & \textcolor{white}{\textbf{FKs}} & \textcolor{white}{\textbf{Demais atributos}} \\ \hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{PK}} & \textcolor{white}{\textbf{FKs}} & \textcolor{white}{\textbf{Demais atributos}} \\ \hline
+			\endhead
+			\texttt{cliente} & \texttt{id\_cliente} & \texttt{prefixo\_cep} & \texttt{id\_cliente\_unico}, \texttt{cidade}, \texttt{estado} \\ \hline
+			\texttt{pedido} & \texttt{id\_pedido} & \texttt{id\_cliente} & \texttt{status\_pedido}, datas de processamento e entrega \\ \hline
+			\texttt{item\_pedido} & \texttt{id\_pedido}, \texttt{id\_item} & \texttt{id\_pedido}, \texttt{id\_produto}, \texttt{id\_vendedor} & \texttt{data\_limite\_envio}, \texttt{preco\_item}, \texttt{valor\_frete} \\ \hline
+			\texttt{produto} & \texttt{id\_produto} & --- & \texttt{nome\_categoria}, métricas textuais, fotos, peso e dimensões \\ \hline
+			\texttt{vendedor} & \texttt{id\_vendedor} & \texttt{prefixo\_cep} & \texttt{cidade}, \texttt{estado} \\ \hline
+			\texttt{pagamento} & \texttt{id\_pedido}, \texttt{sequencial\_pagamento} & \texttt{id\_pedido} & tipo, parcelas e valor \\ \hline
+			\texttt{avaliacao} & \texttt{id\_avaliacao}, \texttt{id\_pedido} & \texttt{id\_pedido} & \texttt{nota\_avaliacao}, criação e resposta \\ \hline
+			\texttt{prefixo\_cep} & \texttt{prefixo\_cep} & --- & --- \\ \hline
+			\texttt{geolocalizacao} & \texttt{id\_geolocalizacao} & \texttt{prefixo\_cep} & latitude, longitude, cidade e estado \\ \hline
+	\end{longtable}}
+
+	O artefato técnico consolidado usa domínios lógicos, e não tipos físicos de
+	PostgreSQL.
+	\section{Prontidão para a Modelagem Física}
+
+	O modelo consolidado possui nove tabelas em 3FN, chaves primárias e estrangeiras
+	explícitas, nomenclatura uniforme e cobertura referencial validada. Permanecem
+	corretamente reservadas à modelagem física as escolhas de tipos físicos e comprimentos,
+	implementação da chave substituta de Geolocalização, restrições de domínio,
+	índices e scripts DDL.
+
+	\section{Resultado da Modelagem Lógica}
+
+	O trabalho foi consolidado em um modelo relacional completo, rastreável e
+	independente de SGBD. A tabela \texttt{avaliacao} preserva a chave composta e
+	o relacionamento 1:N com Pedido validados durante a modelagem conceitual.
+	Nenhuma alteração foi realizada no modelo conceitual.
+
+\end{document}
