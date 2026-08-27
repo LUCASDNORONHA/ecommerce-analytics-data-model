@@ -86,6 +86,9 @@ Não fazem parte do escopo atual o desenvolvimento de uma plataforma transaciona
 
 A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos. O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git; os notebooks sincronizados em `notebooks/` são os artefatos versionados e entregues com o projeto.
 
+## Road map
+<img src="./assets/project-roadmap.png" alt="Road Map" width="100%">
+
 ## Configuração do ambiente
 
 O projeto utiliza [uv](https://docs.astral.sh/uv/) para gerenciar a versão do Python, o ambiente virtual e as dependências.
