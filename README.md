@@ -57,7 +57,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
 │       │   ├── conceptual_model.pdf
-│       │   └── mer/                 # MER editável e exportado
+│       │   └── mer/                 # Representação exportada do MER
 │       │
 │       ├── logical/                 # Documentação da modelagem lógica
 │       │   ├── logical_model.tex
@@ -69,6 +69,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 ├── models/
 │   ├── README.md
 │   ├── conceptual/                  # Artefatos técnicos do modelo conceitual
+│   │   └── mer-olist-conceitual.drawio
 │   ├── logical/                     # Artefatos técnicos do modelo lógico
 │   │   └── logical_schema.dbml
 │   └── physical/                    # Artefatos técnicos do modelo físico
