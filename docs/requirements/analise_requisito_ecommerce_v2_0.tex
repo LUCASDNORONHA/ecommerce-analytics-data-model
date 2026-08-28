@@ -17,6 +17,8 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{indentfirst}
+\usepackage{ragged2e}
+\usepackage{xurl}
 \usepackage{hyperref}
 
 % ---------------------------
@@ -62,6 +64,7 @@
 }
 
 \onehalfspacing
+\setlength{\emergencystretch}{2em}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -124,7 +127,11 @@
 \begin{center}
 \renewcommand{\arraystretch}{1.5}
 
-\begin{tabularx}{\textwidth}{|c|c|X|l|}
+\begin{tabularx}{\textwidth}{
+|>{\centering\arraybackslash}p{1.6cm}
+|>{\centering\arraybackslash}p{3.5cm}
+|>{\RaggedRight\arraybackslash}X
+|>{\RaggedRight\arraybackslash}p{3.5cm}|}
 \hline
 \rowcolor{AzulCorporativo}
 \textcolor{white}{\textbf{Versão}} &
@@ -290,12 +297,17 @@ Ficam explicitamente excluídos do escopo:
 \end{itemize}
 
 % ---------------------------
+\clearpage
+\mbox{}\vspace{-\baselineskip}
 \subsection{Atributos}
 
 \begin{itemize}
     \item \textbf{Cliente:} id\_cliente, id\_cliente\_unico, prefixo\_cep, cidade, estado
 
-    \item \textbf{Pedido:} id\_pedido, id\_cliente, status, data\_compra, data\_aprovacao, data\_envio\_transportador, data\_entrega, data\_estimada
+    \item \textbf{Pedido:} \nolinkurl{id_pedido}, \nolinkurl{id_cliente},
+    \nolinkurl{status}, \nolinkurl{data_compra}, \nolinkurl{data_aprovacao},
+    \nolinkurl{data_envio_transportador}, \nolinkurl{data_entrega},
+    \nolinkurl{data_estimada}
 
     \item \textbf{Item do Pedido:} id\_pedido, id\_item, id\_produto, id\_vendedor, data\_limite\_envio, preco, valor\_frete
 
@@ -329,11 +341,13 @@ Ficam explicitamente excluídos do escopo:
 \end{itemize}
 
 % ---------------------------
+\clearpage
 \subsection{Requisitos Funcionais}
 
 Os requisitos funcionais descrevem as capacidades que a estrutura de dados deverá oferecer para possibilitar a integração e exploração analítica das informações.
 
-\begin{longtable}{|p{2cm}|p{12cm}|}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{2cm}|>{\RaggedRight\arraybackslash}p{12cm}|}
     \hline
     \rowcolor{AzulCorporativo}
     \textcolor{white}{\textbf{ID}} &
@@ -346,27 +360,27 @@ Os requisitos funcionais descrevem as capacidades que a estrutura de dados dever
     \textcolor{white}{\textbf{Descrição}} \\ \hline
     \endhead
 
-    RF01 & O modelo deve permitir a integração dos dados de clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização. \\
+    RF01 & O modelo deve permitir a integração dos dados de clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização. \\ \hline
 
-    RF02 & O modelo deve permitir a recuperação do histórico de pedidos e suas respectivas informações relacionadas. \\
+    RF02 & O modelo deve permitir a recuperação do histórico de pedidos e suas respectivas informações relacionadas. \\ \hline
 
-    RF03 & O modelo deve permitir a análise de vendas segundo diferentes dimensões, incluindo período, produto, categoria, cliente, vendedor e localização geográfica. \\
+    RF03 & O modelo deve permitir a análise de vendas segundo diferentes dimensões, incluindo período, produto, categoria, cliente, vendedor e localização geográfica. \\ \hline
 
-    RF04 & O modelo deve permitir a análise do comportamento de compra dos clientes a partir do histórico disponível. \\
+    RF04 & O modelo deve permitir a análise do comportamento de compra dos clientes a partir do histórico disponível. \\ \hline
 
-    RF05 & O modelo deve permitir a análise do desempenho comercial de produtos, categorias e vendedores. \\
+    RF05 & O modelo deve permitir a análise do desempenho comercial de produtos, categorias e vendedores. \\ \hline
 
-    RF06 & O modelo deve permitir a análise das formas, valores e condições de pagamento associadas aos pedidos. \\
+    RF06 & O modelo deve permitir a análise das formas, valores e condições de pagamento associadas aos pedidos. \\ \hline
 
-    RF07 & O modelo deve permitir relacionar avaliações dos clientes às demais informações dos respectivos pedidos. \\
+    RF07 & O modelo deve permitir relacionar avaliações dos clientes às demais informações dos respectivos pedidos. \\ \hline
 
-    RF08 & O modelo deve permitir analisar datas previstas e efetivas associadas ao processamento e à entrega dos pedidos. \\
+    RF08 & O modelo deve permitir analisar datas previstas e efetivas associadas ao processamento e à entrega dos pedidos. \\ \hline
 
-    RF09 & O modelo deve permitir análises geográficas utilizando informações de clientes e vendedores e, quando aplicável, coordenadas associadas aos prefixos de CEP. \\
+    RF09 & O modelo deve permitir análises geográficas utilizando informações de clientes e vendedores e, quando aplicável, coordenadas associadas aos prefixos de CEP. \\ \hline
 
-    RF10 & O modelo deve permitir consultas que combinem múltiplas entidades sem comprometer a integridade dos relacionamentos. \\
+    RF10 & O modelo deve permitir consultas que combinem múltiplas entidades sem comprometer a integridade dos relacionamentos. \\ \hline
 
-    RF11 & O modelo deve permitir agregações e filtros por dimensões temporais, comerciais, geográficas e relacionadas aos pedidos. \\
+    RF11 & O modelo deve permitir agregações e filtros por dimensões temporais, comerciais, geográficas e relacionadas aos pedidos. \\ \hline
 
     RF12 & O modelo deve fornecer uma base estruturada para consumo por ferramentas de análise de dados e Business Intelligence. \\ \hline
 \end{longtable}
@@ -376,7 +390,7 @@ Os requisitos funcionais descrevem as capacidades que a estrutura de dados dever
 
 Os requisitos não funcionais descrevem restrições e qualidades que o sistema deve atender.
 
-\begin{longtable}{|p{2cm}|p{12cm}|}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{2cm}|>{\RaggedRight\arraybackslash}p{12cm}|}
     \hline
     \rowcolor{AzulCorporativo}
     \textcolor{white}{\textbf{ID}} &
@@ -389,19 +403,19 @@ Os requisitos não funcionais descrevem restrições e qualidades que o sistema 
     \textcolor{white}{\textbf{Descrição}} \\ \hline
     \endhead
 
-    RNF01 & O sistema deve garantir a integridade e consistência dos dados armazenados. \\
+    RNF01 & O sistema deve garantir a integridade e consistência dos dados armazenados. \\ \hline
 
-    RNF02 & O sistema deve assegurar a correta integração entre as diferentes entidades do modelo de dados. \\
+    RNF02 & O sistema deve assegurar a correta integração entre as diferentes entidades do modelo de dados. \\ \hline
 
-    RNF03 & O sistema deve permitir consultas com desempenho adequado para análise de dados. \\
+    RNF03 & O sistema deve permitir consultas com desempenho adequado para análise de dados. \\ \hline
 
-    RNF04 & O sistema deve ser estruturado de forma a facilitar escalabilidade, manutenção e extensão. \\
+    RNF04 & O sistema deve ser estruturado de forma a facilitar escalabilidade, manutenção e extensão. \\ \hline
 
-    RNF05 & O sistema deve garantir padronização nos formatos de dados, especialmente datas, identificadores e atributos geográficos. \\
+    RNF05 & O sistema deve garantir padronização nos formatos de dados, especialmente datas, identificadores e atributos geográficos. \\ \hline
 
-    RNF06 & O sistema deve assegurar a rastreabilidade das informações ao longo do fluxo de ingestão e transformação dos dados. \\
+    RNF06 & O sistema deve assegurar a rastreabilidade das informações ao longo do fluxo de ingestão e transformação dos dados. \\ \hline
 
-    RNF07 & O sistema deve ser projetado de forma a permitir fácil extensão para novas análises. \\
+    RNF07 & O sistema deve ser projetado de forma a permitir fácil extensão para novas análises. \\ \hline
 
     RNF08 & O sistema deve incorporar verificações de qualidade dos dados, incluindo duplicidades, valores ausentes e inconsistências de relacionamento. \\ \hline
 \end{longtable}
@@ -574,9 +588,9 @@ Abaixo está o detalhamento dos principais campos considerados para a modelagem 
 
 {\footnotesize
 \begin{longtable}{
-    |>{\raggedright\arraybackslash}p{6cm}
+    |>{\raggedright\arraybackslash}p{5.5cm}
     |>{\raggedright\arraybackslash}p{2cm}
-    |>{\raggedright\arraybackslash}p{7cm}|
+    |>{\raggedright\arraybackslash}p{6.8cm}|
 }
 \hline
 \rowcolor{AzulCorporativo}
@@ -652,7 +666,11 @@ Esta seção identifica os principais perfis interessados na estruturação e ut
 
 \vspace{0.5cm}
 
-\begin{longtable}{|p{4cm}|p{4cm}|p{7cm}|}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{
+|>{\RaggedRight\arraybackslash}p{3.7cm}
+|>{\RaggedRight\arraybackslash}p{3.7cm}
+|>{\RaggedRight\arraybackslash}p{6.9cm}|}
     \hline
     \rowcolor{AzulCorporativo}
     \textcolor{white}{\textbf{Stakeholder}} &
@@ -669,19 +687,19 @@ Esta seção identifica os principais perfis interessados na estruturação e ut
 
     Gestores de Negócio &
     Tomadores de decisão &
-    Utilizar informações consolidadas para compreender desempenho comercial, comportamento dos clientes e demais dimensões relevantes do negócio. \\
+    Utilizar informações consolidadas para compreender desempenho comercial, comportamento dos clientes e demais dimensões relevantes do negócio. \\ \hline
 
     Analistas de Dados &
     Usuários analíticos &
-    Realizar consultas, análises exploratórias e diagnósticas e produzir indicadores e informações para apoio à decisão. \\
+    Realizar consultas, análises exploratórias e diagnósticas e produzir indicadores e informações para apoio à decisão. \\ \hline
 
     Profissionais de BI &
     Consumidores da camada de dados &
-    Utilizar dados estruturados para construção de relatórios, indicadores e dashboards. \\
+    Utilizar dados estruturados para construção de relatórios, indicadores e dashboards. \\ \hline
 
     Engenharia de Dados / Administração de Banco de Dados &
     Responsáveis pela estrutura de dados &
-    Assegurar qualidade, integridade, organização, desempenho e manutenção da estrutura relacional. \\
+    Assegurar qualidade, integridade, organização, desempenho e manutenção da estrutura relacional. \\ \hline
 
     Áreas de Negócio &
     Consumidores das análises &

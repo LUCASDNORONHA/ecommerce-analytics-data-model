@@ -23,6 +23,7 @@
 \usepackage{ragged2e}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{xurl}
 
 % ---------------------------
 % Paleta de cores
@@ -73,6 +74,7 @@
 
 \onehalfspacing
 \setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
 
 % ---------------------------
 % Cabeçalho e rodapé
@@ -279,7 +281,8 @@
 		\item \textbf{Estabilidade:} o identificador não deve variar em decorrência de alterações ordinárias nos atributos descritivos;
 		\item \textbf{Clareza semântica:} a chave deve representar adequadamente a identidade da entidade;
 		\item \textbf{Granularidade:} o identificador deve respeitar o nível de detalhe de cada registro;
-		\item \textbf{Parcimônia:} identificadores simples são preferidos quando suficientes, recorrendo-se a composições apenas quando necessário.
+		\item \textbf{Parcimônia:} identificadores simples são preferidos quando
+		suficientes; composições são usadas apenas quando necessárias.
 	\end{itemize}
 	
 	\subsection{Análise dos Identificadores}
@@ -298,8 +301,8 @@
 	adotar \textbf{\texttt{id\_cliente}} como identificador conceitual da entidade,
 	correspondente ao campo de origem \texttt{customer\_id}.
 	
-	O atributo \texttt{customer\_unique\_id} será representado conceitualmente como
-	\texttt{id\_cliente\_unico} e mantido como atributo de identificação
+	O atributo \nolinkurl{customer_unique_id} será representado conceitualmente
+	como \nolinkurl{id_cliente_unico} e mantido como atributo de identificação
 	longitudinal do consumidor.
 	
 	\subsubsection{Pedido}
@@ -366,10 +369,10 @@
 		\renewcommand{\arraystretch}{1.35}
 		
 		\begin{longtable}{
-				|>{\raggedright\arraybackslash}p{3cm}
-				|>{\raggedright\arraybackslash}p{5cm}
-				|>{\raggedright\arraybackslash}p{2.5cm}
-				|>{\raggedright\arraybackslash}p{4cm}|
+				|>{\raggedright\arraybackslash}p{2.8cm}
+				|>{\raggedright\arraybackslash}p{4.6cm}
+				|>{\raggedright\arraybackslash}p{2.4cm}
+				|>{\raggedright\arraybackslash}p{3.8cm}|
 			}
 			\hline
 			\rowcolor{AzulCorporativo}
@@ -438,7 +441,7 @@
 	\subsection{Validação Referencial dos Relacionamentos}
 	
 	A sustentação estrutural dos relacionamentos foi verificada no artefato
-	\texttt{03\_validacao\_relacionamentos.ipynb}, utilizando os arquivos originais
+	\nolinkurl{03_validacao_relacionamentos.ipynb}, utilizando os arquivos originais
 	do conjunto de dados.
 	
 	Os seis relacionamentos fundamentados em identificadores diretos apresentaram
@@ -477,10 +480,10 @@
 		\renewcommand{\arraystretch}{1.35}
 		
 		\begin{longtable}{
-				|>{\raggedright\arraybackslash}p{4.2cm}
-				|>{\raggedright\arraybackslash}p{2.2cm}
-				|>{\raggedright\arraybackslash}p{3.3cm}
-				|>{\raggedright\arraybackslash}p{3.3cm}|
+				|>{\raggedright\arraybackslash}p{3.8cm}
+				|>{\raggedright\arraybackslash}p{2.8cm}
+				|>{\raggedright\arraybackslash}p{3.2cm}
+				|>{\raggedright\arraybackslash}p{3.2cm}|
 			}
 			\hline
 			\rowcolor{AzulCorporativo}
@@ -511,7 +514,8 @@
 	}
 	
 	% ---------------------------
-	\section{Construção, Refinamento e Validação do Modelo Entidade-Relacionamento}
+	\section[Construção e Validação do MER]
+	{Construção, Refinamento e Validação do Modelo\\Entidade-Relacionamento}
 	
 	\subsection{Contexto}
 	
@@ -552,6 +556,7 @@
 	suas dependências semânticas e conectadas pelos relacionamentos previamente
 	definidos.
 	
+	\mbox{}\vspace{-\baselineskip}
 	\subsection{Critérios de Validação}
 	
 	A versão consolidada do MER foi submetida a uma revisão sistemática antes de
@@ -582,7 +587,7 @@
 	
 	As cardinalidades representadas graficamente foram comparadas com os resultados
 	da validação empírica registrada no artefato
-	\texttt{04\_validacao\_cardinalidades.ipynb} e com as decisões conceituais
+	\nolinkurl{04_validacao_cardinalidades.ipynb} e com as decisões conceituais
 	documentadas.
 	
 	\subsubsection{Consistência da Granularidade}
@@ -676,7 +681,6 @@
 	relacional.
 	
 	% ---------------------------
-	\clearpage
 	\section{Referências}
 	
 	\subsection{Fontes de Dados}
@@ -717,6 +721,7 @@
 		
 	\end{itemize}
 	
+	\enlargethispage{2\baselineskip}
 	\subsection{Ferramentas Utilizadas}
 	
 	\begin{itemize}[leftmargin=1.2cm]
