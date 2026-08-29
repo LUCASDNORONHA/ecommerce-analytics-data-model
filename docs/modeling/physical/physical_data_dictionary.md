@@ -9,9 +9,10 @@
 
 ## Escopo
 
-Este documento converte os domínios do modelo lógico em tipos concretos do
-PostgreSQL e define nulabilidade, geração de valores e restrições. Ele orientará
-a criação do DDL na issue #36, mas não contém o script executável.
+Este documento descreve o schema `core`: converte os domínios do modelo lógico
+em tipos concretos do PostgreSQL e define nulabilidade, geração de valores e
+restrições. A RAW e o papel de ANALYTICS estão documentados na arquitetura em
+camadas.
 
 As nove tabelas, suas granularidades e seus relacionamentos permanecem
 inalterados. Nenhuma decisão física deste documento modifica silenciosamente o
@@ -304,6 +305,7 @@ Permanecem para as tarefas seguintes:
 ## Referências
 
 - [Decisão técnica do SGBD](database_selection.md)
+- [Arquitetura física em camadas](layered_architecture.md)
 - [Modelo lógico aprovado](../../../models/logical/logical_schema.dbml)
 - [Tipos de dados do PostgreSQL 18](https://www.postgresql.org/docs/18/datatype.html)
 - [Constraints do PostgreSQL 18](https://www.postgresql.org/docs/18/ddl-constraints.html)
