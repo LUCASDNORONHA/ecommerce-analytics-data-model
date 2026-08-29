@@ -14,7 +14,7 @@ A partir do conjunto de dados público **Brazilian E-Commerce Public Dataset by 
 
 O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados, carga e preparação dos dados e posterior disponibilização dos dados para consultas e análises.
 
-Atualmente, as etapas de modelagem e implementação da estrutura física estão concluídas. O projeto está iniciando a **carga de dados**, com foco na definição dos contratos de ingestão da camada RAW e na caracterização técnica dos arquivos de origem.
+Atualmente, as etapas de modelagem e implementação da estrutura física estão concluídas. O projeto está na fase de **carga de dados**, cobrindo contratos de ingestão, mapeamento RAW → CORE, regras de qualidade, implementação e reconciliação do ELT.
 
 ## Objetivos
 
@@ -56,7 +56,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── requirements/                # Análise e documentação de requisitos
 │   ├── WORKFLOW.md                  # Regras do fluxo de desenvolvimento
 │   ├── data-loading/                # Contratos e documentação da carga
-│   │   └── raw_ingestion_contract.md
+│   │   ├── raw_ingestion_contract.md
+│   │   └── raw_to_core_mapping.md
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
