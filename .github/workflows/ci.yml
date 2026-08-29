@@ -39,3 +39,6 @@ jobs:
 
       - name: Validar notebooks Jupytext
         run: uv run jupytext --to py:percent --test 'notebooks/**/*.ipynb'
+
+      - name: Executar testes automatizados
+        run: uv run python -m unittest discover -s tests -v
