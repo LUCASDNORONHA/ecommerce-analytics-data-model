@@ -57,7 +57,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── WORKFLOW.md                  # Regras do fluxo de desenvolvimento
 │   ├── data-loading/                # Contratos e documentação da carga
 │   │   ├── raw_ingestion_contract.md
-│   │   └── raw_to_core_mapping.md
+│   │   ├── raw_to_core_mapping.md
+│   │   └── data_quality_rules.md
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
@@ -87,7 +88,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   ├── 04_validacao_cardinalidades.ipynb
 │   │   └── 05_validacao_prefixo_cep.ipynb
 │   └── data-loading/                # Evidências reproduzíveis da carga
-│       └── 01_raw_source_profiling.ipynb
+│       ├── 01_raw_source_profiling.ipynb
+│       └── 02_raw_to_core_quality_validation.ipynb
 │
 ├── scripts/                         # Fontes Jupytext locais, não versionadas
 │   ├── data-modeling/
