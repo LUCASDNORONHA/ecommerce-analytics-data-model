@@ -12,7 +12,9 @@ Este projeto tem como objetivo desenvolver um modelo de dados relacional para ap
 
 A partir do conjunto de dados público **Brazilian E-Commerce Public Dataset by Olist**, o projeto organiza e relaciona informações de clientes, pedidos, itens, produtos, vendedores, pagamentos, avaliações e geolocalização. A estrutura resultante busca fornecer uma base consistente para análises comerciais, comportamentais, financeiras, geográficas e relacionadas ao processo de entrega.
 
-O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados e posterior disponibilização dos dados para consultas e análises.
+O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados, carga e preparação dos dados e posterior disponibilização dos dados para consultas e análises.
+
+Atualmente, as etapas de modelagem e implementação da estrutura física estão concluídas. O projeto está iniciando a **carga de dados**, com foco na definição dos contratos de ingestão da camada RAW e na caracterização técnica dos arquivos de origem.
 
 ## Objetivos
 
@@ -53,6 +55,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 ├── docs/
 │   ├── requirements/                # Análise e documentação de requisitos
 │   ├── WORKFLOW.md                  # Regras do fluxo de desenvolvimento
+│   ├── data-loading/                # Contratos e documentação da carga
+│   │   └── raw_ingestion_contract.md
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
@@ -64,7 +68,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │       │   ├── logical_model.pdf
 │       │   └── model/               # Representação gráfica do modelo lógico
 │       │
-│       └── physical/                # Documentação da modelagem física
+│       └── physical/                # Documentação consolidada da modelagem física
 │
 ├── models/
 │   ├── README.md
@@ -72,18 +76,21 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   └── mer-olist-conceitual.drawio
 │   ├── logical/                     # Artefatos técnicos do modelo lógico
 │   │   └── logical_schema.dbml
-│   └── physical/                    # Artefatos técnicos do modelo físico
+│   └── physical/                    # DDL, índices e validações para PostgreSQL
 │
 ├── notebooks/
-│   └── data-modeling/               # Validações e evidências da modelagem
-│       ├── 01_validacao_entidades.ipynb
-│       ├── 02_validacao_atributos.ipynb
-│       ├── 03_validacao_relacionamentos.ipynb
-│       ├── 04_validacao_cardinalidades.ipynb
-│       └── 05_validacao_prefixo_cep.ipynb
+│   ├── data-modeling/               # Validações e evidências da modelagem
+│   │   ├── 01_validacao_entidades.ipynb
+│   │   ├── 02_validacao_atributos.ipynb
+│   │   ├── 03_validacao_relacionamentos.ipynb
+│   │   ├── 04_validacao_cardinalidades.ipynb
+│   │   └── 05_validacao_prefixo_cep.ipynb
+│   └── data-loading/                # Evidências reproduzíveis da carga
+│       └── 01_raw_source_profiling.ipynb
 │
 ├── scripts/                         # Fontes Jupytext locais, não versionadas
-│   └── data-modeling/
+│   ├── data-modeling/
+│   └── data-loading/
 │
 ├── .github/
 ├── .gitignore
@@ -172,7 +179,9 @@ Consultas e análises
 
 A modelagem conceitual estabelece as entidades, atributos, identificadores, relacionamentos e cardinalidades do domínio. A modelagem lógica converte essa estrutura para o paradigma relacional, definindo tabelas, chaves, restrições de integridade, nomenclatura e dependências entre os dados sem vincular o modelo a decisões específicas de implementação.
 
-A modelagem física será responsável por traduzir o modelo lógico para estruturas concretas do Sistema Gerenciador de Banco de Dados adotado, incluindo tipos de dados, restrições, índices e demais decisões necessárias à implementação.
+A modelagem física traduziu o modelo lógico para PostgreSQL 18 e materializou uma arquitetura ELT com os schemas `raw`, `core` e `analytics`. A camada RAW possui uma tabela para cada CSV de origem; a CORE implementa as nove tabelas relacionais, suas restrições e os índices iniciais aprovados; a ANALYTICS permanece reservada para entregas analíticas posteriores.
+
+A etapa atual prepara a carga reproduzível do dataset. Ela começa pelo inventário e pelo perfil técnico dos arquivos de origem, avança para o mapeamento RAW → CORE, define regras de qualidade e transformação e, por fim, executa e reconcilia a carga. As entregas dessa etapa devem preservar a rastreabilidade entre os CSVs, as tabelas RAW e o modelo CORE.
 
 O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), enquanto o fluxo de contribuição está documentado em [CONTRIBUTING.md](CONTRIBUTING.md).
 
