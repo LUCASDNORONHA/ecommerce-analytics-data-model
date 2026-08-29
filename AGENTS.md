@@ -17,9 +17,9 @@ O desenvolvimento segue uma sequência progressiva de etapas:
 7. carga e preparação dos dados;
 8. consultas e análises.
 
-A análise de requisitos, a modelagem conceitual e a modelagem lógica estão concluídas e constituem a base aprovada para as etapas seguintes.
+A análise de requisitos e as modelagens conceitual, lógica e física estão concluídas e constituem a base aprovada para as etapas seguintes. A arquitetura física e os scripts PostgreSQL também foram implementados e validados.
 
-A etapa atualmente em desenvolvimento é a **Modelagem Física**, tendo o PostgreSQL como SGBD de destino.
+A etapa atualmente em desenvolvimento é a **Carga de Dados**, seguindo uma arquitetura ELT com os schemas `raw`, `core` e `analytics` no PostgreSQL 18.
 
 Consulte o GitHub Project nº 6 antes de iniciar qualquer tarefa.
 
@@ -46,7 +46,7 @@ O modelo conceitual aprovado deve ser tratado como referência semântica do dom
 
 O modelo lógico aprovado deve ser tratado como referência estrutural para a implementação física, preservando tabelas, granularidade, chaves, relacionamentos, cardinalidades, restrições lógicas e decisões de normalização.
 
-A modelagem física pode introduzir tipos de dados concretos, constraints específicas do PostgreSQL, índices e outras estruturas dependentes do SGBD, mas não deve alterar silenciosamente decisões conceituais ou lógicas já aprovadas.
+O modelo físico aprovado deve ser tratado como referência concreta para a carga, preservando schemas, tabelas, colunas, tipos, chaves, constraints e índices. A carga não deve alterar silenciosamente decisões conceituais, lógicas ou físicas já aprovadas.
 
 Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, dataset ou issue ativa, não invente uma decisão de domínio. Registre a inconsistência, apresente a evidência e preserve a rastreabilidade da decisão adotada.
 
@@ -165,11 +165,9 @@ Não altere silenciosamente essas decisões durante a implementação física.
 
 Caso uma limitação do PostgreSQL, uma característica comprovada do dataset ou uma necessidade técnica exija mudança estrutural, documente a divergência, sua justificativa e seu impacto sobre o modelo lógico.
 
-## Diretrizes para a Modelagem Física
+## Estado consolidado da modelagem física
 
-A Modelagem Física deve transformar o modelo lógico aprovado em uma especificação concreta e implementável no PostgreSQL.
-
-O modelo lógico é a referência estrutural desta etapa. A modelagem física deve definir como essa estrutura será materializada no SGBD sem modificar silenciosamente sua semântica.
+A Modelagem Física foi concluída, implementada e validada no PostgreSQL 18. O modelo lógico permanece como referência estrutural, e os artefatos consolidados em `models/physical/` materializam a arquitetura com os schemas `raw`, `core` e `analytics`.
 
 A sequência de trabalho deve considerar:
 
@@ -217,7 +215,7 @@ A definição de um tipo físico deve considerar simultaneamente:
 
 Sempre que houver dúvida sobre uma decisão física dependente dos dados, valide primeiro os arquivos em `data/raw/` ou produza evidência em notebook apropriado antes de consolidar a decisão.
 
-## Artefatos da Modelagem Física
+## Artefatos consolidados da Modelagem Física
 
 Os artefatos técnicos dependentes do PostgreSQL devem ser armazenados em:
 
@@ -236,7 +234,45 @@ Mantenha separadas:
 - a **carga e preparação dos dados**, que insere e transforma os dados provenientes da fonte;
 - a **camada analítica**, que poderá posteriormente introduzir views, tabelas derivadas, marts ou outras estruturas destinadas ao consumo analítico.
 
-Não antecipe estruturas analíticas apenas para simplificar a modelagem física.
+Não antecipe estruturas analíticas apenas para simplificar a carga.
+
+## Diretrizes para a Carga de Dados
+
+A carga deve implementar um fluxo reproduzível e rastreável dos nove CSVs de origem para a RAW e da RAW para a CORE. A issue ativa define o objetivo, os artefatos e os critérios de aceitação de cada entrega.
+
+A sequência de trabalho deve considerar:
+
+1. inventariar os arquivos e definir seus contratos de ingestão;
+2. consolidar formatos, volumes, granularidade, colunas e chaves aparentes;
+3. mapear cada coluna relevante da origem para RAW e CORE;
+4. identificar valores ausentes, duplicidades, formatos inválidos e inconsistências referenciais;
+5. definir transformações e regras de qualidade reproduzíveis;
+6. implementar a ingestão na RAW com configuração, logs e metadados;
+7. implementar as transformações da RAW para a CORE na ordem exigida pelas dependências;
+8. reconciliar volumes, chaves, referências, rejeições e regras de qualidade;
+9. documentar decisões, exceções e impactos para a camada analítica.
+
+Durante essa etapa:
+
+- trate os CSVs de `data/raw/` como fontes imutáveis e não os versione;
+- preserve nomes, valores e identificadores da fonte na RAW, salvo regra de ingestão documentada;
+- registre origem, momento e identificação da execução nos metadados previstos na RAW;
+- valide encoding, delimitador, cabeçalho, nulidade, tipos aparentes e quantidade de colunas antes da carga;
+- não infira regras de negócio apenas porque um padrão aparece no dataset;
+- mantenha separadas a ingestão na RAW, as transformações para a CORE e as validações posteriores;
+- aplique conversões e saneamentos de forma explícita, determinística e testável;
+- não descarte registros silenciosamente: contabilize e justifique rejeições e exceções;
+- preserve zeros à esquerda em prefixos de CEP e a precisão exata de valores monetários;
+- respeite nulabilidade, PKs, FKs, `UNIQUE` e `CHECK` definidos no modelo físico;
+- não desabilite constraints como solução permanente para falhas de carga;
+- não altere o DDL para acomodar dados inválidos sem decisão formal e evidência;
+- não antecipe views, marts ou regras próprias da camada ANALYTICS;
+- não inclua credenciais, segredos ou configurações locais sensíveis nos artefatos versionados;
+- produza logs e evidências suficientes para repetir e reconciliar cada execução.
+
+Quando os dados divergirem do contrato ou do modelo aprovado, registre o arquivo, a coluna e os registros afetados, a expectativa violada, a quantidade de ocorrências, o tratamento adotado e o impacto sobre a CORE e as análises posteriores.
+
+Use `docs/` para contratos, inventários, mapeamentos, decisões e relatórios; `notebooks/` para exploração e evidências empíricas versionadas; e diretórios técnicos apropriados para scripts reproduzíveis de ingestão, transformação e validação. Não misture dados ou rotinas operacionais de carga em `models/physical/`.
 
 ## Ambiente e dependências
 
@@ -247,3 +283,4 @@ Não use `pip`, Poetry ou Conda para alterar o ambiente do projeto.
 ```bash
 uv sync --locked --all-groups
 uv lock --check
+```
