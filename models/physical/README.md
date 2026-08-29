@@ -6,6 +6,8 @@ física nos schemas `raw`, `core` e `analytics`.
 ## Arquivos
 
 - `create_schema.sql`: cria os três schemas, nove tabelas RAW e nove tabelas CORE com suas constraints;
+- `create_indexes.sql`: cria os seis índices adicionais aprovados no CORE;
+- `drop_indexes.sql`: remove somente os índices adicionais;
 - `drop_schema.sql`: remove as tabelas e os schemas em ordem segura.
 
 ## Execução no DBeaver
@@ -13,8 +15,9 @@ física nos schemas `raw`, `core` e `analytics`.
 1. conecte o DBeaver a uma instância PostgreSQL 18;
 2. abra um editor SQL associado ao banco de destino;
 3. carregue e execute `create_schema.sql` como script;
-4. confirme o `COMMIT` e atualize a árvore de objetos;
-5. inspecione os schemas `raw`, `core` e `analytics` e suas tabelas RAW e CORE.
+4. execute `create_indexes.sql` após a criação do modelo;
+5. confirme o `COMMIT` e atualize a árvore de objetos;
+6. inspecione os schemas `raw`, `core` e `analytics` e suas tabelas RAW e CORE.
 
 Para remover o modelo, execute `drop_schema.sql` no mesmo banco. O script de
 remoção elimina objetos e deve ser usado somente em um ambiente descartável ou
@@ -26,13 +29,14 @@ com autorização explícita.
 - uma falha durante a criação aborta a transação e evita um modelo parcial;
 - a repetição de `create_schema.sql` sem remoção prévia falha intencionalmente,
   protegendo objetos existentes contra redefinição silenciosa;
-- o script não cria banco, usuário, credenciais, índices adicionais ou dados;
+- o script de schema não cria banco, usuário, credenciais, índices adicionais ou dados;
 - PKs e a constraint `UNIQUE` criam os índices necessários à sua implementação;
-  outros índices pertencem à issue #37.
+  outros índices dependem de evidência produzida nas etapas de carga e análise.
 
 ## Referências
 
 - [Decisão técnica do SGBD](../../docs/modeling/physical/database_selection.md)
 - [Arquitetura física em camadas](../../docs/modeling/physical/layered_architecture.md)
+- [Estratégia inicial de índices](../../docs/modeling/physical/index_strategy.md)
 - [Dicionário de dados físico](../../docs/modeling/physical/physical_data_dictionary.md)
 - [Modelo lógico aprovado](../logical/logical_schema.dbml)
