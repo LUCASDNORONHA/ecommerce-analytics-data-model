@@ -1,0 +1,298 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{geometry,setspace,longtable,array,indentfirst,hyperref,enumitem,ragged2e}
+\usepackage[table]{xcolor}
+\usepackage{titlesec,fancyhdr,xurl}
+
+\definecolor{AzulCorporativo}{RGB}{0,82,155}
+\definecolor{AzulPetroleo}{RGB}{23,104,133}
+\definecolor{CinzaEscuro}{RGB}{64,64,64}
+\definecolor{LaranjaDestaque}{RGB}{230,115,0}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=AzulPetroleo,
+	urlcolor=AzulCorporativo,
+	citecolor=LaranjaDestaque,
+	pdftitle={Modelagem Física - Modelo Analítico de Dados para E-commerce},
+	pdfauthor={Lucas Dias Noronha}
+}
+\titleformat{\section}{\color{AzulCorporativo}\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\color{AzulPetroleo}\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\color{CinzaEscuro}\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\geometry{left=3cm,right=2cm,top=3cm,bottom=2cm,headheight=45pt}
+\onehalfspacing
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{\colorbox{AzulCorporativo}{\makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{\textcolor{white}{\textbf{\ \ Modelagem Física}}}}}
+\fancyfoot[C]{\color{CinzaEscuro}\thepage}
+\newcommand{\projeto}{Modelo Analítico de Dados para E-commerce}
+\newcommand{\autor}{Lucas Dias Noronha}
+\newcommand{\dataDocumento}{\today}
+
+\begin{document}
+	\thispagestyle{empty}
+	\vspace*{\fill}
+	\begin{center}
+		{\Huge \textcolor{AzulCorporativo}{\textbf{Modelagem Física}}}\\[0.5cm]
+		{\Large \textcolor{AzulPetroleo}{\projeto}}\\[0.8cm]
+	\end{center}
+	\vspace*{\fill}
+	\noindent
+	\textbf{\textcolor{AzulCorporativo}{Autor:}} \autor
+	\hfill
+	\textbf{\textcolor{AzulCorporativo}{Data:}} \dataDocumento
+	\newpage
+	\setcounter{tocdepth}{1}
+	\tableofcontents
+	\newpage
+
+	\section{Introdução}
+	Este documento consolida a modelagem física do projeto \textit{\projeto}.
+	O modelo lógico aprovado é materializado no PostgreSQL por meio de tipos
+	concretos, nulabilidade, chaves, restrições, índices e scripts SQL
+	reproduzíveis.
+
+	A solução segue uma arquitetura ELT em três camadas:
+	\begin{center}
+		\textbf{Dataset Olist $\rightarrow$ RAW $\rightarrow$ CORE
+		$\rightarrow$ ANALYTICS $\rightarrow$ Power BI / SQL}
+	\end{center}
+
+	A modelagem preserva a semântica e a granularidade aprovadas. Decisões de
+	carga, transformação e consumo analítico são descritas por sua finalidade,
+	sem depender da numeração operacional utilizada no gerenciamento do projeto.
+
+	\section{Sistema Gerenciador de Banco de Dados}
+	O SGBD adotado é o \textbf{PostgreSQL 18}, sempre em sua revisão secundária
+	mais recente disponível. A escolha considera:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item suporte nativo a chaves, integridade referencial, transações e
+		restrições de domínio;
+		\item tipos adequados para valores monetários exatos, coordenadas e dados
+		temporais;
+		\item recursos SQL para junções, agregações, funções de janela e CTEs;
+		\item ferramentas de linha de comando para automação e validação;
+		\item integração com Python, DBeaver e ferramentas de BI;
+		\item manutenção ativa, documentação oficial e licença livre.
+	\end{itemize}
+
+	O DBeaver é utilizado como cliente gráfico para conexão, execução de scripts e
+	inspeção de objetos. Ele não substitui o servidor PostgreSQL nem os testes
+	reproduzíveis. Credenciais e configurações locais não são versionadas.
+
+	\section{Arquitetura Física em Camadas}
+	\subsection{RAW}
+	O schema \texttt{raw} recebe uma representação fiel dos nove arquivos CSV.
+	Há uma tabela por arquivo, os nomes originais das colunas são preservados e os
+	valores de origem são armazenados como \texttt{text}. Dessa forma, uma falha
+	de conversão não impede a ingestão nem elimina a evidência original.
+
+	Cada tabela acrescenta somente:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item \texttt{\_id\_raw}: identidade técnica da ocorrência;
+		\item \texttt{\_arquivo\_origem}: nome do arquivo recebido;
+		\item \texttt{\_carregado\_em}: instante da ingestão.
+	\end{itemize}
+	Os campos da fonte permanecem anuláveis e não recebem regras de negócio. A
+	chave técnica não afirma unicidade sobre o conteúdo original.
+
+	\subsection{CORE}
+	O schema \texttt{core} materializa as nove tabelas relacionais aprovadas.
+	Renomeações, conversões, deduplicação e validações ocorrem no fluxo
+	RAW--CORE. O CORE é a fonte estruturada e íntegra para consultas e para a
+	produção das estruturas analíticas.
+
+	\subsection{ANALYTICS}
+	O schema \texttt{analytics} é inicialmente criado sem objetos. Views, marts e
+	métricas serão derivados do CORE quando suas granularidades, regras e
+	finalidades de consumo estiverem definidas. Power BI e consumidores SQL
+	deverão utilizar preferencialmente essa camada.
+
+	\subsection{Mapeamento dos Arquivos para a RAW}
+	{\scriptsize
+	\renewcommand{\arraystretch}{1.25}
+	\begin{longtable}{|>{\raggedright\arraybackslash}p{7.2cm}|>{\raggedright\arraybackslash}p{7.2cm}|}
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Arquivo}} & \textcolor{white}{\textbf{Tabela RAW}} \\ \hline
+		\endfirsthead
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Arquivo}} & \textcolor{white}{\textbf{Tabela RAW}} \\ \hline
+		\endhead
+		\texttt{olist\_customers\_dataset.csv} & \texttt{raw.olist\_customers} \\ \hline
+		\texttt{olist\_geolocation\_dataset.csv} & \texttt{raw.olist\_geolocation} \\ \hline
+		\texttt{olist\_order\_items\_dataset.csv} & \texttt{raw.olist\_order\_items} \\ \hline
+		\texttt{olist\_order\_payments\_dataset.csv} & \texttt{raw.olist\_order\_payments} \\ \hline
+		\texttt{olist\_order\_reviews\_dataset.csv} & \texttt{raw.olist\_order\_reviews} \\ \hline
+		\texttt{olist\_orders\_dataset.csv} & \texttt{raw.olist\_orders} \\ \hline
+		\texttt{olist\_products\_dataset.csv} & \texttt{raw.olist\_products} \\ \hline
+		\texttt{olist\_sellers\_dataset.csv} & \texttt{raw.olist\_sellers} \\ \hline
+		\texttt{product\_category\_name\_translation.csv} & \texttt{raw.product\_category\_name\_translation} \\ \hline
+	\end{longtable}}
+
+	\section{Evidências para os Tipos Físicos}
+	Os CSVs foram perfilados como texto para evitar inferência indevida. Foram
+	avaliados nulidade, comprimento, domínio, mínimo, máximo, escala decimal,
+	formato temporal, unicidade e integridade referencial.
+
+	{\small
+	\renewcommand{\arraystretch}{1.25}
+	\begin{longtable}{|>{\raggedright\arraybackslash}p{3.3cm}|>{\raggedright\arraybackslash}p{5.4cm}|>{\raggedright\arraybackslash}p{5.5cm}|}
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Domínio}} & \textcolor{white}{\textbf{Evidência}} & \textcolor{white}{\textbf{Decisão}} \\ \hline
+		\endfirsthead
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Domínio}} & \textcolor{white}{\textbf{Evidência}} & \textcolor{white}{\textbf{Decisão}} \\ \hline
+		\endhead
+		Identificadores & 32 caracteres hexadecimais & \texttt{varchar(32)}; não converter para UUID \\ \hline
+		Prefixo de CEP & exatamente cinco dígitos & \texttt{char(5)} com validação \\ \hline
+		UF & dois caracteres; conjunto das UFs brasileiras & \texttt{char(2)} com domínio \\ \hline
+		Cidades & maior ocorrência com 40 caracteres & \texttt{varchar(50)} \\ \hline
+		Categoria & maior ocorrência com 46 caracteres & \texttt{varchar(50)} \\ \hline
+		Valores monetários & duas casas; máximo 13.664,08 & \texttt{numeric(12,2)} \\ \hline
+		Datas e horas & formato válido, sem deslocamento UTC & \texttt{timestamp without time zone} \\ \hline
+		Coordenadas & precisão variável e pontos fora do Brasil & \texttt{double precision}; limites globais \\ \hline
+	\end{longtable}}
+
+	\section{Dicionário Físico do CORE}
+	As colunas sem indicação de nulabilidade são obrigatórias. Nenhum valor de
+	negócio recebe padrão implícito. Somente
+	\texttt{geolocalizacao.id\_geolocalizacao}, inexistente na fonte, é gerado
+	como \texttt{bigint generated always as identity}.
+
+	{\small
+	\renewcommand{\arraystretch}{1.18}
+	\begin{longtable}{|>{\raggedright\arraybackslash}p{2.7cm}|>{\raggedright\arraybackslash}p{3.5cm}|>{\raggedright\arraybackslash}p{3.4cm}|>{\raggedright\arraybackslash}p{4.6cm}|}
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Coluna}} & \textcolor{white}{\textbf{Tipo}} & \textcolor{white}{\textbf{Integridade e observações}} \\ \hline
+		\endfirsthead
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Tabela}} & \textcolor{white}{\textbf{Coluna}} & \textcolor{white}{\textbf{Tipo}} & \textcolor{white}{\textbf{Integridade e observações}} \\ \hline
+		\endhead
+		cliente & id\_cliente & varchar(32) & PK; hexadecimal \\ \hline
+		cliente & id\_cliente\_unico & varchar(32) & hexadecimal \\ \hline
+		cliente & prefixo\_cep & char(5) & FK; cinco dígitos \\ \hline
+		cliente & cidade / estado & varchar(50) / char(2) & texto não vazio; UF válida \\ \hline
+		pedido & id\_pedido & varchar(32) & PK; hexadecimal \\ \hline
+		pedido & id\_cliente & varchar(32) & FK e UNIQUE \\ \hline
+		pedido & status\_pedido & varchar(20) & domínio dos estados observados \\ \hline
+		pedido & datas do ciclo & timestamp without time zone & aprovação, envio e entrega podem ser nulos \\ \hline
+		item\_pedido & id\_pedido, id\_item & varchar(32), smallint & PK composta; item positivo \\ \hline
+		item\_pedido & id\_produto, id\_vendedor & varchar(32) & FKs \\ \hline
+		item\_pedido & preço e frete & numeric(12,2) & valores não negativos \\ \hline
+		produto & id\_produto & varchar(32) & PK; hexadecimal \\ \hline
+		produto & nome\_categoria & varchar(50) & anulável \\ \hline
+		produto & métricas e dimensões & smallint / integer & anuláveis e não negativas \\ \hline
+		vendedor & id\_vendedor & varchar(32) & PK; hexadecimal \\ \hline
+		vendedor & prefixo, cidade, estado & char(5), varchar(50), char(2) & FK e domínios geográficos \\ \hline
+		pagamento & id\_pedido, sequencial & varchar(32), smallint & PK composta; FK; sequência positiva \\ \hline
+		pagamento & tipo / parcelas / valor & varchar(20), smallint, numeric(12,2) & domínios e valores não negativos \\ \hline
+		avaliacao & id\_avaliacao, id\_pedido & varchar(32) & PK composta; FK \\ \hline
+		avaliacao & nota / datas & smallint, timestamp & nota entre 1 e 5 \\ \hline
+		prefixo\_cep & prefixo\_cep & char(5) & PK; cinco dígitos \\ \hline
+		geolocalizacao & id\_geolocalizacao & bigint identity & PK gerada \\ \hline
+		geolocalizacao & prefixo\_cep & char(5) & FK \\ \hline
+		geolocalizacao & latitude / longitude & double precision & limites globais \\ \hline
+		geolocalizacao & cidade / estado & varchar(50) / char(2) & texto não vazio; UF válida \\ \hline
+	\end{longtable}}
+
+	As exclusões referenciadas usam \texttt{ON DELETE RESTRICT}; atualizações de
+	identificadores usam \texttt{ON UPDATE NO ACTION}. Não são impostas
+	comparações universais entre datas. Nulos descritivos e físicos observados em
+	produtos são preservados, sem preenchimento artificial.
+
+	\section{Estratégia Inicial de Índices}
+	O PostgreSQL cria índices B-tree para PKs e restrições \texttt{UNIQUE}, mas
+	não indexa automaticamente as colunas que referenciam FKs. Uma FK é considerada
+	coberta quando suas colunas formam o prefixo à esquerda de um índice existente.
+
+	Foram aprovados seis índices adicionais:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item \texttt{idx\_cliente\_prefixo\_cep};
+		\item \texttt{idx\_vendedor\_prefixo\_cep};
+		\item \texttt{idx\_item\_pedido\_id\_produto};
+		\item \texttt{idx\_item\_pedido\_id\_vendedor};
+		\item \texttt{idx\_avaliacao\_id\_pedido};
+		\item \texttt{idx\_geolocalizacao\_prefixo\_cep}.
+	\end{itemize}
+
+	Não há índices adicionais na RAW antes da implementação das transformações,
+	pois eles aumentariam o custo de ingestão sem padrão de acesso comprovado.
+	Também não há índices em ANALYTICS enquanto o schema estiver vazio. Depois da
+	carga, estatísticas, consultas reais e planos de execução deverão orientar
+	qualquer revisão.
+
+	\section{Scripts e Operação}
+	Os artefatos técnicos são:
+	\begin{itemize}[leftmargin=1.2cm]
+		\item \texttt{create\_schema.sql}: cria os três schemas e as tabelas;
+		\item \texttt{create\_indexes.sql}: cria os seis índices adicionais;
+		\item \texttt{validate\_schema.sql}: valida catálogo e comportamento;
+		\item \texttt{drop\_indexes.sql}: remove os índices adicionais;
+		\item \texttt{drop\_schema.sql}: remove tabelas e schemas em ordem segura.
+	\end{itemize}
+
+	No DBeaver, a criação é realizada executando
+	\path{create_schema.sql}, \path{create_indexes.sql} e
+	\path{validate_schema.sql}, nessa ordem. A criação falha
+	intencionalmente quando os schemas já existem, protegendo objetos contra
+	redefinição silenciosa. A remoção deve ser executada somente em ambiente
+	descartável ou mediante autorização explícita.
+
+	\section{Validação da Arquitetura}
+	A arquitetura foi executada em uma instância limpa do PostgreSQL 18.3.
+	O resultado consolidado foi:
+
+	{\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{longtable}{|>{\raggedright\arraybackslash}p{8.5cm}|>{\centering\arraybackslash}p{2.5cm}|>{\centering\arraybackslash}p{2.5cm}|}
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Verificação}} & \textcolor{white}{\textbf{Esperado}} & \textcolor{white}{\textbf{Obtido}} \\ \hline
+		\endfirsthead
+		\hline
+		\rowcolor{AzulCorporativo}
+		\textcolor{white}{\textbf{Verificação}} & \textcolor{white}{\textbf{Esperado}} & \textcolor{white}{\textbf{Obtido}} \\ \hline
+		\endhead
+		Schemas físicos & 3 & 3 \\ \hline
+		Tabelas RAW / CORE / ANALYTICS & 9 / 9 / 0 & 9 / 9 / 0 \\ \hline
+		Colunas RAW / CORE & 79 / 50 & 79 / 50 \\ \hline
+		Colunas identity & 10 & 10 \\ \hline
+		Chaves primárias / estrangeiras / UNIQUE & 18 / 9 / 1 & 18 / 9 / 1 \\ \hline
+		Índices RAW / CORE / adicionais CORE & 9 / 16 / 6 & 9 / 16 / 6 \\ \hline
+	\end{longtable}}
+
+	A RAW aceitou deliberadamente valores fora dos domínios de negócio. O CORE
+	rejeitou CEP inválido, chave duplicada e referência órfã. Os registros de teste
+	foram revertidos. Uma segunda criação foi rejeitada sem danificar as tabelas
+	existentes, e a remoção pôde ser repetida sem erro.
+
+	\section{Conclusão}
+	A modelagem física está consistente com os modelos conceitual e lógico e
+	pronta para receber o processo ELT. A etapa seguinte deverá extrair os CSVs,
+	carregá-los com rastreabilidade na RAW, transformar e validar os dados no CORE
+	e reconciliar volumes e rejeições. Em seguida, estruturas analíticas derivadas
+	do CORE poderão ser disponibilizadas para Power BI e consultas SQL.
+
+	\section{Referências}
+	\begin{itemize}[leftmargin=1.2cm]
+		\item PostgreSQL. \textit{Versioning Policy}. Disponível em:
+		\url{https://www.postgresql.org/support/versioning/}.
+		\item PostgreSQL. \textit{PostgreSQL 18 Documentation}. Disponível em:
+		\url{https://www.postgresql.org/docs/18/}.
+		\item DBeaver. \textit{PostgreSQL driver documentation}. Disponível em:
+		\url{https://dbeaver.com/docs/dbeaver/Database-driver-PostgreSQL/}.
+	\end{itemize}
+\end{document}

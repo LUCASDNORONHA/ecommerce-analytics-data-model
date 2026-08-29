@@ -37,8 +37,6 @@ com autorização explícita.
 
 ## Referências
 
-- [Decisão técnica do SGBD](../../docs/modeling/physical/database_selection.md)
-- [Arquitetura física em camadas](../../docs/modeling/physical/layered_architecture.md)
-- [Estratégia inicial de índices](../../docs/modeling/physical/index_strategy.md)
-- [Dicionário de dados físico](../../docs/modeling/physical/physical_data_dictionary.md)
+- [Documentação consolidada da modelagem física](../../docs/modeling/physical/physical_model.pdf)
+- [Fonte LaTeX da documentação](../../docs/modeling/physical/physical_model.tex)
 - [Modelo lógico aprovado](../logical/logical_schema.dbml)
