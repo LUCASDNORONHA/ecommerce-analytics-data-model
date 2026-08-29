@@ -59,7 +59,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   ├── raw_ingestion_contract.md
 │   │   ├── raw_to_core_mapping.md
 │   │   ├── data_quality_rules.md
-│   │   └── raw_load_pipeline.md
+│   │   ├── raw_load_pipeline.md
+│   │   └── core_load_pipeline.md
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
@@ -94,17 +95,22 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │
 ├── config/
 │   ├── raw_load.toml                # Contrato operacional da ingestão RAW
+│   ├── core_load.toml               # Configuração da transformação CORE
 │   └── raw_load.env.example         # Exemplo de variável de conexão
 │
 ├── etl/
-│   └── raw_loader.py                # Pipeline transacional da camada RAW
+│   ├── raw_loader.py                # Pipeline transacional da camada RAW
+│   ├── core_loader.py               # Transformação e reconciliação CORE
+│   ├── pipeline.py                  # Orquestração atômica completa
+│   └── sql/load_core.sql            # SQL RAW → CORE
 │
 ├── scripts/                         # Fontes Jupytext locais, não versionadas
 │   ├── data-modeling/
 │   └── data-loading/
 │
 ├── tests/
-│   └── test_raw_loader.py           # Testes automatizados da ingestão
+│   ├── test_raw_loader.py           # Testes automatizados da ingestão
+│   └── test_core_loader.py          # Testes das transformações CORE
 │
 ├── .github/
 ├── .gitignore
@@ -173,16 +179,16 @@ Valide os nove arquivos sem acessar o banco:
 uv run python -m etl.raw_loader --validate-only
 ```
 
-Para executar a carga, configure `DATABASE_URL` no ambiente local e remova a
-opção `--validate-only`:
+Para executar o pipeline completo, configure `DATABASE_URL` no ambiente local:
 
 ```bash
-uv run python -m etl.raw_loader
+uv run python -m etl.pipeline
 ```
 
 O processo é transacional, substitui a carga RAW anterior somente após a
 reconciliação completa e grava logs locais ignorados pelo Git. Consulte
-[a documentação do pipeline](docs/data-loading/raw_load_pipeline.md) para
+[a documentação da RAW](docs/data-loading/raw_load_pipeline.md) e
+[a documentação do pipeline completo](docs/data-loading/core_load_pipeline.md) para
 configuração, operação e diagnóstico.
 
 Consulte [data/README.md](data/README.md) para obter as instruções de download do dataset e preparação do diretório `data/raw/`.

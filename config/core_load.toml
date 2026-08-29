@@ -1,0 +1,5 @@
+[core_load]
+sql_path = "etl/sql/load_core.sql"
+log_dir = "outputs/data-loading/logs"
+lock_timeout_seconds = 30
+statement_timeout_seconds = 0
