@@ -396,12 +396,12 @@
 	\subsection{Mapeamento dos arquivos para a RAW}
 	% ------------------------------------------------------------
 	
-	{\scriptsize
+	{\small
 		\renewcommand{\arraystretch}{1.25}
 		
 		\begin{longtable}{
-				|>{\raggedright\arraybackslash}p{7.2cm}|
-				>{\raggedright\arraybackslash}p{7.2cm}|
+				|>{\raggedright\arraybackslash}p{7.5cm}|
+				>{\raggedright\arraybackslash}p{7.5cm}|
 			}
 			
 			\hline
@@ -639,115 +639,112 @@
 	
 	\textbf{uma ocorrência de cliente associada ao pedido no dataset.}
 	
-	\begin{landscape}
+
 		
-		{\scriptsize
-			\renewcommand{\arraystretch}{1.18}
+	\small
+	\renewcommand{\arraystretch}{1.18}
 			
-			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.0cm}|
-					>{\raggedright\arraybackslash}p{4.1cm}|
-					>{\raggedright\arraybackslash}p{3.0cm}|
-					>{\centering\arraybackslash}p{1.6cm}|
-					>{\raggedright\arraybackslash}p{3.0cm}|
-					>{\raggedright\arraybackslash}p{7.0cm}|
-				}
-				
-				\hline
-				\rowcolor{AzulCorporativo}
-				
-				\textcolor{white}{\textbf{Coluna CORE}} &
-				\textcolor{white}{\textbf{Coluna de origem}} &
-				\textcolor{white}{\textbf{Tipo}} &
-				\textcolor{white}{\textbf{Nulo}} &
-				\textcolor{white}{\textbf{Geração / padrão}} &
-				\textcolor{white}{\textbf{Integridade e observações}}
-				\\ \hline
-				
-				\endfirsthead
-				
-				\hline
-				\rowcolor{AzulCorporativo}
-				
-				\textcolor{white}{\textbf{Coluna CORE}} &
-				\textcolor{white}{\textbf{Coluna de origem}} &
-				\textcolor{white}{\textbf{Tipo}} &
-				\textcolor{white}{\textbf{Nulo}} &
-				\textcolor{white}{\textbf{Geração / padrão}} &
-				\textcolor{white}{\textbf{Integridade e observações}}
-				\\ \hline
-				
-				\endhead
-				
-				id\_cliente
-				&
-				customer\_id
-				&
-				varchar(32)
-				&
-				Não
-				&
-				---
-				&
-				PK; exatamente 32 caracteres hexadecimais
-				\\ \hline
-				
-				id\_cliente\_unico
-				&
-				customer\_unique\_id
-				&
-				varchar(32)
-				&
-				Não
-				&
-				---
-				&
-				exatamente 32 caracteres hexadecimais
-				\\ \hline
-				
-				prefixo\_cep
-				&
-				customer\_zip\_code\_prefix
-				&
-				char(5)
-				&
-				Não
-				&
-				---
-				&
-				FK para \texttt{prefixo\_cep}; exatamente cinco dígitos
-				\\ \hline
-				
-				cidade
-				&
-				customer\_city
-				&
-				varchar(50)
-				&
-				Não
-				&
-				---
-				&
-				texto não vazio
-				\\ \hline
-				
-				estado
-				&
-				customer\_state
-				&
-				char(2)
-				&
-				Não
-				&
-				---
-				&
-				domínio das unidades federativas brasileiras
-				\\ \hline
-				
-			\end{longtable}
+	\begin{longtable}{
+			|>{\raggedright\arraybackslash}p{2.6cm}|
+			>{\raggedright\arraybackslash}p{3.5cm}|
+			>{\raggedright\arraybackslash}p{2cm}|
+			>{\centering\arraybackslash}p{1cm}|
+			>{\raggedright\arraybackslash}p{2cm}|
+			>{\raggedright\arraybackslash}p{3cm}|
 		}
-		
-	\end{landscape}
+				
+		\hline
+		\rowcolor{AzulCorporativo}
+				
+		\textcolor{white}{\textbf{Coluna CORE}} &
+		\textcolor{white}{\textbf{Coluna de origem}} &
+		\textcolor{white}{\textbf{Tipo}} &
+		\textcolor{white}{\textbf{Nulo}} &
+		\textcolor{white}{\textbf{Geração / padrão}} &
+		\textcolor{white}{\textbf{Integridade e observações}}
+		\\ \hline
+				
+		\endfirsthead
+				
+		\hline
+		\rowcolor{AzulCorporativo}
+				
+		\textcolor{white}{\textbf{Coluna CORE}} &
+		\textcolor{white}{\textbf{Coluna de origem}} &
+		\textcolor{white}{\textbf{Tipo}} &
+		\textcolor{white}{\textbf{Nulo}} &
+		\textcolor{white}{\textbf{Geração / padrão}} &
+		\textcolor{white}{\textbf{Integridade e observações}}
+		\\ \hline
+				
+		\endhead
+				
+		id\_cliente
+		&
+		customer\_id
+		&
+		varchar(32)
+		&
+		Não
+		&
+		---
+		&
+		PK; exatamente 32 caracteres hexadecimais
+		\\ \hline
+				
+		id\_cliente\_unico
+		&
+		customer\_unique\_id
+		&
+		varchar(32)
+		&
+		Não
+		&
+		---
+		&
+		exatamente 32 caracteres hexadecimais
+		\\ \hline
+				
+		prefixo\_cep
+		&
+		customer\_zip\_code\_\allowbreak prefix
+		&
+		char(5)
+		&
+		Não
+		&
+		---
+		&
+		FK para \texttt{prefixo\_cep}; exatamente cinco dígitos
+		\\ \hline
+				
+		cidade
+		&
+		customer\_city
+		&
+		varchar(50)
+		&
+		Não
+		&
+		---
+		&
+		texto não vazio
+		\\ \hline
+				
+		estado
+		&
+		customer\_state
+		&
+		char(2)
+		&
+		Não
+		&
+		---
+		&
+		domínio das unidades federativas brasileiras
+		\\ \hline
+				
+	\end{longtable}
 	
 	% ============================================================
 	\subsection{Tabela pedido}
@@ -761,154 +758,153 @@
 	
 	\textbf{um pedido.}
 	
-	\begin{landscape}
-		
-		{\scriptsize
-			\renewcommand{\arraystretch}{1.18}
-			
-			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.3cm}|
-					>{\raggedright\arraybackslash}p{5cm}|
-					>{\raggedright\arraybackslash}p{3.5cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{2.8cm}|
-					>{\raggedright\arraybackslash}p{6.3cm}|
-				}
-				
-				\hline
-				\rowcolor{AzulCorporativo}
-				
-				\textcolor{white}{\textbf{Coluna CORE}} &
-				\textcolor{white}{\textbf{Coluna de origem}} &
-				\textcolor{white}{\textbf{Tipo}} &
-				\textcolor{white}{\textbf{Nulo}} &
-				\textcolor{white}{\textbf{Padrão}} &
-				\textcolor{white}{\textbf{Integridade e observações}}
-				\\ \hline
-				
-				\endfirsthead
-				
-				\hline
-				\rowcolor{AzulCorporativo}
-				
-				\textcolor{white}{\textbf{Coluna CORE}} &
-				\textcolor{white}{\textbf{Coluna de origem}} &
-				\textcolor{white}{\textbf{Tipo}} &
-				\textcolor{white}{\textbf{Nulo}} &
-				\textcolor{white}{\textbf{Padrão}} &
-				\textcolor{white}{\textbf{Integridade e observações}}
-				\\ \hline
-				
-				\endhead
-				
-				id\_pedido
-				&
-				order\_id
-				&
-				varchar(32)
-				&
-				Não
-				&
-				---
-				&
-				PK
-				\\ \hline
-				
-				id\_cliente
-				&
-				customer\_id
-				&
-				varchar(32)
-				&
-				Não
-				&
-				---
-				&
-				FK para \texttt{cliente}; restrição UNIQUE
-				\\ \hline
-				
-				status\_pedido
-				&
-				order\_status
-				&
-				varchar(20)
-				&
-				Não
-				&
-				---
-				&
-				valor pertencente ao domínio de estados observados no dataset
-				\\ \hline
-				
-				data\_compra
-				&
-				order\_purchase\_timestamp
-				&
-				timestamp without time zone
-				&
-				Não
-				&
-				---
-				&
-				instante de criação do pedido
-				\\ \hline
-				
-				data\_aprovacao
-				&
-				order\_approved\_at
-				&
-				timestamp without time zone
-				&
-				Sim
-				&
-				---
-				&
-				ausência preservada quando não registrada pela fonte
-				\\ \hline
-				
-				data\_envio\_transportador
-				&
-				order\_delivered\_carrier\_date
-				&
-				timestamp without time zone
-				&
-				Sim
-				&
-				---
-				&
-				ausência preservada quando não registrada
-				\\ \hline
-				
-				data\_entrega
-				&
-				order\_delivered\_customer\_date
-				&
-				timestamp without time zone
-				&
-				Sim
-				&
-				---
-				&
-				ausência preservada para pedidos não entregues ou sem informação
-				\\ \hline
-				
-				data\_entrega\_estimada
-				&
-				order\_estimated\_delivery\_date
-				&
-				timestamp without time zone
-				&
-				Não
-				&
-				---
-				&
-				data estimada registrada no pedido
-				\\ \hline
-				
-			\end{longtable}
+
+	\small
+	\renewcommand{\arraystretch}{1.18}
+	
+	\begin{longtable}{
+			|>{\raggedright\arraybackslash}p{2.6cm}|
+			>{\raggedright\arraybackslash}p{3.4cm}|
+			>{\raggedright\arraybackslash}p{2.2cm}|
+			>{\centering\arraybackslash}p{1cm}|
+			>{\raggedright\arraybackslash}p{1.2cm}|
+			>{\raggedright\arraybackslash}p{3cm}|
 		}
 		
-	\end{landscape}
+		\hline
+		\rowcolor{AzulCorporativo}
+		
+		\textcolor{white}{\textbf{Coluna CORE}} &
+		\textcolor{white}{\textbf{Coluna de origem}} &
+		\textcolor{white}{\textbf{Tipo}} &
+		\textcolor{white}{\textbf{Nulo}} &
+		\textcolor{white}{\textbf{Padrão}} &
+		\textcolor{white}{\textbf{Integridade e observações}}
+		\\ \hline
+		
+		\endfirsthead
+		
+		\hline
+		\rowcolor{AzulCorporativo}
+		
+		\textcolor{white}{\textbf{Coluna CORE}} &
+		\textcolor{white}{\textbf{Coluna de origem}} &
+		\textcolor{white}{\textbf{Tipo}} &
+		\textcolor{white}{\textbf{Nulo}} &
+		\textcolor{white}{\textbf{Padrão}} &
+		\textcolor{white}{\textbf{Integridade e observações}}
+		\\ \hline
+		
+		\endhead
+		
+		id\_pedido
+		&
+		order\_id
+		&
+		varchar(32)
+		&
+		Não
+		&
+		---
+		&
+		PK
+		\\ \hline
+		
+		id\_cliente
+		&
+		customer\_id
+		&
+		varchar(32)
+		&
+		Não
+		&
+		---
+		&
+		FK para \texttt{cliente}; restrição UNIQUE
+		\\ \hline
+		
+		status\_pedido
+		&
+		order\_status
+		&
+		varchar(20)
+		&
+		Não
+		&
+		---
+		&
+		valor pertencente ao domínio de estados observados no dataset
+		\\ \hline
+		
+		data\_compra
+		&
+		order\_purchase\_\allowbreak timestamp
+		&
+		timestamp without time zone
+		&
+		Não
+		&
+		---
+		&
+		instante de criação do pedido
+		\\ \hline
+		
+		data\_aprovacao
+		&
+		order\_approved\_at
+		&
+		timestamp without time zone
+		&
+		Sim
+		&
+		---
+		&
+		ausência preservada quando não registrada pela fonte
+		\\ \hline
+		
+		data\_envio\_\allowbreak transportador
+		&
+		order\_delivered\_\allowbreak carrier\_date
+		&
+		timestamp without time zone
+		&
+		Sim
+		&
+		---
+		&
+		ausência preservada quando não registrada
+		\\ \hline
+		
+		data\_entrega
+		&
+		order\_delivered\_\allowbreak customer\_date
+		&
+		timestamp without time zone
+		&
+		Sim
+		&
+		---
+		&
+		ausência preservada para pedidos não entregues ou sem informação
+		\\ \hline
+		
+		data\_entrega\_\allowbreak estimada
+		&
+		order\_estimated\_\allowbreak delivery\_date
+		&
+		timestamp without time zone
+		&
+		Não
+		&
+		---
+		&
+		data estimada registrada no pedido
+		\\ \hline
+		
+	\end{longtable}
+
+		
+		
 	
 	Não são estabelecidas comparações temporais universais entre todas as
 	datas do ciclo do pedido.
@@ -929,18 +925,16 @@
 	
 	\textbf{um item dentro de um pedido.}
 	
-	\begin{landscape}
-		
-		{\scriptsize
+		{small
 			\renewcommand{\arraystretch}{1.18}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.3cm}|
-					>{\raggedright\arraybackslash}p{4.5cm}|
-					>{\raggedright\arraybackslash}p{3.4cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{2.5cm}|
-					>{\raggedright\arraybackslash}p{6.7cm}|
+					|>{\raggedright\arraybackslash}p{3cm}|
+					>{\raggedright\arraybackslash}p{3.2cm}|
+					>{\raggedright\arraybackslash}p{2.2cm}|
+					>{\centering\arraybackslash}p{1cm}|
+					>{\raggedright\arraybackslash}p{1.2cm}|
+					>{\raggedright\arraybackslash}p{2.7cm}|
 				}
 				
 				\hline
@@ -1061,9 +1055,8 @@
 				\\ \hline
 				
 			\end{longtable}
-		}
+
 		
-	\end{landscape}
 	
 	% ============================================================
 	\subsection{Tabela produto}
@@ -1077,18 +1070,17 @@
 	
 	\textbf{um produto.}
 	
-	\begin{landscape}
 		
-		{\scriptsize
-			\renewcommand{\arraystretch}{1.18}
+		{\small
+			\renewcommand{\arraystretch}{1.20}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{4cm}|
-					>{\raggedright\arraybackslash}p{5.3cm}|
-					>{\raggedright\arraybackslash}p{3cm}|
-					>{\centering\arraybackslash}p{1.4cm}|
-					>{\raggedright\arraybackslash}p{2.2cm}|
-					>{\raggedright\arraybackslash}p{6cm}|
+					|>{\raggedright\arraybackslash}p{3cm}|
+					>{\raggedright\arraybackslash}p{3.4cm}|
+					>{\raggedright\arraybackslash}p{1.8cm}|
+					>{\centering\arraybackslash}p{1cm}|
+					>{\raggedright\arraybackslash}p{1.2cm}|
+					>{\raggedright\arraybackslash}p{2.8cm}|
 				}
 				
 				\hline
@@ -1132,7 +1124,7 @@
 				
 				nome\_categoria
 				&
-				product\_category\_name
+				product\_\allowbreak category\_name
 				&
 				varchar(50)
 				&
@@ -1143,9 +1135,9 @@
 				ausência da categoria é preservada
 				\\ \hline
 				
-				comprimento\_nome
+				comprimento\_\allowbreak nome
 				&
-				product\_name\_lenght
+				product\_name\_\allowbreak lenght
 				&
 				smallint
 				&
@@ -1156,9 +1148,9 @@
 				valor não negativo
 				\\ \hline
 				
-				comprimento\_descricao
+				comprimento\_\allowbreak descricao
 				&
-				product\_description\_lenght
+				product\_\allowbreak description\_lenght
 				&
 				smallint
 				&
@@ -1234,10 +1226,9 @@
 				valor não negativo
 				\\ \hline
 				
-			\end{longtable}
-		}
+			\end{longtable}}
 		
-	\end{landscape}
+
 	
 	O perfilamento identificou ausências simultâneas em atributos
 	descritivos de produtos e ocorrências ausentes em atributos de
@@ -1261,18 +1252,18 @@
 	
 	\textbf{um vendedor.}
 	
-	\begin{landscape}
+
 		
-		{\scriptsize
-			\renewcommand{\arraystretch}{1.18}
+		{\small
+			\renewcommand{\arraystretch}{1.50}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3cm}|
-					>{\raggedright\arraybackslash}p{4.5cm}|
-					>{\raggedright\arraybackslash}p{3cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{3cm}|
-					>{\raggedright\arraybackslash}p{7cm}|
+					|>{\raggedright\arraybackslash}p{2.5cm}|
+					>{\raggedright\arraybackslash}p{3.8cm}|
+					>{\raggedright\arraybackslash}p{2cm}|
+					>{\centering\arraybackslash}p{1cm}|
+					>{\raggedright\arraybackslash}p{1.2cm}|
+					>{\raggedright\arraybackslash}p{2.8cm}|
 				}
 				
 				\hline
@@ -1356,7 +1347,7 @@
 			\end{longtable}
 		}
 		
-	\end{landscape}
+
 	
 	% ============================================================
 	\subsection{Tabela pagamento}
@@ -1370,18 +1361,17 @@
 	
 	\textbf{uma ocorrência de pagamento dentro de um pedido.}
 	
-	\begin{landscape}
 		
-		{\scriptsize
+		{\small
 			\renewcommand{\arraystretch}{1.18}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.5cm}|
-					>{\raggedright\arraybackslash}p{4.5cm}|
-					>{\raggedright\arraybackslash}p{3cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{2.5cm}|
-					>{\raggedright\arraybackslash}p{6.5cm}|
+					|>{\raggedright\arraybackslash}p{2.2cm}|
+					>{\raggedright\arraybackslash}p{2.8cm}|
+					>{\raggedright\arraybackslash}p{2.2cm}|
+					>{\centering\arraybackslash}p{1cm}|
+					>{\raggedright\arraybackslash}p{1.2cm}|
+					>{\raggedright\arraybackslash}p{3.5cm}|
 				}
 				
 				\hline
@@ -1423,9 +1413,9 @@
 				parte da PK composta e FK para pedido
 				\\ \hline
 				
-				sequencial\_pagamento
+				sequencial\_\allowbreak pagamento
 				&
-				payment\_sequential
+				payment\_\allowbreak sequential
 				&
 				smallint
 				&
@@ -1436,7 +1426,7 @@
 				parte da PK composta; valor maior que zero
 				\\ \hline
 				
-				tipo\_pagamento
+				tipo\_\allowbreak pagamento
 				&
 				payment\_type
 				&
@@ -1449,9 +1439,9 @@
 				domínio de formas de pagamento observadas
 				\\ \hline
 				
-				numero\_parcelas
+				numero\_\allowbreak parcelas
 				&
-				payment\_installments
+				payment\_\allowbreak installments
 				&
 				smallint
 				&
@@ -1462,7 +1452,7 @@
 				valor maior ou igual a zero
 				\\ \hline
 				
-				valor\_pagamento
+				valor\_\allowbreak pagamento
 				&
 				payment\_value
 				&
@@ -1478,7 +1468,6 @@
 			\end{longtable}
 		}
 		
-	\end{landscape}
 	
 	O valor zero em \texttt{numero\_parcelas} não é automaticamente
 	corrigido ou descartado.
@@ -1502,18 +1491,17 @@
 	
 	\textbf{uma avaliação associada a um pedido.}
 	
-	\begin{landscape}
 		
-		{\scriptsize
+		{\small 
 			\renewcommand{\arraystretch}{1.18}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.5cm}|
-					>{\raggedright\arraybackslash}p{4.5cm}|
-					>{\raggedright\arraybackslash}p{3.5cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{2.5cm}|
-					>{\raggedright\arraybackslash}p{6cm}|
+					|>{\raggedright\arraybackslash}p{2.5cm}|
+					>{\raggedright\arraybackslash}p{3cm}|
+					>{\raggedright\arraybackslash}p{2cm}|
+					>{\centering\arraybackslash}p{1cm}|
+					>{\raggedright\arraybackslash}p{1.2cm}|
+					>{\raggedright\arraybackslash}p{3cm}|
 				}
 				
 				\hline
@@ -1583,7 +1571,7 @@
 				
 				data\_criacao
 				&
-				review\_creation\_date
+				review\_creation\_\allowbreak date
 				&
 				timestamp without time zone
 				&
@@ -1596,7 +1584,7 @@
 				
 				data\_resposta
 				&
-				review\_answer\_timestamp
+				review\_answer\_\allowbreak timestamp
 				&
 				timestamp without time zone
 				&
@@ -1610,7 +1598,6 @@
 			\end{longtable}
 		}
 		
-	\end{landscape}
 	
 	Os campos textuais de título e comentário existentes no arquivo de
 	origem não são materializados no CORE porque não pertencem ao modelo
@@ -1631,10 +1618,10 @@
 		\renewcommand{\arraystretch}{1.2}
 		
 		\begin{longtable}{
-				|>{\raggedright\arraybackslash}p{4cm}|
-				>{\raggedright\arraybackslash}p{4cm}|
+				|>{\raggedright\arraybackslash}p{2.5cm}|
+				>{\raggedright\arraybackslash}p{2cm}|
 				>{\centering\arraybackslash}p{2cm}|
-				>{\raggedright\arraybackslash}p{5cm}|
+				>{\raggedright\arraybackslash}p{6cm}|
 			}
 			
 			\hline
@@ -1690,18 +1677,17 @@
 	
 	Foi criada uma chave substituta estável para a tabela.
 	
-	\begin{landscape}
 		
-		{\scriptsize
+		{\small
 			\renewcommand{\arraystretch}{1.18}
 			
 			\begin{longtable}{
-					|>{\raggedright\arraybackslash}p{3.7cm}|
-					>{\raggedright\arraybackslash}p{5cm}|
-					>{\raggedright\arraybackslash}p{3.2cm}|
-					>{\centering\arraybackslash}p{1.5cm}|
-					>{\raggedright\arraybackslash}p{4cm}|
-					>{\raggedright\arraybackslash}p{5cm}|
+					|>{\raggedright\arraybackslash}p{2.4cm}|
+					>{\raggedright\arraybackslash}p{3cm}|
+					>{\raggedright\arraybackslash}p{1.8cm}|
+					>{\centering\arraybackslash}p{1.1cm}|
+					>{\raggedright\arraybackslash}p{2cm}|
+					>{\raggedright\arraybackslash}p{3.5cm}|
 				}
 				
 				\hline
@@ -1730,7 +1716,7 @@
 				
 				\endhead
 				
-				id\_geolocalizacao
+				id\_\allowbreak geolocalizacao
 				&
 				---
 				&
@@ -1745,7 +1731,7 @@
 				
 				prefixo\_cep
 				&
-				geolocation\_zip\_code\_prefix
+				geolocation\_zip\_\allowbreak code\_prefix
 				&
 				char(5)
 				&
@@ -1811,7 +1797,6 @@
 			\end{longtable}
 		}
 		
-	\end{landscape}
 	
 	Os limites de latitude e longitude são globais e não restritos ao
 	território brasileiro.
@@ -1912,7 +1897,7 @@
 	\subsection{Cobertura gerada pelas restrições}
 	% ------------------------------------------------------------
 	
-	{\scriptsize
+	{\small
 		\renewcommand{\arraystretch}{1.2}
 		
 		\begin{longtable}{
