@@ -58,7 +58,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── data-loading/                # Contratos e documentação da carga
 │   │   ├── raw_ingestion_contract.md
 │   │   ├── raw_to_core_mapping.md
-│   │   └── data_quality_rules.md
+│   │   ├── data_quality_rules.md
+│   │   └── raw_load_pipeline.md
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
 │       │   ├── conceptual_model.tex
@@ -91,9 +92,19 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │       ├── 01_raw_source_profiling.ipynb
 │       └── 02_raw_to_core_quality_validation.ipynb
 │
+├── config/
+│   ├── raw_load.toml                # Contrato operacional da ingestão RAW
+│   └── raw_load.env.example         # Exemplo de variável de conexão
+│
+├── etl/
+│   └── raw_loader.py                # Pipeline transacional da camada RAW
+│
 ├── scripts/                         # Fontes Jupytext locais, não versionadas
 │   ├── data-modeling/
 │   └── data-loading/
+│
+├── tests/
+│   └── test_raw_loader.py           # Testes automatizados da ingestão
 │
 ├── .github/
 ├── .gitignore
@@ -121,7 +132,7 @@ O projeto utiliza [uv](https://docs.astral.sh/uv/) para gerenciar a versão do P
 Com o `uv` instalado, sincronize o ambiente:
 
 ```bash
-uv sync
+uv sync --locked --all-groups
 ```
 
 Para abrir os notebooks:
@@ -153,6 +164,26 @@ Os arquivos Python de `scripts/` permanecem apenas no ambiente local. Os noteboo
 ## Dados
 
 Os arquivos CSV originais não são armazenados no Git.
+
+### Ingestão da camada RAW
+
+Valide os nove arquivos sem acessar o banco:
+
+```bash
+uv run python -m etl.raw_loader --validate-only
+```
+
+Para executar a carga, configure `DATABASE_URL` no ambiente local e remova a
+opção `--validate-only`:
+
+```bash
+uv run python -m etl.raw_loader
+```
+
+O processo é transacional, substitui a carga RAW anterior somente após a
+reconciliação completa e grava logs locais ignorados pelo Git. Consulte
+[a documentação do pipeline](docs/data-loading/raw_load_pipeline.md) para
+configuração, operação e diagnóstico.
 
 Consulte [data/README.md](data/README.md) para obter as instruções de download do dataset e preparação do diretório `data/raw/`.
 
