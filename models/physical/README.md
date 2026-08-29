@@ -8,7 +8,8 @@ física nos schemas `raw`, `core` e `analytics`.
 - `create_schema.sql`: cria os três schemas, nove tabelas RAW e nove tabelas CORE com suas constraints;
 - `create_indexes.sql`: cria os seis índices adicionais aprovados no CORE;
 - `drop_indexes.sql`: remove somente os índices adicionais;
-- `drop_schema.sql`: remove as tabelas e os schemas em ordem segura.
+- `drop_schema.sql`: remove as tabelas e os schemas em ordem segura;
+- `validate_schema.sql`: valida catálogo e comportamento sem persistir dados de teste.
 
 ## Execução no DBeaver
 
@@ -16,8 +17,9 @@ física nos schemas `raw`, `core` e `analytics`.
 2. abra um editor SQL associado ao banco de destino;
 3. carregue e execute `create_schema.sql` como script;
 4. execute `create_indexes.sql` após a criação do modelo;
-5. confirme o `COMMIT` e atualize a árvore de objetos;
-6. inspecione os schemas `raw`, `core` e `analytics` e suas tabelas RAW e CORE.
+5. execute `validate_schema.sql` para validar a estrutura;
+6. confirme o `COMMIT` e atualize a árvore de objetos;
+7. inspecione os schemas `raw`, `core` e `analytics` e suas tabelas RAW e CORE.
 
 Para remover o modelo, execute `drop_schema.sql` no mesmo banco. O script de
 remoção elimina objetos e deve ser usado somente em um ambiente descartável ou
