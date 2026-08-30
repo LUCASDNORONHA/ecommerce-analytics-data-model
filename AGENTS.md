@@ -15,11 +15,14 @@ O desenvolvimento segue uma sequência progressiva de etapas:
 5. modelagem física;
 6. implementação do banco de dados;
 7. carga e preparação dos dados;
-8. consultas e análises.
+8. consultas e análises;
+9. construção da camada analítica e preparação para consumo em BI.
 
-A análise de requisitos e as modelagens conceitual, lógica e física estão concluídas e constituem a base aprovada para as etapas seguintes. A arquitetura física e os scripts PostgreSQL também foram implementados e validados.
+A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados e o processo de carga e preparação dos dados estão concluídos e constituem a base aprovada para as etapas seguintes.
 
-A etapa atualmente em desenvolvimento é a **Carga de Dados**, seguindo uma arquitetura ELT com os schemas `raw`, `core` e `analytics` no PostgreSQL 18.
+A arquitetura física foi implementada e validada no PostgreSQL 18 utilizando os schemas `raw`, `core` e `analytics`. O processo ELT também está concluído e validado, contemplando preparação do banco, ingestão dos arquivos de origem na RAW, transformação para a CORE, reconciliação de volumes, validações de integridade e regras de qualidade.
+
+A etapa atualmente em desenvolvimento é a **Camada Analítica e Extração de Inteligência**, com foco na exploração do modelo CORE, desenvolvimento de consultas SQL, definição de métricas, validação dos requisitos analíticos, criação de estruturas de consumo no schema `analytics` e preparação dos dados para utilização em ferramentas de Business Intelligence.
 
 Consulte o GitHub Project nº 6 antes de iniciar qualquer tarefa.
 
@@ -37,18 +40,26 @@ As fontes devem ser consultadas nesta ordem de responsabilidade:
 - `models/conceptual/`: artefato técnico editável do modelo conceitual;
 - `docs/modeling/logical/`: documentação aprovada da modelagem lógica;
 - `models/logical/`: representação técnica consolidada do modelo lógico;
-- `docs/modeling/physical/`: documentação produzida durante a modelagem física;
-- `models/physical/`: artefatos técnicos dependentes do SGBD;
+- `docs/modeling/physical/`: documentação consolidada da modelagem física;
+- `models/physical/`: artefatos técnicos dependentes do PostgreSQL;
+- `docs/data-loading/`: documentação consolidada da carga, transformações e validação do ELT;
+- `database/`: preparação e implementação da estrutura do banco;
+- `elt/`: ingestão RAW, transformação CORE e orquestração do ELT;
+- `validation/`: reconciliação, integridade e qualidade da carga;
+- `notebooks/`: evidências empíricas versionadas;
+- `tests/`: testes automatizados do projeto;
 - `docs/WORKFLOW.md`: regras de gestão do trabalho;
 - `CONTRIBUTING.md`: convenções de branch, commit e pull request.
 
 O modelo conceitual aprovado deve ser tratado como referência semântica do domínio.
 
-O modelo lógico aprovado deve ser tratado como referência estrutural para a implementação física, preservando tabelas, granularidade, chaves, relacionamentos, cardinalidades, restrições lógicas e decisões de normalização.
+O modelo lógico aprovado deve ser tratado como referência estrutural, preservando tabelas, granularidade, chaves, relacionamentos, cardinalidades, restrições lógicas e decisões de normalização.
 
-O modelo físico aprovado deve ser tratado como referência concreta para a carga, preservando schemas, tabelas, colunas, tipos, chaves, constraints e índices. A carga não deve alterar silenciosamente decisões conceituais, lógicas ou físicas já aprovadas.
+O modelo físico aprovado deve ser tratado como referência concreta da implementação no PostgreSQL, preservando schemas, tabelas, colunas, tipos, chaves, constraints e índices.
 
-Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, dataset ou issue ativa, não invente uma decisão de domínio. Registre a inconsistência, apresente a evidência e preserve a rastreabilidade da decisão adotada.
+A CORE populada e validada constitui a referência de dados para as atividades analíticas. As etapas de análise não devem alterar silenciosamente decisões conceituais, lógicas, físicas ou de transformação já aprovadas.
+
+Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, modelo físico, dataset, CORE ou issue ativa, não invente uma decisão de domínio. Registre a inconsistência, apresente a evidência e preserve a rastreabilidade da decisão adotada.
 
 ## Estrutura relevante
 
@@ -58,21 +69,31 @@ Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, 
 - `docs/modeling/conceptual/mer/`: representação exportada do MER utilizada na documentação;
 - `docs/modeling/logical/`: documentação da modelagem lógica;
 - `docs/modeling/physical/`: documentação da modelagem física;
+- `docs/data-loading/`: documentação consolidada do processo de carga e transformação;
 - `models/conceptual/`: fonte técnica editável do modelo conceitual;
 - `models/conceptual/mer-olist-conceitual.drawio`: fonte editável do MER conceitual;
 - `models/logical/`: artefatos técnicos do modelo lógico relacional;
 - `models/logical/logical_schema.dbml`: representação técnica consolidada do modelo lógico;
 - `models/physical/`: DDL e demais artefatos dependentes do PostgreSQL;
-- `notebooks/data-modeling/`: notebooks versionados de validação e apoio às decisões de modelagem;
+- `database/`: preparação da estrutura física no banco;
+- `elt/`: implementação do fluxo Extract → Load → Transform;
+- `elt/sql/`: SQL responsável pelas transformações RAW → CORE;
+- `validation/`: validações independentes de reconciliação, integridade e qualidade;
+- `config/`: contratos e configurações operacionais do ELT;
+- `notebooks/data-modeling/`: evidências da modelagem;
+- `notebooks/data-loading/`: evidências da carga e da qualidade dos dados;
+- `tests/`: testes automatizados;
 - `scripts/`: fontes Python locais pareadas por Jupytext e ignoradas pelo Git.
 
 Não crie arquivos na raiz quando já existir um diretório próprio para o artefato.
 
-Não duplique o mesmo artefato desnecessariamente entre `docs/` e `models/`.
+Não duplique o mesmo artefato desnecessariamente entre `docs/`, `models/` e diretórios de implementação.
 
-Use `docs/` para documentação destinada à leitura humana, como `.tex`, `.pdf`, justificativas e representações explicativas dos modelos.
+Use `docs/` para documentação destinada à leitura humana, como `.tex`, `.pdf`, justificativas, relatórios e representações explicativas.
 
-Use `models/` para fontes editáveis dos modelos, esquemas, definições estruturais, DDL e demais artefatos técnicos destinados à implementação ou reutilização.
+Use `models/` para fontes editáveis de modelos, esquemas, definições estruturais, DDL e demais artefatos técnicos relacionados à modelagem.
+
+Use `database/`, `elt/` e `validation/` para código executável responsável, respectivamente, pela preparação do banco, pelo processamento dos dados e pela validação independente do resultado.
 
 ## Estado consolidado da modelagem conceitual
 
@@ -116,7 +137,7 @@ As decisões conceituais foram sustentadas pelos seguintes notebooks:
 
 Esses artefatos devem ser consultados quando uma decisão posterior depender da justificativa empírica adotada durante a modelagem conceitual.
 
-Não altere o modelo conceitual apenas para facilitar a implementação física. Caso uma etapa posterior revele uma inconsistência conceitual real, registre-a explicitamente antes de modificar artefatos aprovados.
+Não altere o modelo conceitual apenas para facilitar consultas ou estruturas analíticas. Caso uma etapa posterior revele uma inconsistência conceitual real, registre-a explicitamente antes de modificar artefatos aprovados.
 
 ## Estado consolidado da modelagem lógica
 
@@ -161,126 +182,64 @@ As principais decisões consolidadas são:
 - o modelo foi revisado quanto às dependências funcionais e consolidado até a Terceira Forma Normal;
 - decisões de índices, armazenamento, particionamento e tipos específicos do PostgreSQL foram deliberadamente reservadas para a modelagem física.
 
-Não altere silenciosamente essas decisões durante a implementação física.
+Não altere silenciosamente essas decisões durante consultas, criação de views ou desenvolvimento da camada analítica.
 
-Caso uma limitação do PostgreSQL, uma característica comprovada do dataset ou uma necessidade técnica exija mudança estrutural, documente a divergência, sua justificativa e seu impacto sobre o modelo lógico.
+Caso uma limitação comprovada, uma necessidade analítica ou uma característica do dataset exija mudança estrutural, documente a divergência, sua justificativa e seu impacto sobre os modelos aprovados.
 
 ## Estado consolidado da modelagem física
 
-A Modelagem Física foi concluída, implementada e validada no PostgreSQL 18. O modelo lógico permanece como referência estrutural, e os artefatos consolidados em `models/physical/` materializam a arquitetura com os schemas `raw`, `core` e `analytics`.
+A Modelagem Física foi concluída, implementada e validada no PostgreSQL 18.
 
-A sequência de trabalho deve considerar:
+O modelo lógico permanece como referência estrutural, e os artefatos consolidados em `models/physical/` materializam a arquitetura com os schemas:
 
-1. validar os valores reais do dataset relevantes para decisões físicas;
-2. mapear os domínios lógicos para tipos concretos do PostgreSQL;
-3. definir tamanhos, precisão e escala quando aplicáveis;
-4. implementar chaves primárias e estrangeiras;
-5. implementar restrições de unicidade;
-6. definir nulabilidade;
-7. definir restrições `CHECK` quando justificadas pelo domínio;
-8. avaliar índices com base em integridade, relacionamentos e padrões previstos de acesso;
-9. revisar a integridade estrutural do modelo físico;
-10. produzir o DDL correspondente;
-11. documentar decisões físicas e eventuais divergências em relação ao modelo lógico.
+- `raw`;
+- `core`;
+- `analytics`.
 
-Durante essa transformação:
+A camada `raw` representa os dados provenientes das fontes.
 
-- utilize PostgreSQL como SGBD de referência;
-- não escolha tipos físicos apenas pela aparência dos valores;
-- valide o dataset antes de definir tamanho, precisão, escala ou domínio de uma coluna;
-- preserve identificadores provenientes da fonte quando não houver justificativa explícita para transformá-los;
-- não converta automaticamente identificadores textuais em `UUID`;
-- represente valores monetários com tipos de precisão exata, evitando tipos de ponto flutuante;
-- preserve prefixos de CEP como valores capazes de manter zeros à esquerda;
-- avalie explicitamente a semântica das datas antes de decidir entre os tipos temporais disponíveis no PostgreSQL;
-- implemente todas as PKs, FKs, restrições `UNIQUE` e regras de nulabilidade definidas pelo modelo lógico;
-- introduza restrições `CHECK` somente quando sustentadas pelo domínio ou por uma regra explicitamente documentada;
-- não utilize `ON DELETE CASCADE` sem uma nova decisão formal que justifique a alteração da política definida no modelo lógico;
-- não crie índices indiscriminadamente;
-- justifique índices adicionais por integridade, padrão de consulta, relacionamento ou necessidade concreta de desempenho;
-- não desnormalize preventivamente por desempenho;
-- não introduza particionamento, materialized views ou outras otimizações sem necessidade demonstrável;
-- preserve a rastreabilidade entre entidade conceitual, tabela lógica e implementação física;
-- registre qualquer decisão física que possa afetar carga, consultas ou etapas analíticas posteriores.
+A camada `core` implementa o modelo relacional consolidado, com tipos, chaves, constraints e índices aprovados.
 
-A definição de um tipo físico deve considerar simultaneamente:
+A camada `analytics` permanece destinada às estruturas derivadas utilizadas para análise e consumo.
 
-- semântica do atributo;
-- valores efetivamente encontrados no dataset;
-- domínio lógico definido anteriormente;
-- restrições do PostgreSQL;
-- precisão necessária;
-- integridade dos dados;
-- custo e finalidade analítica.
+As principais diretrizes físicas consolidadas são:
 
-Sempre que houver dúvida sobre uma decisão física dependente dos dados, valide primeiro os arquivos em `data/raw/` ou produza evidência em notebook apropriado antes de consolidar a decisão.
+- utilizar PostgreSQL como SGBD de referência;
+- preservar identificadores provenientes da fonte quando não houver justificativa explícita para transformá-los;
+- não converter automaticamente identificadores textuais em `UUID`;
+- representar valores monetários com tipos de precisão exata;
+- preservar prefixos de CEP com zeros à esquerda;
+- respeitar a semântica dos atributos temporais;
+- manter PKs, FKs, restrições `UNIQUE`, nulabilidade e `CHECK` definidos pelo modelo;
+- não utilizar `ON DELETE CASCADE` sem decisão formal;
+- não criar índices indiscriminadamente;
+- não desnormalizar preventivamente por desempenho;
+- não introduzir particionamento ou outras otimizações sem necessidade demonstrável;
+- preservar a rastreabilidade entre os modelos conceitual, lógico e físico.
 
-## Artefatos consolidados da Modelagem Física
+A documentação consolidada encontra-se em:
 
-Os artefatos técnicos dependentes do PostgreSQL devem ser armazenados em:
+`docs/modeling/physical/physical_model.tex`
+
+e:
+
+`docs/modeling/physical/physical_model.pdf`
+
+Os artefatos técnicos encontram-se em:
 
 `models/physical/`
 
-O DDL que representar a estrutura física consolidada deve permanecer nesse diretório.
+## Estado consolidado da carga e do ELT
 
-A documentação das decisões físicas deve ser armazenada em:
+A etapa de carga e preparação dos dados foi concluída e validada.
 
-`docs/modeling/physical/`
+O processo segue a arquitetura:
 
-Mantenha separadas:
-
-- a **modelagem física**, que define como o modelo lógico será representado concretamente no PostgreSQL;
-- a **implementação**, que executa o DDL e cria efetivamente os objetos no banco;
-- a **carga e preparação dos dados**, que insere e transforma os dados provenientes da fonte;
-- a **camada analítica**, que poderá posteriormente introduzir views, tabelas derivadas, marts ou outras estruturas destinadas ao consumo analítico.
-
-Não antecipe estruturas analíticas apenas para simplificar a carga.
-
-## Diretrizes para a Carga de Dados
-
-A carga deve implementar um fluxo reproduzível e rastreável dos nove CSVs de origem para a RAW e da RAW para a CORE. A issue ativa define o objetivo, os artefatos e os critérios de aceitação de cada entrega.
-
-A sequência de trabalho deve considerar:
-
-1. inventariar os arquivos e definir seus contratos de ingestão;
-2. consolidar formatos, volumes, granularidade, colunas e chaves aparentes;
-3. mapear cada coluna relevante da origem para RAW e CORE;
-4. identificar valores ausentes, duplicidades, formatos inválidos e inconsistências referenciais;
-5. definir transformações e regras de qualidade reproduzíveis;
-6. implementar a ingestão na RAW com configuração, logs e metadados;
-7. implementar as transformações da RAW para a CORE na ordem exigida pelas dependências;
-8. reconciliar volumes, chaves, referências, rejeições e regras de qualidade;
-9. documentar decisões, exceções e impactos para a camada analítica.
-
-Durante essa etapa:
-
-- trate os CSVs de `data/raw/` como fontes imutáveis e não os versione;
-- preserve nomes, valores e identificadores da fonte na RAW, salvo regra de ingestão documentada;
-- registre origem, momento e identificação da execução nos metadados previstos na RAW;
-- valide encoding, delimitador, cabeçalho, nulidade, tipos aparentes e quantidade de colunas antes da carga;
-- não infira regras de negócio apenas porque um padrão aparece no dataset;
-- mantenha separadas a ingestão na RAW, as transformações para a CORE e as validações posteriores;
-- aplique conversões e saneamentos de forma explícita, determinística e testável;
-- não descarte registros silenciosamente: contabilize e justifique rejeições e exceções;
-- preserve zeros à esquerda em prefixos de CEP e a precisão exata de valores monetários;
-- respeite nulabilidade, PKs, FKs, `UNIQUE` e `CHECK` definidos no modelo físico;
-- não desabilite constraints como solução permanente para falhas de carga;
-- não altere o DDL para acomodar dados inválidos sem decisão formal e evidência;
-- não antecipe views, marts ou regras próprias da camada ANALYTICS;
-- não inclua credenciais, segredos ou configurações locais sensíveis nos artefatos versionados;
-- produza logs e evidências suficientes para repetir e reconciliar cada execução.
-
-Quando os dados divergirem do contrato ou do modelo aprovado, registre o arquivo, a coluna e os registros afetados, a expectativa violada, a quantidade de ocorrências, o tratamento adotado e o impacto sobre a CORE e as análises posteriores.
-
-Use `docs/` para contratos, inventários, mapeamentos, decisões e relatórios; `notebooks/` para exploração e evidências empíricas versionadas; e diretórios técnicos apropriados para scripts reproduzíveis de ingestão, transformação e validação. Não misture dados ou rotinas operacionais de carga em `models/physical/`.
-
-## Ambiente e dependências
-
-O projeto usa Python 3.12 e `uv`.
-
-Não use `pip`, Poetry ou Conda para alterar o ambiente do projeto.
-
-```bash
-uv sync --locked --all-groups
-uv lock --check
-```
+```text
+CSV
+ ↓
+RAW
+ ↓
+CORE
+ ↓
+validação independente
