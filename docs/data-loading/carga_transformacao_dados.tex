@@ -366,12 +366,12 @@ prefixos de CEP distintos derivados.
 \textcolor{white}{\textbf{Responsabilidade}} \\\hline
 \endhead
 
-\texttt{etl/raw\_loader.py} & Pré-validação, COPY, recarga substitutiva e reconciliação RAW \\\hline
+\texttt{elt/raw\_loader.py} & Pré-validação, COPY, recarga substitutiva e reconciliação RAW \\\hline
 \rowcolor{CinzaClaro}
-\texttt{etl/sql/load\_core.sql} & Transformações SQL na ordem de dependências \\\hline
-\texttt{etl/core\_loader.py} & Execução e reconciliação do CORE \\\hline
+\texttt{elt/sql/load\_core.sql} & Transformações SQL na ordem de dependências \\\hline
+\texttt{elt/core\_loader.py} & Execução e reconciliação do CORE \\\hline
 \rowcolor{CinzaClaro}
-\texttt{etl/pipeline.py} & Orquestração atômica CSV $\rightarrow$ RAW $\rightarrow$ CORE \\\hline
+\texttt{elt/pipeline.py} & Orquestração atômica CSV $\rightarrow$ RAW $\rightarrow$ CORE \\\hline
 \texttt{config/raw\_load.toml} & Contrato operacional das fontes RAW \\\hline
 \rowcolor{CinzaClaro}
 \texttt{config/core\_load.toml} & Configuração da transformação CORE \\\hline
