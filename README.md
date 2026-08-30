@@ -139,3 +139,197 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 ├── README.md
 ├── pyproject.toml                   # Metadados e dependências do projeto
 └── uv.lock                          # Dependências com versões reproduzíveis
+```
+
+A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos, especialmente durante a construção da camada analítica.
+
+O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git. Os notebooks sincronizados em `notebooks/` constituem os artefatos versionados utilizados para registrar validações e evidências empíricas que sustentam decisões de modelagem e preparação dos dados.
+
+## Roadmap
+
+<img src="./assets/project-roadmap.png" alt="Roadmap do projeto" width="100%">
+
+## Configuração do ambiente
+
+O projeto utiliza [uv](https://docs.astral.sh/uv/) para gerenciar o ambiente Python e as dependências.
+
+Com o `uv` instalado, sincronize o ambiente:
+
+```bash
+uv sync --locked --all-groups
+```
+
+Para abrir os notebooks:
+
+```bash
+uv run jupyter lab
+```
+
+### Fluxo de trabalho com Jupytext
+
+Os notebooks possuem uma representação pareada em Python no formato `py:percent`. O desenvolvimento é realizado localmente nos arquivos do diretório `scripts/`, utilizando células delimitadas por `# %%` no VS Code.
+
+Após alterar um script, sincronize o notebook correspondente:
+
+```bash
+uv run jupytext --sync scripts/data-modeling/01_validacao_entidades.py
+```
+
+O pareamento mantém a seguinte correspondência:
+
+```text
+scripts/<etapa>/<arquivo>.py
+              ↕ Jupytext
+notebooks/<etapa>/<arquivo>.ipynb
+```
+
+Os arquivos Python de `scripts/` permanecem apenas no ambiente local. Os notebooks `.ipynb` correspondentes são os artefatos incluídos nos commits.
+
+## Dados
+
+Os arquivos CSV originais não são armazenados no Git.
+
+Consulte [data/README.md](data/README.md) para obter as instruções de download do dataset e preparação do diretório `data/raw/`.
+
+Fonte: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
+
+## Banco de dados e processo ELT
+
+A implementação utiliza PostgreSQL 18 e organiza os dados em três schemas:
+
+```text
+raw
+ ↓
+core
+ ↓
+analytics
+```
+
+A camada `raw` preserva os dados provenientes dos arquivos de origem.
+
+A camada `core` materializa o modelo relacional consolidado, aplicando transformações, restrições e regras de integridade.
+
+A camada `analytics` é destinada às estruturas de consumo analítico desenvolvidas nas etapas posteriores do projeto.
+
+### Preparação do banco
+
+Configure `DATABASE_URL` no ambiente local e execute:
+
+```bash
+uv run python -m database.setup
+```
+
+Quando for necessário reconstruir a estrutura do projeto no banco:
+
+```bash
+uv run python -m database.setup --reset
+```
+
+### Validação dos arquivos de origem
+
+Para validar os arquivos CSV antes de acessar o banco:
+
+```bash
+uv run python -m elt.raw_loader --validate-only
+```
+
+### Execução do ELT
+
+Para executar a ingestão da RAW e as transformações para a CORE:
+
+```bash
+uv run python -m elt.pipeline
+```
+
+O pipeline executa a carga de forma transacional, reconcilia os volumes processados e registra informações sobre cada execução.
+
+A carga RAW segue uma estratégia de substituição da carga anterior, evitando a acumulação de múltiplas cópias do mesmo dataset.
+
+### Validação da carga
+
+Após a execução do pipeline, a reconciliação e as regras de qualidade podem ser executadas independentemente:
+
+```bash
+uv run python -m validation.elt_validation
+```
+
+A validação verifica, entre outros aspectos:
+
+- Reconciliação de volumes entre origem e destino;
+- Integridade de chaves primárias;
+- Integridade referencial;
+- Restrições de unicidade;
+- Nulabilidade;
+- Domínios de valores;
+- Formatos de identificadores e prefixos de CEP;
+- Valores monetários;
+- Coordenadas geográficas;
+- Transformações realizadas entre RAW e CORE.
+
+A documentação consolidada da carga e das transformações encontra-se em:
+
+- [carga_transformacao_dados.pdf](docs/data-loading/carga_transformacao_dados.pdf)
+- [carga_transformacao_dados.tex](docs/data-loading/carga_transformacao_dados.tex)
+
+## Testes e qualidade
+
+O projeto possui testes automatizados para a preparação do banco, ingestão da RAW, transformação da CORE, orquestração do pipeline e validação do ELT.
+
+Execute a suíte localmente com:
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+A integração contínua executada pelo GitHub Actions verifica:
+
+- Sincronização do ambiente por meio do lockfile;
+- Consistência do `uv.lock`;
+- Validade dos notebooks Jupytext;
+- Testes automatizados do projeto.
+
+## Metodologia
+
+O desenvolvimento segue uma abordagem incremental, na qual cada etapa deriva das decisões, modelos e evidências produzidos anteriormente:
+
+```text
+Análise de requisitos
+        ↓
+Entendimento e validação dos dados
+        ↓
+Modelo conceitual
+        ↓
+Modelo lógico relacional
+        ↓
+Modelo físico
+        ↓
+Implementação do banco de dados
+        ↓
+Carga e preparação dos dados
+        ↓
+Validação do ELT
+        ↓
+Consultas e análises
+        ↓
+Camada analítica e consumo em BI
+```
+
+A modelagem conceitual estabelece as entidades, atributos, identificadores, relacionamentos e cardinalidades do domínio.
+
+A modelagem lógica converte essa estrutura para o paradigma relacional, definindo tabelas, chaves, restrições de integridade, nomenclatura e dependências entre os dados sem vinculá-la às particularidades de um SGBD.
+
+A modelagem física traduz o modelo lógico para PostgreSQL 18 e materializa a arquitetura de dados nos schemas `raw`, `core` e `analytics`.
+
+O processo ELT extrai os dados dos arquivos de origem, carrega-os na camada RAW e executa as transformações necessárias dentro do banco para produzir a camada CORE. A carga é acompanhada por reconciliação de volumes, testes automatizados e validações independentes de integridade e qualidade.
+
+Com a preparação e a validação dos dados concluídas, a etapa atual concentra-se na exploração do modelo CORE e na construção da camada ANALYTICS. Essa fase inclui consultas SQL, métricas analíticas, validação dos requisitos funcionais, criação de estruturas de consumo e preparação dos dados para utilização em ferramentas de Business Intelligence.
+
+O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), enquanto o fluxo de contribuição está documentado em [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Autor
+
+Lucas Dias Noronha
+
+## Licença
+
+Este projeto está licenciado sob os termos da [MIT License](LICENSE).
