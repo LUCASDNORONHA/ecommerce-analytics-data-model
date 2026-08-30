@@ -10,14 +10,14 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{
-    geometry,
-    setspace,
-    longtable,
-    array,
-    indentfirst,
-    hyperref,
-    enumitem,
-    ragged2e
+	geometry,
+	setspace,
+	longtable,
+	array,
+	indentfirst,
+	hyperref,
+	enumitem,
+	ragged2e
 }
 
 \usepackage[table]{xcolor}
@@ -33,12 +33,12 @@
 \definecolor{LaranjaDestaque}{RGB}{230,115,0}
 
 \hypersetup{
-    colorlinks=true,
-    linkcolor=AzulPetroleo,
-    urlcolor=AzulCorporativo,
-    citecolor=LaranjaDestaque,
-    pdftitle={Carga e Transformação de Dados - Modelo Analítico de Dados para E-commerce},
-    pdfauthor={Lucas Dias Noronha}
+	colorlinks=true,
+	linkcolor=AzulPetroleo,
+	urlcolor=AzulCorporativo,
+	citecolor=LaranjaDestaque,
+	pdftitle={Carga e Transformação de Dados - Modelo Analítico de Dados para E-commerce},
+	pdfauthor={Lucas Dias Noronha}
 }
 
 \titleformat{\section}
@@ -54,11 +54,11 @@
 {\thesubsubsection}{1em}{}
 
 \geometry{
-    left=3cm,
-    right=2cm,
-    top=3cm,
-    bottom=2cm,
-    headheight=45pt
+	left=3cm,
+	right=2cm,
+	top=3cm,
+	bottom=2cm,
+	headheight=45pt
 }
 
 \onehalfspacing
@@ -70,11 +70,11 @@
 \renewcommand{\headrulewidth}{0pt}
 
 \fancyhead[C]{
-    \colorbox{AzulCorporativo}{
-        \makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{
-            \textcolor{white}{\textbf{\ \ Carga e Transformação de Dados}}
-        }
-    }
+	\colorbox{AzulCorporativo}{
+		\makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{
+			\textcolor{white}{\textbf{\ \ Carga e Transformação de Dados}}
+		}
+	}
 }
 
 \fancyfoot[C]{\color{CinzaEscuro}\thepage}
@@ -90,434 +90,544 @@
 % Documento
 % ============================================================
 \begin{document}
-
-% ============================================================
-% Capa
-% ============================================================
-\thispagestyle{empty}
-
-\vspace*{\fill}
-
-\begin{center}
-    {\Huge
-        \textcolor{AzulCorporativo}{
-            \textbf{Carga e Transformação de Dados}
-        }
-    }\\[0.5cm]
-
-    {\Large
-        \textcolor{AzulPetroleo}{
-            \projeto
-        }
-    }\\[0.8cm]
-\end{center}
-
-\vspace*{\fill}
-
-\noindent
-\textbf{\textcolor{AzulCorporativo}{Autor:}} \autor
-\hfill
-\textbf{\textcolor{AzulCorporativo}{Data:}} \dataDocumento
-
-\newpage
-
-\setcounter{tocdepth}{2}
-\tableofcontents
-
-\newpage
-
-% ============================================================
-\section{Introdução}
-% ============================================================
-
-Este documento consolida o processo de carga e transformação do projeto
-\textit{\projeto}, desde os nove arquivos CSV do
-\textit{Brazilian E-Commerce Public Dataset by Olist} até a publicação do
-modelo relacional no schema \texttt{core} do PostgreSQL.
-
-A solução segue uma arquitetura ELT: os dados são inicialmente carregados na
-camada RAW com mínima interferência e, em seguida, transformados dentro do
-banco para o CORE. O objetivo é garantir reprodutibilidade, rastreabilidade,
-integridade e reconciliação entre fonte e destino.
-
-\begin{center}
-    \textbf{
-        Dataset Olist
-        $\rightarrow$
-        RAW
-        $\rightarrow$
-        CORE
-        $\rightarrow$
-        ANALYTICS
-        $\rightarrow$
-        Power BI / SQL
-    }
-\end{center}
-
-As decisões são descritas por sua finalidade técnica e semântica, sem depender
-de identificadores internos utilizados no gerenciamento do projeto.
-
-% ============================================================
-\section{Arquitetura do ELT}
-% ============================================================
-
-\subsection{Camada RAW}
-
-A camada RAW preserva os valores recebidos da fonte. Existe uma tabela
-correspondente a cada CSV; as colunas de negócio mantêm os nomes originais e
-são armazenadas inicialmente como \texttt{text}.
-
-Cada ocorrência recebe os metadados técnicos:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item \texttt{\_id\_raw}: identificador técnico da ocorrência carregada;
-    \item \texttt{\_arquivo\_origem}: identificação do arquivo de origem;
-    \item \texttt{\_carregado\_em}: instante em que o registro foi incorporado à RAW.
-\end{itemize}
-
-A política de recarga é substitutiva e atômica: uma nova carga aprovada
-substitui integralmente a anterior. Falhas durante a operação provocam
-\textit{rollback}, preservando o estado previamente publicado.
-
-\subsection{Camada CORE}
-
-O CORE materializa o modelo relacional aprovado. As transformações incluem:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item conversões explícitas de tipos;
-    \item renomeações de atributos;
-    \item aplicação das constraints físicas;
-    \item derivação de prefixos de CEP;
-    \item consolidação das duplicidades integrais de geolocalização;
-    \item reconciliação dos volumes inseridos.
-\end{itemize}
-
-A ordem de dependências adotada é:
-
-\begin{enumerate}[leftmargin=1.2cm]
-    \item \texttt{core.prefixo\_cep};
-    \item \texttt{core.cliente}, \texttt{core.produto} e \texttt{core.vendedor};
-    \item \texttt{core.pedido} e \texttt{core.geolocalizacao};
-    \item \texttt{core.item\_pedido}, \texttt{core.pagamento} e \texttt{core.avaliacao}.
-\end{enumerate}
-
-\subsection{Atomicidade do pipeline completo}
-
-O comando completo usa uma única conexão PostgreSQL para o fluxo CSV
-$\rightarrow$ RAW $\rightarrow$ CORE. O controle transacional é realizado pelo
-\texttt{psycopg}. Se qualquer arquivo, conversão, constraint ou reconciliação
-falhar, RAW e CORE retornam conjuntamente ao estado anterior.
-
-% ============================================================
-\section{Contrato de Ingestão RAW}
-% ============================================================
-
-A ingestão contempla exclusivamente os nove arquivos contratados. Arquivos
-adicionais exigem alteração explícita do contrato e dos artefatos físicos.
-
-{\small
-\renewcommand{\arraystretch}{1.2}
-\begin{longtable}{
-    |>{\raggedright\arraybackslash}p{7.2cm}|
-    >{\raggedleft\arraybackslash}p{2.2cm}|
-    >{\raggedright\arraybackslash}p{5.2cm}|
-}
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Arquivo}} &
-\textcolor{white}{\textbf{Linhas}} &
-\textcolor{white}{\textbf{Destino RAW}} \\\hline
-\endfirsthead
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Arquivo}} &
-\textcolor{white}{\textbf{Linhas}} &
-\textcolor{white}{\textbf{Destino RAW}} \\\hline
-\endhead
-
-\texttt{olist\_customers\_dataset.csv} & 99.441 & \texttt{olist\_customers} \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_geolocation\_dataset.csv} & 1.000.163 & \texttt{olist\_geolocation} \\\hline
-\texttt{olist\_order\_items\_dataset.csv} & 112.650 & \texttt{olist\_order\_items} \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_order\_payments\_dataset.csv} & 103.886 & \texttt{olist\_order\_payments} \\\hline
-\texttt{olist\_order\_reviews\_dataset.csv} & 99.224 & \texttt{olist\_order\_reviews} \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_orders\_dataset.csv} & 99.441 & \texttt{olist\_orders} \\\hline
-\texttt{olist\_products\_dataset.csv} & 32.951 & \texttt{olist\_products} \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_sellers\_dataset.csv} & 3.095 & \texttt{olist\_sellers} \\\hline
-\texttt{product\_category\_name\_translation.csv} & 71 & \texttt{product\_category\_name\_translation} \\\hline
-\rowcolor{CinzaClaro}
-\textbf{Total} & \textbf{1.550.922} & \textbf{9 tabelas} \\\hline
-\end{longtable}
-}
-
-A pré-validação confirma, antes de qualquer alteração no banco:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item presença dos nove arquivos obrigatórios;
-    \item leitura UTF-8 ou UTF-8 com BOM;
-    \item cabeçalho exato e na ordem contratada;
-    \item quantidade correta de campos em todas as linhas;
-    \item sintaxe CSV válida;
-    \item quantidade de registros;
-    \item tamanho e hash SHA-256 de cada fonte.
-\end{itemize}
-
-Campos vazios podem ser carregados como SQL \texttt{NULL}. Strings não vazias
-semelhantes a marcadores de ausência não são reinterpretadas. Duplicidades e
-inconsistências de negócio permanecem preservadas na RAW.
-
-% ============================================================
-\section{Mapeamento RAW para CORE}
-% ============================================================
-
-O mapeamento preserva identificadores de 32 caracteres como texto, prefixos de
-CEP como cinco caracteres, valores monetários em \texttt{numeric(12,2)} e datas
-em \texttt{timestamp without time zone}. Valores inválidos não são corrigidos
-ou descartados silenciosamente.
-
-{\small
-\renewcommand{\arraystretch}{1.2}
-\begin{longtable}{
-    |>{\raggedright\arraybackslash}p{5.3cm}|
-    >{\raggedright\arraybackslash}p{3.5cm}|
-    >{\raggedright\arraybackslash}p{5.8cm}|
-}
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Origem}} &
-\textcolor{white}{\textbf{Destino CORE}} &
-\textcolor{white}{\textbf{Tratamento principal}} \\\hline
-\endfirsthead
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Origem}} &
-\textcolor{white}{\textbf{Destino CORE}} &
-\textcolor{white}{\textbf{Tratamento principal}} \\\hline
-\endhead
-
-\texttt{olist\_customers} & \texttt{cliente} & Identificadores, CEP, cidade e UF \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_orders} & \texttt{pedido} & Status e eventos temporais \\\hline
-\texttt{olist\_order\_items} & \texttt{item\_pedido} & Item, produto, vendedor, preço e frete \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_products} & \texttt{produto} & Categoria, descritores e medidas físicas \\\hline
-\texttt{olist\_sellers} & \texttt{vendedor} & Identificador, CEP, cidade e UF \\\hline
-\rowcolor{CinzaClaro}
-\texttt{olist\_order\_payments} & \texttt{pagamento} & Sequência, tipo, parcelas e valor \\\hline
-\texttt{olist\_order\_reviews} & \texttt{avaliacao} & PK composta, nota e datas \\\hline
-\rowcolor{CinzaClaro}
-Clientes + vendedores + geolocalização & \texttt{prefixo\_cep} & União distinta dos prefixos \\\hline
-\texttt{olist\_geolocation} & \texttt{geolocalizacao} & Deduplicação exata e identity \\\hline
-\end{longtable}
-}
-
-Título e mensagem das avaliações e a tabela de tradução de categorias
-permanecem disponíveis na RAW porque não possuem destino no CORE aprovado.
-
-% ============================================================
-\section{Regras de Qualidade e Saneamento}
-% ============================================================
-
-As regras são classificadas como bloqueantes, transformações ou informativas.
-Violações bloqueantes impedem a publicação do CORE; transformações aprovadas
-alteram o dado de forma determinística e reconciliável; características válidas
-incomuns são preservadas.
-
-Entre os controles aplicados estão:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item preservação de \texttt{NOT NULL}, PK, FK, \texttt{UNIQUE} e \texttt{CHECK};
-    \item validação do formato dos identificadores quando aplicável;
-    \item prefixos de CEP com cinco dígitos e preservação de zeros à esquerda;
-    \item validação dos domínios de UF, status de pedido e tipo de pagamento;
-    \item conversão estrita de datas para timestamp sem fuso;
-    \item valores monetários não negativos com precisão decimal exata;
-    \item notas de avaliação entre 1 e 5;
-    \item latitude e longitude dentro dos limites globais;
-    \item integridade referencial entre as entidades carregadas.
-\end{itemize}
-
-O profiling de qualidade avaliou 113 regras sobre o snapshot e encontrou
-\textbf{zero violações bloqueantes}. Foram identificadas 261.831 duplicidades
-integrais de geolocalização, consolidadas de forma determinística, e 19.177
-prefixos de CEP distintos derivados.
-
-% ============================================================
-\section{Implementação}
-% ============================================================
-
-{\small
-\renewcommand{\arraystretch}{1.2}
-\begin{longtable}{
-    |>{\raggedright\arraybackslash}p{5.2cm}|
-    >{\raggedright\arraybackslash}p{9.4cm}|
-}
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Artefato}} &
-\textcolor{white}{\textbf{Responsabilidade}} \\\hline
-\endfirsthead
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Artefato}} &
-\textcolor{white}{\textbf{Responsabilidade}} \\\hline
-\endhead
-
-\texttt{elt/raw\_loader.py} & Pré-validação, COPY, recarga substitutiva e reconciliação RAW \\\hline
-\rowcolor{CinzaClaro}
-\texttt{elt/sql/load\_core.sql} & Transformações SQL na ordem de dependências \\\hline
-\texttt{elt/core\_loader.py} & Execução e reconciliação do CORE \\\hline
-\rowcolor{CinzaClaro}
-\texttt{elt/pipeline.py} & Orquestração atômica CSV $\rightarrow$ RAW $\rightarrow$ CORE \\\hline
-\texttt{config/raw\_load.toml} & Contrato operacional das fontes RAW \\\hline
-\rowcolor{CinzaClaro}
-\texttt{config/core\_load.toml} & Configuração da transformação CORE \\\hline
-\texttt{tests/} & Testes automatizados dos loaders e do pipeline \\\hline
-\end{longtable}
-}
-
-% ============================================================
-\section{Configuração e Execução}
-% ============================================================
-
-Credenciais não são versionadas. No ambiente local, a conexão pode ser
-armazenada em \texttt{.env}, ignorado pelo Git, enquanto um arquivo de exemplo
-sem segredo documenta a variável necessária.
-
-\begin{verbatim}
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/ecommerce
-\end{verbatim}
-
-Com o banco físico previamente criado, a execução operacional do pipeline
-completo é:
-
-\begin{verbatim}
-uv run python -m etl.pipeline
-\end{verbatim}
-
-A pré-validação isolada continua disponível por:
-
-\begin{verbatim}
-uv run python -m etl.pipeline --validate-only
-\end{verbatim}
-
-Cada execução completa gera um log JSON local em:
-
-\begin{verbatim}
-outputs/data-loading/logs/full_load_<run_id>.json
-\end{verbatim}
-
-O registro contém perfis e hashes das fontes, reconciliações RAW e CORE, hash
-do SQL de transformação, horários, modo, status e erro quando houver. A URL de
-conexão não é registrada.
-
-% ============================================================
-\section{Validação e Testes}
-% ============================================================
-
-A implementação foi validada em PostgreSQL 18.6 temporário e isolado, com duas
-execuções completas consecutivas sem acumulação. Um erro deliberado ao final da
-transformação confirmou rollback conjunto de RAW e CORE.
-
-A execução na base persistente de teste também foi concluída com status
-\textbf{APPROVED}, após recriação do schema físico e dos índices.
-
-A suíte automatizada atual contém 20 testes aprovados. Cinco deles exercitam
-diretamente o pipeline completo:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item validação sem conexão;
-    \item ausência de \texttt{DATABASE\_URL};
-    \item compartilhamento da mesma conexão entre RAW e CORE;
-    \item propagação de falha no CORE;
-    \item presença das reconciliações RAW e CORE no resultado.
-\end{itemize}
-
-A suíte completa é executada com:
-
-\begin{verbatim}
-uv run python -m unittest discover -s tests -v
-\end{verbatim}
-
-% ============================================================
-\section{Resultado da Carga}
-% ============================================================
-
-Os volumes reconciliados no CORE para o snapshot validado são:
-
-{\small
-\renewcommand{\arraystretch}{1.2}
-\begin{longtable}{
-    |>{\raggedright\arraybackslash}p{8.0cm}|
-    >{\raggedleft\arraybackslash}p{5.0cm}|
-}
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Tabela CORE}} &
-\textcolor{white}{\textbf{Registros reconciliados}} \\\hline
-\endfirsthead
-\hline
-\rowcolor{AzulCorporativo}
-\textcolor{white}{\textbf{Tabela CORE}} &
-\textcolor{white}{\textbf{Registros reconciliados}} \\\hline
-\endhead
-
-\texttt{prefixo\_cep} & 19.177 \\\hline
-\rowcolor{CinzaClaro}
-\texttt{cliente} & 99.441 \\\hline
-\texttt{produto} & 32.951 \\\hline
-\rowcolor{CinzaClaro}
-\texttt{vendedor} & 3.095 \\\hline
-\texttt{pedido} & 99.441 \\\hline
-\rowcolor{CinzaClaro}
-\texttt{item\_pedido} & 112.650 \\\hline
-\texttt{pagamento} & 103.886 \\\hline
-\rowcolor{CinzaClaro}
-\texttt{avaliacao} & 99.224 \\\hline
-\texttt{geolocalizacao} & 738.332 \\\hline
-\rowcolor{CinzaClaro}
-\textbf{Total físico} & \textbf{1.308.197} \\\hline
-\end{longtable}
-}
-
-O total CORE não deve ser comparado diretamente ao total RAW como se ambas as
-camadas possuíssem a mesma granularidade. A diferença decorre da entidade
-derivada de prefixos, da consolidação de geolocalização, da tabela de tradução
-sem destino e das granularidades próprias das entidades.
-
-% ============================================================
-\section{Rastreabilidade e Limites}
-% ============================================================
-
-A RAW mantém o valor original e os metadados técnicos necessários para localizar
-a ocorrência carregada. Falhas do PostgreSQL e divergências de reconciliação
-interrompem a transação e são registradas no log operacional.
-
-O contrato de qualidade prevê que violações bloqueantes sejam associadas,
-quando aplicável, à carga, tabela, arquivo, \texttt{\_id\_raw}, coluna, valor
-original, regra e motivo. A implementação atual garante bloqueio transacional
-e registro da falha, mas o detalhamento estruturado por regra permanece um
-ponto de evolução para cenários em que o snapshot apresente violações
-bloqueantes.
-
-Agendamento, observabilidade de produção e objetos do schema \texttt{analytics}
-não fazem parte desta entrega.
-
-% ============================================================
-\section{Conclusão}
-% ============================================================
-
-O processo de carga e transformação está implementado de forma reproduzível e
-transacional. Os nove CSVs são pré-validados, carregados e reconciliados na RAW;
-as transformações materializam as nove tabelas do CORE respeitando dependências
-e constraints; e o pipeline completo publica as duas camadas somente após
-aprovação das verificações.
-
-Com a execução integrada aprovada e a cobertura automatizada do pipeline, o
-banco fica preparado para a validação final de reconciliação e, posteriormente,
-para a construção das estruturas analíticas destinadas ao consumo.
-
+	
+	% ============================================================
+	% Capa
+	% ============================================================
+	\thispagestyle{empty}
+	
+	\vspace*{\fill}
+	
+	\begin{center}
+		{\Huge
+			\textcolor{AzulCorporativo}{
+				\textbf{Carga e Transformação de Dados}
+			}
+		}\\[0.5cm]
+		
+		{\Large
+			\textcolor{AzulPetroleo}{
+				\projeto
+			}
+		}\\[0.8cm]
+	\end{center}
+	
+	\vspace*{\fill}
+	
+	\noindent
+	\textbf{\textcolor{AzulCorporativo}{Autor:}} \autor
+	\hfill
+	\textbf{\textcolor{AzulCorporativo}{Data:}} \dataDocumento
+	
+	\newpage
+	
+	\setcounter{tocdepth}{2}
+	\tableofcontents
+	
+	\newpage
+	
+	% ============================================================
+	\section{Introdução}
+	% ============================================================
+	
+	Este documento consolida a preparação automatizada do banco de dados, o processo
+	de carga e a transformação do projeto \textit{\projeto}, desde a criação da
+	estrutura física no PostgreSQL até a publicação das entidades relacionais no
+	schema \texttt{core}.
+	
+	A preparação da infraestrutura de banco é tratada separadamente do ELT. O
+	componente \texttt{database} garante que o banco de destino exista, aplica os
+	scripts versionados do modelo físico, cria os índices e valida a arquitetura.
+	Somente após essa etapa o pipeline ELT realiza a carga dos nove arquivos CSV do
+	\textit{Brazilian E-Commerce Public Dataset by Olist} na RAW e a transformação
+	para o CORE.
+	
+	A solução busca garantir reprodutibilidade, rastreabilidade, integridade,
+	atomicidade e reconciliação entre fonte e destino.
+	
+	\begin{center}
+		\textbf{
+			PostgreSQL
+			$\rightarrow$
+			database.setup
+			$\rightarrow$
+			RAW
+			$\rightarrow$
+			CORE
+			$\rightarrow$
+			ANALYTICS
+			$\rightarrow$
+			Power BI / SQL
+		}
+	\end{center}
+	
+	As decisões são descritas por sua finalidade técnica e semântica, sem depender
+	de identificadores internos utilizados no gerenciamento do projeto.
+	
+	% ============================================================
+	\section{Preparação Automatizada do Banco}
+	% ============================================================
+	
+	A criação e a preparação da estrutura física são responsabilidades anteriores
+	ao ELT e, por esse motivo, permanecem isoladas no pacote \texttt{database}. Os
+	scripts SQL em \texttt{models/physical/} continuam sendo a fonte da verdade para
+	o modelo físico; o código Python atua apenas como orquestrador.
+	
+	\subsection{Identificação do banco de destino}
+	
+	A conexão é definida pela variável de ambiente \texttt{DATABASE\_URL}. O nome
+	do banco é extraído da própria URL e registrado no log antes de qualquer
+	alteração estrutural.
+	
+	No ambiente local, a configuração pode ser mantida em arquivo \texttt{.env},
+	ignorado pelo Git:
+	
+	\begin{verbatim}
+		DATABASE_URL=postgresql://usuario:senha@localhost:5432/ecommerce_analytics
+	\end{verbatim}
+	
+	O arquivo \texttt{.env.example} documenta a variável necessária sem expor
+	credenciais reais.
+	
+	\subsection{Criação automática do database}
+	
+	Antes de aplicar a estrutura física, o processo consulta o catálogo
+	\texttt{pg\_database} por meio do banco administrativo \texttt{postgres}. Se o
+	database indicado em \texttt{DATABASE\_URL} ainda não existir, ele é criado
+	automaticamente.
+	
+	Essa operação depende de o usuário PostgreSQL possuir permissão para
+	\texttt{CREATE DATABASE}. Caso a permissão não esteja disponível, a execução é
+	interrompida e o erro é informado sem tentativa de contorno.
+	
+	A verificação por catálogo evita dependência de mensagens textuais do servidor
+	e, portanto, não depende do idioma configurado no PostgreSQL.
+	
+	\subsection{Aplicação do modelo físico}
+	
+	Após garantir a existência do database, o processo aplica os artefatos físicos
+	versionados nesta ordem:
+	
+	\begin{enumerate}[leftmargin=1.2cm]
+		\item \texttt{models/physical/create\_schema.sql};
+		\item \texttt{models/physical/create\_indexes.sql};
+		\item \texttt{models/physical/validate\_schema.sql}.
+	\end{enumerate}
+	
+	A validação final confirma a presença dos schemas, tabelas, colunas, identities,
+	PKs, FKs, constraints e índices definidos para a arquitetura física.
+	
+	\subsection{Reconstrução controlada}
+	
+	Quando o banco já existe, a opção \texttt{--reset} executa
+	\texttt{drop\_schema.sql} antes da recriação da estrutura:
+	
+	\begin{verbatim}
+		uv run python -m database.setup --reset
+	\end{verbatim}
+	
+	O \texttt{--reset} não remove o database PostgreSQL. Apenas a estrutura
+	pertencente ao projeto é reconstruída. Se o database for criado na própria
+	execução, a etapa de remoção é omitida por não existir estrutura anterior a ser
+	descartada.
+	
+	Para um ambiente novo, a preparação pode ser executada simplesmente por:
+	
+	\begin{verbatim}
+		uv run python -m database.setup
+	\end{verbatim}
+	
+	% ============================================================
+	\section{Arquitetura do ELT}
+	% ============================================================
+	
+	\subsection{Camada RAW}
+	
+	A camada RAW preserva os valores recebidos da fonte. Existe uma tabela
+	correspondente a cada CSV; as colunas de negócio mantêm os nomes originais e
+	são armazenadas inicialmente como \texttt{text}.
+	
+	Cada ocorrência recebe os metadados técnicos:
+	
+	\begin{itemize}[leftmargin=1.2cm]
+		\item \texttt{\_id\_raw}: identificador técnico da ocorrência carregada;
+		\item \texttt{\_arquivo\_origem}: identificação do arquivo de origem;
+		\item \texttt{\_carregado\_em}: instante em que o registro foi incorporado à RAW.
+	\end{itemize}
+	
+	A política de recarga é substitutiva e atômica: uma nova carga aprovada
+	substitui integralmente a anterior. Falhas durante a operação provocam
+	\textit{rollback}, preservando o estado previamente publicado.
+	
+	\subsection{Camada CORE}
+	
+	O CORE materializa o modelo relacional aprovado. As transformações incluem:
+	
+	\begin{itemize}[leftmargin=1.2cm]
+		\item conversões explícitas de tipos;
+		\item renomeações de atributos;
+		\item aplicação das constraints físicas;
+		\item derivação de prefixos de CEP;
+		\item consolidação das duplicidades integrais de geolocalização;
+		\item reconciliação dos volumes inseridos.
+	\end{itemize}
+	
+	A ordem de dependências adotada é:
+	
+	\begin{enumerate}[leftmargin=1.2cm]
+		\item \texttt{core.prefixo\_cep};
+		\item \texttt{core.cliente}, \texttt{core.produto} e \texttt{core.vendedor};
+		\item \texttt{core.pedido} e \texttt{core.geolocalizacao};
+		\item \texttt{core.item\_pedido}, \texttt{core.pagamento} e \texttt{core.avaliacao}.
+	\end{enumerate}
+	
+	\subsection{Atomicidade do pipeline completo}
+	
+	O comando completo usa uma única conexão PostgreSQL para o fluxo CSV
+	$\rightarrow$ RAW $\rightarrow$ CORE. O controle transacional é realizado pelo
+	\texttt{psycopg}. Se qualquer arquivo, conversão, constraint ou reconciliação
+	falhar, RAW e CORE retornam conjuntamente ao estado anterior.
+	
+	% ============================================================
+	\section{Contrato de Ingestão RAW}
+	% ============================================================
+	
+	A ingestão contempla exclusivamente os nove arquivos contratados. Arquivos
+	adicionais exigem alteração explícita do contrato e dos artefatos físicos.
+	
+	{\small
+		\renewcommand{\arraystretch}{1.2}
+		\begin{longtable}{
+				|>{\raggedright\arraybackslash}p{7.2cm}|
+				>{\raggedleft\arraybackslash}p{2.2cm}|
+				>{\raggedright\arraybackslash}p{5.2cm}|
+			}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Arquivo}} &
+			\textcolor{white}{\textbf{Linhas}} &
+			\textcolor{white}{\textbf{Destino RAW}} \\\hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Arquivo}} &
+			\textcolor{white}{\textbf{Linhas}} &
+			\textcolor{white}{\textbf{Destino RAW}} \\\hline
+			\endhead
+			
+			\texttt{olist\_customers\_dataset.csv} & 99.441 & \texttt{olist\_customers} \\\hline
+			\texttt{olist\_geolocation\_dataset.csv} & 1.000.163 & \texttt{olist\_geolocation} \\\hline
+			\texttt{olist\_order\_items\_dataset.csv} & 112.650 & \texttt{olist\_order\_items} \\\hline
+			\texttt{olist\_order\_payments\_dataset.csv} & 103.886 & \texttt{olist\_order\_payments} \\\hline
+			\texttt{olist\_order\_reviews\_dataset.csv} & 99.224 & \texttt{olist\_order\_reviews} \\\hline
+			\texttt{olist\_orders\_dataset.csv} & 99.441 & \texttt{olist\_orders} \\\hline
+			\texttt{olist\_products\_dataset.csv} & 32.951 & \texttt{olist\_products} \\\hline
+			\texttt{olist\_sellers\_dataset.csv} & 3.095 & \texttt{olist\_sellers} \\\hline
+			\texttt{product\_category\_name\_translation.csv} & 71 & \texttt{product\_category\_name\_\allowbreak translation} \\\hline
+			\textbf{Total} & \textbf{1.550.922} & \textbf{9 tabelas} \\\hline
+		\end{longtable}
+	}
+	
+	A pré-validação confirma, antes de qualquer alteração no banco:
+	
+	\begin{itemize}[leftmargin=1.2cm]
+		\item presença dos nove arquivos obrigatórios;
+		\item leitura UTF-8 ou UTF-8 com BOM;
+		\item cabeçalho exato e na ordem contratada;
+		\item quantidade correta de campos em todas as linhas;
+		\item sintaxe CSV válida;
+		\item quantidade de registros;
+		\item tamanho e hash SHA-256 de cada fonte.
+	\end{itemize}
+	
+	Campos vazios podem ser carregados como SQL \texttt{NULL}. Strings não vazias
+	semelhantes a marcadores de ausência não são reinterpretadas. Duplicidades e
+	inconsistências de negócio permanecem preservadas na RAW.
+	
+	% ============================================================
+	\section{Mapeamento RAW para CORE}
+	% ============================================================
+	
+	O mapeamento preserva identificadores de 32 caracteres como texto, prefixos de
+	CEP como cinco caracteres, valores monetários em \texttt{numeric(12,2)} e datas
+	em \texttt{timestamp without time zone}. Valores inválidos não são corrigidos
+	ou descartados silenciosamente.
+	
+	{\small
+		\renewcommand{\arraystretch}{1.2}
+		\begin{longtable}{
+				|>{\raggedright\arraybackslash}p{5.3cm}|
+				>{\raggedright\arraybackslash}p{3.5cm}|
+				>{\raggedright\arraybackslash}p{5.8cm}|
+			}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Origem}} &
+			\textcolor{white}{\textbf{Destino CORE}} &
+			\textcolor{white}{\textbf{Tratamento principal}} \\\hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Origem}} &
+			\textcolor{white}{\textbf{Destino CORE}} &
+			\textcolor{white}{\textbf{Tratamento principal}} \\\hline
+			\endhead
+			
+			\texttt{olist\_customers} & \texttt{cliente} & Identificadores, CEP, cidade e UF \\\hline
+			\texttt{olist\_orders} & \texttt{pedido} & Status e eventos temporais \\\hline
+			\texttt{olist\_order\_items} & \texttt{item\_pedido} & Item, produto, vendedor, preço e frete \\\hline
+			\texttt{olist\_products} & \texttt{produto} & Categoria, descritores e medidas físicas \\\hline
+			\texttt{olist\_sellers} & \texttt{vendedor} & Identificador, CEP, cidade e UF \\\hline
+			\texttt{olist\_order\_payments} & \texttt{pagamento} & Sequência, tipo, parcelas e valor \\\hline
+			\texttt{olist\_order\_reviews} & \texttt{avaliacao} & PK composta, nota e datas \\\hline
+			Clientes + vendedores + geolocalização & \texttt{prefixo\_cep} & União distinta dos prefixos \\\hline
+			\texttt{olist\_geolocation} & \texttt{geolocalizacao} & Deduplicação exata e identity \\\hline
+		\end{longtable}
+	}
+	
+	Título e mensagem das avaliações e a tabela de tradução de categorias
+	permanecem disponíveis na RAW porque não possuem destino no CORE aprovado.
+	
+	% ============================================================
+	\section{Regras de Qualidade e Saneamento}
+	% ============================================================
+	
+	As regras são classificadas como bloqueantes, transformações ou informativas.
+	Violações bloqueantes impedem a publicação do CORE; transformações aprovadas
+	alteram o dado de forma determinística e reconciliável; características válidas
+	incomuns são preservadas.
+	
+	Entre os controles aplicados estão:
+	
+	\begin{itemize}[leftmargin=1.2cm]
+		\item preservação de \texttt{NOT NULL}, PK, FK, \texttt{UNIQUE} e \texttt{CHECK};
+		\item validação do formato dos identificadores quando aplicável;
+		\item prefixos de CEP com cinco dígitos e preservação de zeros à esquerda;
+		\item validação dos domínios de UF, status de pedido e tipo de pagamento;
+		\item conversão estrita de datas para timestamp sem fuso;
+		\item valores monetários não negativos com precisão decimal exata;
+		\item notas de avaliação entre 1 e 5;
+		\item latitude e longitude dentro dos limites globais;
+		\item integridade referencial entre as entidades carregadas.
+	\end{itemize}
+	
+	O profiling de qualidade avaliou 113 regras sobre o snapshot e encontrou
+	\textbf{zero violações bloqueantes}. Foram identificadas 261.831 duplicidades
+	integrais de geolocalização, consolidadas de forma determinística, e 19.177
+	prefixos de CEP distintos derivados.
+	
+	% ============================================================
+	\section{Implementação}
+	% ============================================================
+	
+	{\small
+		\renewcommand{\arraystretch}{1.2}
+		\begin{longtable}{
+				|>{\raggedright\arraybackslash}p{5.2cm}|
+				>{\raggedright\arraybackslash}p{9.4cm}|
+			}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Artefato}} &
+			\textcolor{white}{\textbf{Responsabilidade}} \\\hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Artefato}} &
+			\textcolor{white}{\textbf{Responsabilidade}} \\\hline
+			\endhead
+			
+			\texttt{models/physical/*.sql} & Fonte da verdade da estrutura física, índices, desmontagem e validação \\\hline
+			\texttt{database/setup.py} & Criação do database quando necessário e orquestração da preparação física \\\hline
+			\texttt{elt/raw\_loader.py} & Pré-validação, COPY, recarga substitutiva e reconciliação RAW \\\hline
+			\texttt{elt/sql/load\_core.sql} & Transformações SQL na ordem de dependências \\\hline
+			\texttt{elt/core\_loader.py} & Execução e reconciliação do CORE \\\hline
+			\texttt{elt/pipeline.py} & Orquestração atômica CSV $\rightarrow$ RAW $\rightarrow$ CORE \\\hline
+			\texttt{config/raw\_load.toml} & Contrato operacional das fontes RAW \\\hline
+			\texttt{config/core\_load.toml} & Configuração da transformação CORE \\\hline
+			\texttt{tests/test\_database\_setup.py} & Testes automatizados da preparação do banco \\\hline
+			\texttt{tests/} & Testes automatizados dos loaders, pipeline e componentes auxiliares \\\hline
+		\end{longtable}
+	}
+	
+	% ============================================================
+	\section{Configuração e Execução}
+	% ============================================================
+	
+	Credenciais não são versionadas. No ambiente local, a conexão pode ser
+	armazenada em \texttt{.env}, ignorado pelo Git, enquanto um arquivo de exemplo
+	sem segredo documenta a variável necessária.
+	
+	\begin{verbatim}
+		DATABASE_URL=postgresql://usuario:senha@localhost:5432/ecommerce_analytics
+	\end{verbatim}
+	
+	A preparação inicial do banco é executada com:
+	
+	\begin{verbatim}
+		uv run python -m database.setup
+	\end{verbatim}
+	
+	Se o database ainda não existir, ele é criado automaticamente antes da
+	aplicação do modelo físico. Para reconstruir a estrutura de um database já
+	existente:
+	
+	\begin{verbatim}
+		uv run python -m database.setup --reset
+	\end{verbatim}
+	
+	Após a preparação física, a execução operacional do pipeline completo é:
+	
+	\begin{verbatim}
+		uv run python -m elt.pipeline
+	\end{verbatim}
+	
+	O fluxo reproduzível completo é, portanto:
+	
+	\begin{verbatim}
+		uv run python -m database.setup --reset
+		uv run python -m elt.pipeline
+	\end{verbatim}
+	
+	A pré-validação isolada continua disponível por:
+	
+	\begin{verbatim}
+		uv run python -m elt.pipeline --validate-only
+	\end{verbatim}
+	
+	Cada execução completa gera um log JSON local em:
+	
+	\begin{verbatim}
+		outputs/data-loading/logs/full_load_<run_id>.json
+	\end{verbatim}
+	
+	O registro contém perfis e hashes das fontes, reconciliações RAW e CORE, hash
+	do SQL de transformação, horários, modo, status e erro quando houver. A URL de
+	conexão não é registrada.
+	
+	% ============================================================
+	\section{Validação e Testes}
+	% ============================================================
+	
+	A implementação do ELT foi validada em PostgreSQL 18.6 temporário e isolado,
+	com duas execuções completas consecutivas sem acumulação. Um erro deliberado ao
+	final da transformação confirmou rollback conjunto de RAW e CORE.
+	
+	A execução em base persistente também foi concluída com status
+	\textbf{APPROVED}, após recriação da estrutura física e dos índices.
+	
+	A automação de preparação do banco foi validada manualmente em dois cenários:
+	uso de database já existente e criação automática de um database inexistente.
+	Neste segundo cenário, o processo identificou a ausência pelo catálogo
+	\texttt{pg\_database}, criou o database, aplicou a estrutura, criou os índices e
+	concluiu a validação física com sucesso.
+	
+	A suíte específica de \texttt{database.setup} contém oito testes automatizados
+	aprovados, cobrindo:
+	
+	\begin{itemize}[leftmargin=1.2cm]
+		\item extração do nome do database a partir da URL;
+		\item construção da URL administrativa apontando para \texttt{postgres};
+		\item não criação quando o database já existe;
+		\item criação quando o database não existe;
+		\item execução normal sem remoção de schema;
+		\item ordem correta dos scripts no modo \texttt{--reset};
+		\item omissão do \texttt{drop\_schema.sql} quando o database acaba de ser criado;
+		\item falha controlada quando \texttt{DATABASE\_URL} não está configurada.
+	\end{itemize}
+	
+	Os testes previamente existentes continuam exercitando os loaders e o pipeline,
+	incluindo validação sem conexão, ausência de \texttt{DATABASE\_URL},
+	compartilhamento da mesma conexão entre RAW e CORE, propagação de falha no CORE
+	e presença das reconciliações RAW e CORE no resultado.
+	
+	A suíte completa é executada com:
+	
+	\begin{verbatim}
+		uv run python -m unittest discover -s tests -v
+	\end{verbatim}
+	
+	% ============================================================
+	\section{Resultado da Carga}
+	% ============================================================
+	
+	Os volumes reconciliados no CORE para o snapshot validado são:
+	
+	{\small
+		\renewcommand{\arraystretch}{1.2}
+		\begin{longtable}{
+				|>{\raggedright\arraybackslash}p{8.0cm}|
+				>{\raggedleft\arraybackslash}p{5.0cm}|
+			}
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela CORE}} &
+			\textcolor{white}{\textbf{Registros reconciliados}} \\\hline
+			\endfirsthead
+			\hline
+			\rowcolor{AzulCorporativo}
+			\textcolor{white}{\textbf{Tabela CORE}} &
+			\textcolor{white}{\textbf{Registros reconciliados}} \\\hline
+			\endhead
+			
+			\texttt{prefixo\_cep} & 19.177 \\\hline
+			\texttt{cliente} & 99.441 \\\hline
+			\texttt{produto} & 32.951 \\\hline
+			\texttt{vendedor} & 3.095 \\\hline
+			\texttt{pedido} & 99.441 \\\hline
+			\texttt{item\_pedido} & 112.650 \\\hline
+			\texttt{pagamento} & 103.886 \\\hline
+			\texttt{avaliacao} & 99.224 \\\hline
+			\texttt{geolocalizacao} & 738.332 \\\hline
+			\textbf{Total físico} & \textbf{1.308.197} \\\hline
+		\end{longtable}
+	}
+	
+	O total CORE não deve ser comparado diretamente ao total RAW como se ambas as
+	camadas possuíssem a mesma granularidade. A diferença decorre da entidade
+	derivada de prefixos, da consolidação de geolocalização, da tabela de tradução
+	sem destino e das granularidades próprias das entidades.
+	
+	% ============================================================
+	\section{Rastreabilidade e Limites}
+	% ============================================================
+	
+	A RAW mantém o valor original e os metadados técnicos necessários para localizar
+	a ocorrência carregada. Falhas do PostgreSQL e divergências de reconciliação
+	interrompem a transação e são registradas no log operacional.
+	
+	A preparação do banco registra explicitamente o database de destino antes das
+	operações estruturais. O processo não armazena a URL de conexão nos logs e não
+	remove o database PostgreSQL no modo \texttt{--reset}; apenas os schemas e
+	objetos pertencentes ao modelo são reconstruídos.
+	
+	O contrato de qualidade prevê que violações bloqueantes sejam associadas,
+	quando aplicável, à carga, tabela, arquivo, \texttt{\_id\_raw}, coluna, valor
+	original, regra e motivo. A implementação atual garante bloqueio transacional
+	e registro da falha, mas o detalhamento estruturado por regra permanece um
+	ponto de evolução para cenários em que o snapshot apresente violações
+	bloqueantes.
+	
+	Agendamento, observabilidade de produção e objetos do schema \texttt{analytics}
+	não fazem parte desta entrega.
+	
+	% ============================================================
+	\section{Conclusão}
+	% ============================================================
+	
+	O processo está implementado de forma reproduzível desde a preparação do banco
+	até a publicação das entidades no CORE. O componente \texttt{database.setup}
+	garante que o database exista, aplica e valida o modelo físico sem misturar essa
+	responsabilidade ao ELT. Em seguida, os nove CSVs são pré-validados, carregados
+	e reconciliados na RAW, enquanto as transformações materializam as nove tabelas
+	do CORE respeitando dependências e constraints.
+	
+	A automação reduz etapas manuais, elimina a necessidade de executar
+	individualmente os scripts físicos por uma interface gráfica e torna a
+	reconstrução do ambiente verificável por comandos versionados.
+	
+	Com a preparação física e a execução integrada aprovadas, o banco fica
+	preparado para a validação final de reconciliação e, posteriormente, para a
+	construção das estruturas analíticas destinadas ao consumo.
+	
 \end{document}
