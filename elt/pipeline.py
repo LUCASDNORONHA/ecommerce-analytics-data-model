@@ -1,5 +1,4 @@
 """Pipeline atômico completo: CSV → RAW → CORE."""
-
 from __future__ import annotations
 
 import argparse
@@ -14,12 +13,13 @@ from pathlib import Path
 
 import psycopg
 
-from etl.core_loader import (
+from dotenv import load_dotenv
+from elt.core_loader import (
     _load_core_transaction,
     _sql_sha256,
     load_core_settings,
 )
-from etl.raw_loader import (
+from elt.raw_loader import (
     RawLoadError,
     _load_transaction,
     load_settings,
@@ -123,6 +123,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    load_dotenv()
     args = build_parser().parse_args(argv)
     try:
         result = run_pipeline(

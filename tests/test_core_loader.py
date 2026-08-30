@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from etl.core_loader import (
+from elt.core_loader import (
     EXPECTED_QUERIES,
     CoreSettings,
     _load_core_transaction,
@@ -19,14 +19,14 @@ class CoreConfigurationTests(unittest.TestCase):
         settings = load_core_settings(root / "config/core_load.toml")
 
         self.assertEqual(settings.repository_root, root)
-        self.assertEqual(settings.sql_path, root / "etl/sql/load_core.sql")
+        self.assertEqual(settings.sql_path, root / "elt/sql/load_core.sql")
         self.assertEqual(settings.lock_timeout_seconds, 30)
 
 
 class TransformationSqlTests(unittest.TestCase):
     def setUp(self) -> None:
         root = Path(__file__).resolve().parents[1]
-        self.sql = (root / "etl/sql/load_core.sql").read_text(encoding="utf-8")
+        self.sql = (root / "elt/sql/load_core.sql").read_text(encoding="utf-8")
 
     def test_loads_all_nine_core_tables(self) -> None:
         self.assertEqual(self.sql.count("INSERT INTO core."), 9)

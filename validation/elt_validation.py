@@ -15,7 +15,7 @@ import psycopg
 from dotenv import load_dotenv
 from psycopg import sql
 
-from etl.raw_loader import find_repository_root
+from elt.raw_loader import find_repository_root
 
 LOGGER = logging.getLogger("validation.elt")
 
