@@ -17,7 +17,7 @@ from typing import Any
 
 import psycopg
 
-from etl.raw_loader import RawLoadError, find_repository_root
+from elt.raw_loader import RawLoadError, find_repository_root
 
 
 LOGGER = logging.getLogger("core_loader")
@@ -88,7 +88,7 @@ def load_core_settings(config_path: Path) -> CoreSettings:
         raise RawLoadError(f"Não foi possível ler {resolved_config}: {exc}") from exc
 
     raw = config.get("core_load", {})
-    sql_path = _resolve_from_root(root, str(raw.get("sql_path", "etl/sql/load_core.sql")))
+    sql_path = _resolve_from_root(root, str(raw.get("sql_path", "elt/sql/load_core.sql")))
     if not sql_path.is_file():
         raise RawLoadError(f"SQL de transformação ausente: {sql_path}")
     return CoreSettings(
