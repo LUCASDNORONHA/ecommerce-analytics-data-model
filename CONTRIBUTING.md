@@ -32,6 +32,12 @@ Tipos de branch e commit:
 
 Exemplo: `feat/10-definir-chaves-primarias` e `feat: documentar chaves primárias conceituais`.
 
+### Numeração de artefatos
+
+Use prefixos de dois dígitos (`01_`, `02_`, `03_`) somente quando os arquivos formarem uma sequência real de leitura ou execução. Notebooks sequenciais e coleções SQL ordenadas devem seguir essa convenção.
+
+Não numere diretórios arquiteturais, módulos Python, testes ou arquivos independentes apenas para reproduzir a cronologia geral do projeto. A ordem das etapas é documentada no README principal; os nomes no repositório devem continuar representando a responsabilidade técnica de cada artefato.
+
 ## Consultas, scripts e notebooks
 
 Consultas SQL exploratórias e analíticas devem ser versionadas em `queries/`. Estruturas persistentes do schema `analytics` pertencem a `models/analytics/`. Notebooks são criados e editados diretamente em `notebooks/`.

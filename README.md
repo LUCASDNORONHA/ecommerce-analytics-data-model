@@ -149,6 +149,24 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 
 A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos, especialmente durante a construção da camada analítica.
 
+## Ordem de desenvolvimento e navegação
+
+O projeto evolui pelas etapas abaixo. A numeração representa a sequência de desenvolvimento e orienta a leitura dos artefatos, sem alterar os nomes dos diretórios arquiteturais.
+
+| Ordem | Etapa | Principais artefatos |
+|---:|---|---|
+| 01 | Análise de requisitos | [`docs/requirements/`](docs/requirements/) |
+| 02 | Entendimento e validação dos dados | [`data/`](data/) e [`notebooks/data-modeling/`](notebooks/data-modeling/) |
+| 03 | Modelagem conceitual | [`models/conceptual/`](models/conceptual/) e [`docs/modeling/conceptual/`](docs/modeling/conceptual/) |
+| 04 | Modelagem lógica | [`models/logical/`](models/logical/) e [`docs/modeling/logical/`](docs/modeling/logical/) |
+| 05 | Modelagem física | [`models/physical/`](models/physical/) e [`docs/modeling/physical/`](docs/modeling/physical/) |
+| 06 | Implementação do banco de dados | [`database/`](database/) |
+| 07 | Carga, transformação e validação | [`elt/`](elt/), [`validation/`](validation/), [`config/`](config/), [`notebooks/data-loading/`](notebooks/data-loading/) e [`docs/data-loading/`](docs/data-loading/) |
+| 08 | Consultas e análises | [`queries/`](queries/) |
+| **09** | **Camada analítica e preparação para BI — etapa atual** | [`models/analytics/`](models/analytics/), [`docs/analytics/`](docs/analytics/) e [`notebooks/analytics/`](notebooks/analytics/) |
+
+Prefixos numéricos como `01_`, `02_` e `03_` são utilizados somente dentro de coleções cuja ordem de leitura ou execução seja real, como sequências de notebooks e consultas SQL. Diretórios arquiteturais, módulos Python, testes e arquivos independentes mantêm nomes descritivos sem numeração artificial.
+
 ## Roadmap
 
 <img src="./assets/project-roadmap.png" alt="Roadmap do projeto" width="100%">
