@@ -72,10 +72,7 @@ class DatabaseSetupTests(unittest.TestCase):
 
         ensure_database_mock.assert_called_once_with(database_url)
 
-        paths = [
-            call.args[1]
-            for call in execute_sql_mock.call_args_list
-        ]
+        paths = [call.args[1] for call in execute_sql_mock.call_args_list]
 
         self.assertEqual(
             paths,
@@ -106,10 +103,7 @@ class DatabaseSetupTests(unittest.TestCase):
 
         ensure_database_mock.assert_called_once_with(database_url)
 
-        paths = [
-            call.args[1]
-            for call in execute_sql_mock.call_args_list
-        ]
+        paths = [call.args[1] for call in execute_sql_mock.call_args_list]
 
         self.assertEqual(
             paths,
@@ -139,10 +133,7 @@ class DatabaseSetupTests(unittest.TestCase):
 
         ensure_database_mock.assert_called_once_with(database_url)
 
-        paths = [
-            call.args[1]
-            for call in execute_sql_mock.call_args_list
-        ]
+        paths = [call.args[1] for call in execute_sql_mock.call_args_list]
 
         self.assertEqual(
             paths,

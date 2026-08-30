@@ -12,13 +12,13 @@ import re
 import sys
 import tomllib
 import uuid
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import psycopg
-
 
 LOGGER = logging.getLogger("raw_loader")
 IDENTIFIER = re.compile(r"^[a-z_][a-z0-9_]*$")
@@ -63,7 +63,9 @@ def find_repository_root(start: Path) -> Path:
     for candidate in (start, *start.parents):
         if (candidate / "pyproject.toml").is_file() and (candidate / "models").is_dir():
             return candidate
-    raise RawLoadError(f"Raiz do repositório não encontrada a partir de {start.resolve()}")
+    raise RawLoadError(
+        f"Raiz do repositório não encontrada a partir de {start.resolve()}"
+    )
 
 
 def _resolve_from_root(root: Path, value: str) -> Path:
@@ -79,7 +81,9 @@ def _validate_identifier(value: str, context: str) -> None:
 def load_settings(config_path: Path) -> LoadSettings:
     """Lê e valida a configuração TOML versionada."""
     root = find_repository_root(Path.cwd())
-    resolved_config = config_path if config_path.is_absolute() else Path.cwd() / config_path
+    resolved_config = (
+        config_path if config_path.is_absolute() else Path.cwd() / config_path
+    )
     if not resolved_config.is_file() and not config_path.is_absolute():
         resolved_config = root / config_path
     try:
@@ -91,7 +95,9 @@ def load_settings(config_path: Path) -> LoadSettings:
     raw = config.get("raw_load", {})
     source_rows = config.get("sources", [])
     if not isinstance(source_rows, list) or not source_rows:
-        raise RawLoadError("A configuração deve declarar ao menos uma fonte em [[sources]]")
+        raise RawLoadError(
+            "A configuração deve declarar ao menos uma fonte em [[sources]]"
+        )
 
     sources: list[SourceContract] = []
     filenames: set[str] = set()
@@ -111,7 +117,9 @@ def load_settings(config_path: Path) -> LoadSettings:
         for column in columns:
             _validate_identifier(column, f"{filename}.columns")
         if filename in filenames or table in tables:
-            raise RawLoadError(f"Fonte ou tabela duplicada na configuração: {filename}/{table}")
+            raise RawLoadError(
+                f"Fonte ou tabela duplicada na configuração: {filename}/{table}"
+            )
         filenames.add(filename)
         tables.add(table)
         sources.append(SourceContract(filename, table, columns))
@@ -126,7 +134,9 @@ def load_settings(config_path: Path) -> LoadSettings:
     return LoadSettings(
         repository_root=root,
         data_dir=_resolve_from_root(root, str(raw.get("data_dir", "data/raw"))),
-        log_dir=_resolve_from_root(root, str(raw.get("log_dir", "outputs/data-loading/logs"))),
+        log_dir=_resolve_from_root(
+            root, str(raw.get("log_dir", "outputs/data-loading/logs"))
+        ),
         lock_timeout_seconds=int(raw.get("lock_timeout_seconds", 30)),
         statement_timeout_seconds=int(raw.get("statement_timeout_seconds", 0)),
         sources=tuple(sources),
@@ -165,7 +175,9 @@ def validate_source(path: Path, contract: SourceContract) -> SourceProfile:
                     )
                 rows += 1
     except UnicodeDecodeError as exc:
-        raise RawLoadError(f"Codificação inválida em {contract.filename}: {exc}") from exc
+        raise RawLoadError(
+            f"Codificação inválida em {contract.filename}: {exc}"
+        ) from exc
     except csv.Error as exc:
         raise RawLoadError(f"CSV malformado em {contract.filename}: {exc}") from exc
 
@@ -187,7 +199,9 @@ def validate_sources(settings: LoadSettings) -> tuple[SourceProfile, ...]:
     errors: list[str] = []
     for contract in settings.sources:
         try:
-            profiles.append(validate_source(settings.data_dir / contract.filename, contract))
+            profiles.append(
+                validate_source(settings.data_dir / contract.filename, contract)
+            )
         except RawLoadError as exc:
             errors.append(str(exc))
     if errors:
@@ -267,7 +281,9 @@ def _load_transaction(
             }
             reconciliation.append(item)
             if not approved:
-                raise RawLoadError(f"Reconciliação reprovada em raw.{contract.table}: {item}")
+                raise RawLoadError(
+                    f"Reconciliação reprovada em raw.{contract.table}: {item}"
+                )
     return reconciliation
 
 
@@ -346,7 +362,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
+    )
     args = build_parser().parse_args(argv)
     try:
         settings = load_settings(args.config)

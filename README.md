@@ -84,7 +84,8 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   └── mer-olist-conceitual.drawio
 │   ├── logical/                     # Artefatos técnicos do modelo lógico
 │   │   └── logical_schema.dbml
-│   └── physical/                    # DDL, índices e validações para PostgreSQL
+│   ├── physical/                    # DDL, índices e validações para PostgreSQL
+│   └── analytics/                   # Views, marts e estruturas persistentes
 │
 ├── notebooks/
 │   ├── data-modeling/               # Validações e evidências da modelagem
@@ -94,14 +95,14 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   ├── 04_validacao_cardinalidades.ipynb
 │   │   └── 05_validacao_prefixo_cep.ipynb
 │   │
-│   └── data-loading/                # Evidências reproduzíveis da carga
-│       ├── 01_raw_source_profiling.ipynb
-│       └── 02_raw_to_core_quality_validation.ipynb
+│   ├── data-loading/                # Evidências reproduzíveis da carga
+│   │   ├── 01_raw_source_profiling.ipynb
+│   │   └── 02_raw_to_core_quality_validation.ipynb
+│   └── analytics/                   # Exploração e evidências analíticas
 │
 ├── config/
 │   ├── raw_load.toml                # Contrato operacional da ingestão RAW
-│   ├── core_load.toml               # Configuração da transformação CORE
-│   └── raw_load.env.example         # Exemplo de variável de conexão
+│   └── core_load.toml               # Configuração da transformação CORE
 │
 ├── database/
 │   ├── __init__.py
@@ -119,9 +120,13 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── __init__.py
 │   └── elt_validation.py            # Reconciliação, integridade e qualidade do ELT
 │
-├── scripts/                         # Fontes Jupytext locais, não versionadas
-│   ├── data-modeling/
-│   └── data-loading/
+├── queries/                         # Consultas SQL sobre a CORE
+│   ├── basic/
+│   ├── analysis/
+│   └── validation/
+│
+├── scripts/                         # Utilitários necessários e versionados
+│   └── maintenance/
 │
 ├── tests/
 │   ├── test_core_loader.py
@@ -131,6 +136,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   └── test_raw_loader.py
 │
 ├── .github/
+├── .env.example                    # Exemplo canônico de configuração
 ├── .gitignore
 ├── .python-version
 ├── AGENTS.md
@@ -142,8 +148,6 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 ```
 
 A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos, especialmente durante a construção da camada analítica.
-
-O diretório `scripts/` existe apenas no ambiente local e é ignorado pelo Git. Os notebooks sincronizados em `notebooks/` constituem os artefatos versionados utilizados para registrar validações e evidências empíricas que sustentam decisões de modelagem e preparação dos dados.
 
 ## Roadmap
 
@@ -165,25 +169,23 @@ Para abrir os notebooks:
 uv run jupyter lab
 ```
 
-### Fluxo de trabalho com Jupytext
+### Trabalho com notebooks
 
-Os notebooks possuem uma representação pareada em Python no formato `py:percent`. O desenvolvimento é realizado localmente nos arquivos do diretório `scripts/`, utilizando células delimitadas por `# %%` no VS Code.
+Os notebooks são criados e editados diretamente em `notebooks/`, no diretório correspondente à etapa do projeto. O diretório `scripts/` é reservado a utilitários necessários e versionados; notebooks não possuem cópias Python pareadas.
 
-Após alterar um script, sincronize o notebook correspondente:
+### Limpeza de artefatos locais
+
+Inspecione os artefatos regeneráveis que seriam removidos:
 
 ```bash
-uv run jupytext --sync scripts/data-modeling/01_validacao_entidades.py
+uv run python scripts/maintenance/clean.py
 ```
 
-O pareamento mantém a seguinte correspondência:
+Confirme a limpeza explicitamente com `--apply`. O utilitário recusa alvos que contenham arquivos versionados:
 
-```text
-scripts/<etapa>/<arquivo>.py
-              ↕ Jupytext
-notebooks/<etapa>/<arquivo>.ipynb
+```bash
+uv run python scripts/maintenance/clean.py --apply
 ```
-
-Os arquivos Python de `scripts/` permanecem apenas no ambiente local. Os notebooks `.ipynb` correspondentes são os artefatos incluídos nos commits.
 
 ## Dados
 
@@ -285,7 +287,7 @@ A integração contínua executada pelo GitHub Actions verifica:
 
 - Sincronização do ambiente por meio do lockfile;
 - Consistência do `uv.lock`;
-- Validade dos notebooks Jupytext;
+- Lint e formatação com Ruff;
 - Testes automatizados do projeto.
 
 ## Metodologia

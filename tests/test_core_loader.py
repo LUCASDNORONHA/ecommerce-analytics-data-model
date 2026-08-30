@@ -95,9 +95,7 @@ class CoreTransactionTests(unittest.TestCase):
             )
             connection = FakeConnection()
 
-            raw_counts, reconciliation = _load_core_transaction(
-                connection, settings
-            )
+            raw_counts, reconciliation = _load_core_transaction(connection, settings)
 
         self.assertEqual(len(raw_counts), 9)
         self.assertEqual(len(reconciliation), 9)

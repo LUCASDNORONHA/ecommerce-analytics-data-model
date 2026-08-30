@@ -80,10 +80,14 @@ Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, 
 - `elt/sql/`: SQL responsável pelas transformações RAW → CORE;
 - `validation/`: validações independentes de reconciliação, integridade e qualidade;
 - `config/`: contratos e configurações operacionais do ELT;
+- `queries/`: consultas SQL exploratórias, analíticas e de validação sobre a CORE;
+- `models/analytics/`: fontes SQL das estruturas persistentes do schema `analytics`;
+- `docs/analytics/`: métricas, decisões, limitações e rastreabilidade analítica;
+- `notebooks/analytics/`: exploração e evidências empíricas da camada analítica;
 - `notebooks/data-modeling/`: evidências da modelagem;
 - `notebooks/data-loading/`: evidências da carga e da qualidade dos dados;
 - `tests/`: testes automatizados;
-- `scripts/`: fontes Python locais pareadas por Jupytext e ignoradas pelo Git.
+- `scripts/`: utilitários necessários e versionados; não replica notebooks.
 
 Não crie arquivos na raiz quando já existir um diretório próprio para o artefato.
 
@@ -426,7 +430,7 @@ Use `notebooks/` para:
 - comparação de resultados;
 - evidências reproduzíveis.
 
-Use diretórios SQL apropriados para consultas e estruturas versionadas.
+Use `queries/` para consultas direcionadas à CORE e `models/analytics/` para estruturas persistentes do schema `analytics`.
 
 Não utilize notebooks como única fonte de uma regra de negócio que deva ser reutilizada em produção ou pela camada analítica.
 
@@ -495,10 +499,11 @@ Para validar o lockfile:
 uv lock --check
 ```
 
-Para validar os notebooks:
+Para validar lint e formatação:
 
 ```bash
-uv run jupytext --to py:percent --test 'notebooks/**/*.ipynb'
+uv run ruff check .
+uv run ruff format --check .
 ```
 
 Não considere uma alteração pronta caso as verificações pertinentes à tarefa apresentem erro.

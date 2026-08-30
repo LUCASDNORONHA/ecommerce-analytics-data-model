@@ -13,7 +13,6 @@ import psycopg
 from dotenv import load_dotenv
 from psycopg import sql
 
-
 LOGGER = logging.getLogger("database.setup")
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,9 +55,7 @@ def build_admin_url(database_url: str) -> str:
 
     parsed = urlparse(database_url)
 
-    return urlunparse(
-        parsed._replace(path="/postgres")
-    )
+    return urlunparse(parsed._replace(path="/postgres"))
 
 
 def database_exists(database_url: str) -> bool:
@@ -95,9 +92,7 @@ def create_database(database_url: str) -> None:
     with psycopg.connect(admin_url, autocommit=True) as connection:
         with connection.cursor() as cursor:
             cursor.execute(
-                sql.SQL("CREATE DATABASE {}").format(
-                    sql.Identifier(database_name)
-                )
+                sql.SQL("CREATE DATABASE {}").format(sql.Identifier(database_name))
             )
 
 
