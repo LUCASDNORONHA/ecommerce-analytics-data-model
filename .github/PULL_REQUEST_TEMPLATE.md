@@ -1,18 +1,27 @@
 ## Objetivo
 
-<!-- Explique de forma breve o resultado desta alteração. -->
+<!-- Descreva brevemente o resultado desta alteração e por que ela é necessária. -->
 
-Closes #
+Closes #<numero-da-issue>
 
 ## Alterações
 
-- 
+<!-- Liste as principais alterações realizadas. Não deixe esta seção vazia. -->
+
+-
 
 ## Validação
 
+<!-- Marque somente o que foi efetivamente verificado. Use N/A quando um item não se aplicar. -->
+
 - [ ] Os critérios de aceitação da issue foram atendidos.
-- [ ] O artefato final está no diretório correto.
-- [ ] Scripts locais foram sincronizados com os notebooks entregues.
-- [ ] Dados locais, credenciais e arquivos gerados não foram versionados.
-- [ ] A documentação afetada foi atualizada.
-- [ ] As verificações automáticas foram aprovadas.
+- [ ] Os testes e verificações aplicáveis foram executados localmente.
+- [ ] As verificações automáticas da CI foram aprovadas.
+- [ ] O artefato final está no diretório correto ou este item não se aplica.
+- [ ] A documentação afetada foi atualizada ou este item não se aplica.
+- [ ] Dados locais, credenciais, segredos e arquivos gerados indevidamente não foram versionados.
+- [ ] Scripts Jupytext foram sincronizados com os notebooks entregues ou este item não se aplica.
+
+## Observações
+
+<!-- Registre decisões, limitações, exceções ou impactos relevantes. Remova esta seção se não houver observações. -->
