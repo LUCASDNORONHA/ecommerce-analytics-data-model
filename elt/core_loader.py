@@ -17,7 +17,7 @@ from typing import Any
 
 import psycopg
 
-from etl.raw_loader import RawLoadError, find_repository_root
+from elt.raw_loader import RawLoadError, find_repository_root
 
 
 LOGGER = logging.getLogger("core_loader")
