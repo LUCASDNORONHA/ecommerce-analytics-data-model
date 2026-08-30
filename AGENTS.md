@@ -243,3 +243,315 @@ RAW
 CORE
  ↓
 validação independente
+```
+
+A implementação está organizada da seguinte forma:
+
+- `database/setup.py`: prepara e valida a estrutura do banco;
+- `elt/raw_loader.py`: valida os arquivos de origem e executa a ingestão na RAW;
+- `elt/core_loader.py`: executa as transformações e a reconciliação da CORE;
+- `elt/pipeline.py`: orquestra o fluxo completo;
+- `elt/sql/load_core.sql`: materializa as transformações RAW → CORE;
+- `validation/elt_validation.py`: valida reconciliação, integridade e qualidade após a carga.
+
+Os nove arquivos CSV utilizados como fonte devem ser tratados como imutáveis durante a execução da carga e não devem ser versionados.
+
+A camada RAW preserva os valores provenientes da origem conforme os contratos de ingestão aprovados.
+
+A transformação RAW → CORE deve permanecer explícita, determinística e reproduzível.
+
+A carga substitui a execução anterior da RAW, em vez de acumular múltiplas cópias do mesmo dataset.
+
+Não altere as regras de transformação apenas para facilitar uma consulta analítica. Caso uma análise revele uma limitação real da transformação, registre a evidência e trate a alteração como mudança própria do ELT.
+
+## Validação consolidada do ELT
+
+O resultado da carga foi aprovado por validações independentes de:
+
+- reconciliação de volumes;
+- chaves primárias;
+- restrições de unicidade;
+- integridade referencial;
+- nulabilidade;
+- domínio dos identificadores;
+- formato dos prefixos de CEP;
+- domínio das UFs;
+- domínio dos status de pedido;
+- domínio dos tipos de pagamento;
+- notas de avaliação;
+- valores monetários não negativos;
+- sequenciais;
+- dimensões de produto;
+- coordenadas geográficas;
+- textos obrigatórios;
+- equivalência das transformações RAW → CORE.
+
+A implementação dessas regras encontra-se em:
+
+`validation/elt_validation.py`
+
+Os testes automatizados correspondentes encontram-se em:
+
+`tests/test_elt_validation.py`
+
+A documentação consolidada da etapa encontra-se em:
+
+`docs/data-loading/carga_transformacao_dados.tex`
+
+e:
+
+`docs/data-loading/carga_transformacao_dados.pdf`
+
+A CORE aprovada deve ser tratada como ponto de partida da etapa analítica.
+
+## Diretrizes para a Camada Analítica
+
+A etapa atual deve utilizar a CORE validada para responder aos requisitos analíticos do projeto.
+
+O trabalho deve evoluir de consultas exploratórias para estruturas de consumo reproduzíveis, respeitando a ordem definida pela issue ativa.
+
+A sequência prevista inclui:
+
+1. desenvolver consultas SQL fundamentais sobre o modelo CORE;
+2. combinar as entidades em consultas analíticas;
+3. validar requisitos funcionais por meio de dados e resultados reproduzíveis;
+4. definir métricas com fórmula, granularidade, dimensão temporal e interpretação explícitas;
+5. identificar consultas e regras recorrentes que justifiquem estruturas no schema `analytics`;
+6. criar views, marts ou outras estruturas derivadas quando houver necessidade concreta;
+7. preparar os dados para consumo por SQL e ferramentas de Business Intelligence;
+8. documentar resultados, premissas, limitações e decisões analíticas.
+
+Durante essa etapa:
+
+- utilize a CORE como fonte principal para análise;
+- não consulte diretamente a RAW para produzir métricas finais, salvo investigação de qualidade ou rastreabilidade;
+- não altere a CORE apenas para simplificar uma análise;
+- não duplique regras de negócio em múltiplas consultas quando uma estrutura analítica reutilizável for justificável;
+- defina explicitamente a granularidade de cada métrica;
+- diferencie valor absoluto, percentual, proporção, taxa, média e mediana;
+- registre filtros e condições que alterem a interpretação de um indicador;
+- documente o período temporal considerado;
+- não trate correlação como causalidade;
+- não invente dimensões, atributos ou relações ausentes do dataset;
+- não atribua ao dataset capacidades operacionais que ele não possui;
+- preserve a diferença entre pedido, item, cliente, vendedor, pagamento e avaliação ao realizar agregações;
+- valide o risco de duplicação de medidas ao realizar joins entre relações `1:N`;
+- evite somar valores monetários após joins que multipliquem a granularidade dos registros;
+- valide métricas contra consultas de controle antes de consolidá-las;
+- mantenha SQL analítico legível, reproduzível e versionado;
+- documente estruturas criadas no schema `analytics`;
+- não introduza uma view ou mart apenas porque uma consulta é longa; reutilização, semântica e frequência devem justificar a estrutura.
+
+Consultas exploratórias podem permanecer direcionadas à CORE.
+
+Views, marts e demais estruturas reutilizáveis destinadas ao consumo recorrente devem utilizar o schema `analytics`, quando justificadas pela issue ativa.
+
+## Granularidade e joins analíticos
+
+Antes de combinar tabelas, determine explicitamente a granularidade de cada uma.
+
+Exemplos:
+
+- `pedido`: um registro por pedido;
+- `item_pedido`: um registro por item do pedido;
+- `pagamento`: um registro por pagamento ou sequência de pagamento;
+- `avaliacao`: um registro por par de avaliação e pedido;
+- `geolocalizacao`: múltiplos registros podem estar associados ao mesmo prefixo de CEP.
+
+Ao combinar tabelas com granularidades diferentes, valide se o join multiplica linhas.
+
+Não calcule medidas agregadas após um join `1:N` ou `N:N` sem verificar se os valores foram duplicados.
+
+Quando necessário:
+
+- agregue previamente a tabela de maior granularidade;
+- utilize CTEs ou subconsultas para controlar a granularidade;
+- valide contagens antes e depois do join;
+- mantenha explícita a unidade analítica de cada resultado.
+
+Essa regra é especialmente importante ao combinar pedidos com itens, pagamentos, avaliações ou geolocalização.
+
+## Métricas
+
+Toda métrica consolidada deve possuir, quando aplicável:
+
+- nome;
+- objetivo;
+- fórmula;
+- unidade;
+- granularidade;
+- dimensão temporal;
+- filtros;
+- regras de inclusão e exclusão;
+- fonte das colunas;
+- interpretação;
+- limitações.
+
+Não use nomes ambíguos como `receita`, `vendas`, `clientes ativos` ou `ticket médio` sem definir exatamente como são calculados.
+
+Quando houver mais de uma interpretação válida para uma métrica, registre a decisão adotada.
+
+## Camada ANALYTICS
+
+O schema `analytics` existe para encapsular estruturas destinadas ao consumo analítico.
+
+Pode conter, quando justificado:
+
+- views;
+- tabelas derivadas;
+- marts;
+- agregações recorrentes;
+- estruturas de consumo para BI.
+
+Não utilize o schema `analytics` como local para copiar tabelas da CORE sem transformação ou finalidade analítica.
+
+Uma estrutura analítica deve existir porque reduz repetição, estabiliza uma regra, organiza uma granularidade de consumo ou facilita uma necessidade recorrente.
+
+A criação de qualquer estrutura nesse schema deve preservar a rastreabilidade até as tabelas CORE utilizadas em sua origem.
+
+## Documentação e evidências
+
+Use `docs/` para:
+
+- documentação destinada à leitura humana;
+- definição e interpretação de métricas;
+- decisões analíticas;
+- matrizes de rastreabilidade;
+- relatórios consolidados.
+
+Use `notebooks/` para:
+
+- exploração;
+- validação empírica;
+- comparação de resultados;
+- evidências reproduzíveis.
+
+Use diretórios SQL apropriados para consultas e estruturas versionadas.
+
+Não utilize notebooks como única fonte de uma regra de negócio que deva ser reutilizada em produção ou pela camada analítica.
+
+## Ambiente e dependências
+
+O projeto usa Python 3.12 e `uv`.
+
+Não use `pip`, Poetry ou Conda para alterar o ambiente do projeto.
+
+Use:
+
+```bash
+uv sync --locked --all-groups
+uv lock --check
+```
+
+O arquivo `.python-version` define a versão de referência do Python.
+
+O `pyproject.toml` define as dependências do projeto.
+
+O `uv.lock` deve permanecer sincronizado com o `pyproject.toml`.
+
+Não altere dependências sem necessidade concreta da issue ativa.
+
+## Execução e validação local
+
+Para preparar o banco:
+
+```bash
+uv run python -m database.setup
+```
+
+Para reconstruir a estrutura do projeto no banco:
+
+```bash
+uv run python -m database.setup --reset
+```
+
+Para validar os arquivos de origem sem acessar o banco:
+
+```bash
+uv run python -m elt.raw_loader --validate-only
+```
+
+Para executar o ELT completo:
+
+```bash
+uv run python -m elt.pipeline
+```
+
+Para executar a validação independente da carga:
+
+```bash
+uv run python -m validation.elt_validation
+```
+
+Para executar os testes automatizados:
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+Para validar o lockfile:
+
+```bash
+uv lock --check
+```
+
+Para validar os notebooks:
+
+```bash
+uv run jupytext --to py:percent --test 'notebooks/**/*.ipynb'
+```
+
+Não considere uma alteração pronta caso as verificações pertinentes à tarefa apresentem erro.
+
+## Fluxo de trabalho
+
+Antes de iniciar uma tarefa:
+
+1. consulte o GitHub Project nº 6;
+2. identifique a issue marcada como **Em Andamento**;
+3. leia integralmente seu objetivo, dependências, artefatos e critérios de aceitação;
+4. confirme que a `main` local está sincronizada;
+5. crie uma branch específica para a issue;
+6. limite o trabalho ao escopo definido.
+
+Durante o desenvolvimento:
+
+- faça alterações pequenas e rastreáveis;
+- mantenha os artefatos nos diretórios corretos;
+- atualize testes e documentação quando necessário;
+- não antecipe trabalho pertencente a issues posteriores;
+- não altere modelos aprovados sem evidência e justificativa;
+- preserve compatibilidade com o estado consolidado do projeto.
+
+Ao concluir:
+
+1. execute as validações aplicáveis;
+2. revise os critérios de aceitação;
+3. abra um pull request vinculado à issue;
+4. utilize `Closes #<numero>` corretamente;
+5. faça o merge somente após aprovação da CI;
+6. encerre a issue;
+7. confirme seu estado como **Concluído** no GitHub Project;
+8. exclua a branch após o merge.
+
+Não deixe `Closes #` vazio no pull request.
+
+Não faça merge de uma alteração com verificações automáticas falhando.
+
+## Princípios gerais
+
+Preserve a rastreabilidade do projeto.
+
+Não altere uma camada anterior apenas para tornar uma camada posterior mais conveniente.
+
+Não transforme um padrão encontrado nos dados em regra de negócio sem justificativa.
+
+Não descarte inconsistências silenciosamente.
+
+Não esconda limitações dos dados.
+
+Não antecipe complexidade.
+
+Prefira soluções simples, reproduzíveis, explícitas e sustentadas por evidência.
+
+Quando houver dúvida entre implementar uma suposição e registrar uma incerteza, registre a incerteza.
