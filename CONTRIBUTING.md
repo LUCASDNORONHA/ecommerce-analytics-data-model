@@ -15,7 +15,7 @@ Este projeto usa o GitHub Project como fonte de verdade do trabalho e o reposit�
    ```
 
 4. Faça commits pequenos no padrão `<tipo>: <descrição>`.
-5. Sincronize o notebook a partir do script local e versione somente o `.ipynb`.
+5. Crie e edite notebooks diretamente em `notebooks/`, quando necessários.
 6. Abra um pull request vinculado à issue com `Closes #<numero>`.
 7. Após as verificações automáticas, revise os critérios de aceitação e faça squash merge.
 
@@ -32,16 +32,20 @@ Tipos de branch e commit:
 
 Exemplo: `feat/10-definir-chaves-primarias` e `feat: documentar chaves primárias conceituais`.
 
-## Scripts e notebooks
+## Consultas, scripts e notebooks
 
-Os arquivos Python em `scripts/` são fontes locais de trabalho e não são versionados. Cada script deve estar pareado por Jupytext com um notebook em `notebooks/`, que é a entrega oficial.
+Consultas SQL exploratórias e analíticas devem ser versionadas em `queries/`. Estruturas persistentes do schema `analytics` pertencem a `models/analytics/`. Notebooks são criados e editados diretamente em `notebooks/`.
 
-Antes do commit:
+O diretório `scripts/` é reservado a utilitários necessários e versionados. Não duplique notebooks em scripts Python pareados.
+
+Antes do commit, execute:
 
 ```bash
-uv sync --locked
-uv run jupytext --sync scripts/<caminho>/<arquivo>.py
-uv run jupytext --to py:percent --test notebooks/**/*.ipynb
+uv sync --locked --all-groups
+uv lock --check
+uv run ruff check .
+uv run ruff format --check .
+uv run python -m unittest discover -s tests -v
 ```
 
 Não versione CSVs de origem, bancos locais, credenciais, ambientes virtuais ou saídas geradas.

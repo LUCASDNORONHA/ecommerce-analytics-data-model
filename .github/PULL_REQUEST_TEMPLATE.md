@@ -20,7 +20,7 @@ Closes #<numero-da-issue>
 - [ ] O artefato final está no diretório correto ou este item não se aplica.
 - [ ] A documentação afetada foi atualizada ou este item não se aplica.
 - [ ] Dados locais, credenciais, segredos e arquivos gerados indevidamente não foram versionados.
-- [ ] Scripts Jupytext foram sincronizados com os notebooks entregues ou este item não se aplica.
+- [ ] Notebooks entregues foram revisados diretamente ou este item não se aplica.
 
 ## Observações
 

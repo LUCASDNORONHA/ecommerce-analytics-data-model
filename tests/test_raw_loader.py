@@ -241,7 +241,9 @@ class TransactionTests(unittest.TestCase):
             result = _load_transaction(FakeConnection(cursor), settings, (profile,))
 
         self.assertTrue(result[0]["approved"])
-        self.assertIn("TRUNCATE TABLE raw.source_table RESTART IDENTITY", cursor.executed[1][0])
+        self.assertIn(
+            "TRUNCATE TABLE raw.source_table RESTART IDENTITY", cursor.executed[1][0]
+        )
         self.assertEqual(bytes(cursor.copies[0][1].data), b"id,value\n1,a\n2,\n")
 
 

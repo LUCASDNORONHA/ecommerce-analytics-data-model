@@ -5,16 +5,26 @@ description = "Modelo relacional para análises multidimensionais de e-commerce 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "ipykernel>=7.3.0",
-    "jupytext>=1.19.5",
-    "numpy>=2.0",
-    "pandas>=2.2",
     "psycopg[binary]>=3.2",
     "python-dotenv>=1.2.3",
 ]
 
 [dependency-groups]
-dev = [
-    "ipykernel>=6.29",
+analytics = [
+    "ipykernel>=7.3.0",
     "jupyterlab>=4.2",
+    "numpy>=2.0",
+    "pandas>=2.2",
 ]
+dev = [
+    "ruff>=0.12.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]

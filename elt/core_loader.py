@@ -19,7 +19,6 @@ import psycopg
 
 from elt.raw_loader import RawLoadError, find_repository_root
 
-
 LOGGER = logging.getLogger("core_loader")
 
 
@@ -78,7 +77,9 @@ def _resolve_from_root(root: Path, value: str) -> Path:
 
 def load_core_settings(config_path: Path) -> CoreSettings:
     root = find_repository_root(Path.cwd())
-    resolved_config = config_path if config_path.is_absolute() else Path.cwd() / config_path
+    resolved_config = (
+        config_path if config_path.is_absolute() else Path.cwd() / config_path
+    )
     if not resolved_config.is_file() and not config_path.is_absolute():
         resolved_config = root / config_path
     try:
@@ -88,7 +89,9 @@ def load_core_settings(config_path: Path) -> CoreSettings:
         raise RawLoadError(f"Não foi possível ler {resolved_config}: {exc}") from exc
 
     raw = config.get("core_load", {})
-    sql_path = _resolve_from_root(root, str(raw.get("sql_path", "elt/sql/load_core.sql")))
+    sql_path = _resolve_from_root(
+        root, str(raw.get("sql_path", "elt/sql/load_core.sql"))
+    )
     if not sql_path.is_file():
         raise RawLoadError(f"SQL de transformação ausente: {sql_path}")
     return CoreSettings(
@@ -220,7 +223,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
+    )
     args = build_parser().parse_args(argv)
     try:
         settings = load_core_settings(args.config)
