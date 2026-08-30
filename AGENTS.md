@@ -99,6 +99,8 @@ Use `models/` para fontes editáveis de modelos, esquemas, definições estrutur
 
 Use `database/`, `elt/` e `validation/` para código executável responsável, respectivamente, pela preparação do banco, pelo processamento dos dados e pela validação independente do resultado.
 
+Utilize prefixos numéricos de dois dígitos apenas em coleções com ordem real de leitura ou execução, como notebooks sequenciais e consultas SQL ordenadas. Não numere diretórios arquiteturais, módulos Python, testes ou arquivos independentes para representar a cronologia geral; essa sequência deve permanecer documentada no README principal.
+
 ## Estado consolidado da modelagem conceitual
 
 A Modelagem Conceitual foi concluída e validada.
