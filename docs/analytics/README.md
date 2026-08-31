@@ -14,3 +14,5 @@ premissas, limitações e matrizes de rastreabilidade.
 - [`evidencias_consultas_analiticas_core.md`](evidencias_consultas_analiticas_core.md):
   resultados financeiros, concentração de vendedores, pagamentos e riscos
   associados observados durante a etapa M06-02.
+- [`matriz_validacao_requisitos_funcionais.md`](matriz_validacao_requisitos_funcionais.md):
+  rastreabilidade entre RF01–RF12, consultas e evidências da etapa M06-03.

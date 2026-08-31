@@ -14,5 +14,11 @@ duplicação entre granularidades diferentes.
 4. `04_granularidade_vendedor.sql`: valida a atribuição de itens e valores a
    vendedores.
 
+## Controles da etapa M06-03
+
+5. `05_cobertura_requisitos_funcionais.sql`: consolida evidências de integração
+   das entidades, histórico de clientes, avaliações, marcos temporais e
+   cobertura geográfica para a matriz de requisitos funcionais.
+
 Resultados diferentes de zero não representam automaticamente erro. Cada
 consulta registra a interpretação apropriada para o controle.
