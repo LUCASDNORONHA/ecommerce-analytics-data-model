@@ -8,3 +8,6 @@ premissas, limitações e matrizes de rastreabilidade.
 - [`contrato_analitico.md`](contrato_analitico.md): problema de negócio,
   stakeholders, demandas, casos de uso, catálogo preliminar de indicadores,
   regras semânticas e limitações da camada analítica.
+- [`evidencias_consultas_basicas_core.md`](evidencias_consultas_basicas_core.md):
+  resultados de controle e decisões de granularidade observados durante a etapa
+  M06-01.
