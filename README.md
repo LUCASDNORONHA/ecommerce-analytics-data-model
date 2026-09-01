@@ -123,6 +123,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 ├── queries/                         # Consultas SQL sobre a CORE
 │   ├── basic/
 │   ├── analysis/
+│   ├── consumption/                 # Exportações para SQL e ferramentas de BI
 │   └── validation/
 │
 ├── scripts/                         # Utilitários necessários e versionados

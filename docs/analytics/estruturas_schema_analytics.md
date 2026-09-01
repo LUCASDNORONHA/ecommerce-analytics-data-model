@@ -137,5 +137,6 @@ desempenho. Materialização ou índices específicos exigirão medição própr
 - O crescimento mensal permanece nulo em comparações com cobertura parcial.
 - A taxa VEN08 é calculada por item (9,32%). O indicador exploratório anterior
   de 8,97% representa pares vendedor-pedido com algum item fora do limite.
-- As estruturas são adequadas ao consumo SQL recorrente; o contrato final de
-  importação e relacionamentos do Power BI será definido na M06-06.
+- As estruturas são adequadas ao consumo SQL recorrente. O contrato final de
+  importação, relacionamentos e medidas do Power BI está documentado em
+  [`consumo_power_bi_sql.md`](consumo_power_bi_sql.md).
