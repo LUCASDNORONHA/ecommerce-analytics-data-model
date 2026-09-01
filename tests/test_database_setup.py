@@ -80,6 +80,8 @@ class DatabaseSetupTests(unittest.TestCase):
                 setup.CREATE_SCHEMA,
                 setup.CREATE_INDEXES,
                 setup.VALIDATE_SCHEMA,
+                *setup.analytics_view_scripts(),
+                setup.VALIDATE_ANALYTICS,
             ],
         )
 
@@ -112,6 +114,8 @@ class DatabaseSetupTests(unittest.TestCase):
                 setup.CREATE_SCHEMA,
                 setup.CREATE_INDEXES,
                 setup.VALIDATE_SCHEMA,
+                *setup.analytics_view_scripts(),
+                setup.VALIDATE_ANALYTICS,
             ],
         )
 
@@ -141,10 +145,25 @@ class DatabaseSetupTests(unittest.TestCase):
                 setup.CREATE_SCHEMA,
                 setup.CREATE_INDEXES,
                 setup.VALIDATE_SCHEMA,
+                *setup.analytics_view_scripts(),
+                setup.VALIDATE_ANALYTICS,
             ],
         )
 
         self.assertNotIn(setup.DROP_SCHEMA, paths)
+
+    def test_analytics_view_scripts_follow_dependency_order(self):
+        names = [path.name for path in setup.analytics_view_scripts()]
+
+        self.assertEqual(
+            names,
+            [
+                "01_pedido_financeiro.sql",
+                "02_financeiro_mensal.sql",
+                "03_vendedor_pedido.sql",
+                "04_desempenho_vendedor.sql",
+            ],
+        )
 
     @patch("database.setup.load_dotenv")
     @patch.dict("os.environ", {}, clear=True)

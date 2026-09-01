@@ -19,3 +19,5 @@ premissas, limitações e matrizes de rastreabilidade.
 - [`catalogo_metricas_analiticas.md`](catalogo_metricas_analiticas.md):
   definições, fórmulas, granularidades, resultados e limitações das métricas
   financeiras e de vendedores consolidadas na etapa M06-04.
+- [`estruturas_schema_analytics.md`](estruturas_schema_analytics.md): finalidade,
+  granularidade, campos, dependências e validação das views criadas na M06-05.

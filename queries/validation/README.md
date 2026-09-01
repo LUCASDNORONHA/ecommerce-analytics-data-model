@@ -20,5 +20,10 @@ duplicação entre granularidades diferentes.
    das entidades, histórico de clientes, avaliações, marcos temporais e
    cobertura geográfica para a matriz de requisitos funcionais.
 
+## Controles da etapa M06-05
+
+6. `06_views_analytics.sql`: valida as granularidades das quatro views e
+   reconcilia os valores atribuídos aos vendedores contra a CORE.
+
 Resultados diferentes de zero não representam automaticamente erro. Cada
 consulta registra a interpretação apropriada para o controle.
