@@ -55,7 +55,7 @@ descritivas e não demonstram causalidade.
 | VEN05 | **Pedidos com participação do vendedor** — medir alcance em pedidos | `COUNT(DISTINCT id_pedido)`; pedidos/vendedor | Vendedor; histórica ou por período; `data_compra` | Pedidos entregues com item do vendedor | Consulta básica 07 | Em pedido multivendedor, cada vendedor recebe uma participação; a soma excede pedidos do marketplace. |
 | VEN06 | **Itens por vendedor** — medir volume comercializado | `COUNT(*)`; itens/vendedor | Vendedor; histórica ou por período; `data_compra` | Itens de pedidos entregues | Consulta básica 07 | Mede linhas de item, não quantidade física além da representação da fonte. |
 | VEN07 | **Valor médio do vendedor por pedido com participação** — medir contribuição média | `valor_itens_vendedor / pedidos_distintos_com_participação`; BRL/pedido participante | Vendedor; histórica ou por período; `data_compra` | Mesma base da VEN02 | Consulta básica 07 | Considera somente a parcela de itens do vendedor; não é o valor total nem o pagamento do pedido. |
-| VEN08 | **Taxa de itens enviados após o limite** — medir cumprimento do prazo diretamente relacionado ao item | `100 × itens após data_limite_envio / itens com observação`; percentual | Vendedor-item, consolidada por vendedor; `data_compra` | Pedidos entregues; somente observações não nulas | `core.item_pedido.data_limite_envio`, `core.pedido.data_envio_transportador`; análise 05 | O envio é comparado ao limite do item; não explica a causa do atraso. |
+| VEN08 | **Taxa de itens enviados após o limite** — medir cumprimento do prazo diretamente relacionado ao item | `100 × itens após data_limite_envio / itens com observação`; percentual | Vendedor-item, consolidada por vendedor; `data_compra` | Pedidos entregues; somente observações não nulas | `core.item_pedido.data_limite_envio`, `core.pedido.data_envio_transportador`; `analytics.vw_desempenho_vendedor` | O envio é comparado ao limite de cada item; não confundir com a proporção de pares vendedor-pedido que possuem algum item fora do limite. |
 | VEN09 | **Taxa de pedidos atrasados associados ao vendedor** — contextualizar risco de entrega | `100 × pedidos entregues após estimativa / pedidos com datas`; percentual | Vendedor-pedido; histórica ou por período; `data_compra` | Pedidos entregues com datas de entrega e estimativa | `core.pedido`; `queries/analysis/05_risco_operacional_vendedores.sql` | Atraso pertence ao pedido; usar “associado”, sem atribuir responsabilidade ao vendedor. |
 | VEN10 | **Nota média associada ao vendedor** — contextualizar experiência | Média da nota média pré-agregada por pedido; pontos de 1 a 5 | Vendedor-pedido; histórica ou por período; `data_compra` | Pedidos entregues com avaliação | `core.avaliacao.nota_avaliacao`; análise 05 | Avaliação pertence ao pedido e pode envolver vários vendedores; não mede causalidade. |
 
@@ -81,9 +81,10 @@ que impede tratar as representações como equivalentes.
 
 Para vendedores, foram observados 2.970 ativos. Os 5, 10 e 20 maiores
 representam, respectivamente, 7,71%, 13,27% e 21,28% do valor dos itens; os 10%
-maiores representam 67,11%. Na granularidade vendedor-pedido, a taxa de envio
-após o limite é 8,97%, a taxa de atraso associado é 8,02% e a nota média
-associada é 4,14.
+maiores representam 67,11%. Na granularidade de item, a taxa de envio após o
+limite é 9,32%. Na granularidade vendedor-pedido, 8,97% das participações
+possuem ao menos um item fora do limite. A taxa de atraso associado é 8,02% e a
+nota média associada é 4,14.
 
 ## 6. Validação e controles
 

@@ -17,11 +17,20 @@ LOGGER = logging.getLogger("database.setup")
 
 ROOT = Path(__file__).resolve().parents[1]
 PHYSICAL_MODEL = ROOT / "models" / "physical"
+ANALYTICS_MODEL = ROOT / "models" / "analytics"
+ANALYTICS_VIEWS_DIR = ANALYTICS_MODEL / "views"
 
 CREATE_SCHEMA = PHYSICAL_MODEL / "create_schema.sql"
 CREATE_INDEXES = PHYSICAL_MODEL / "create_indexes.sql"
 VALIDATE_SCHEMA = PHYSICAL_MODEL / "validate_schema.sql"
 DROP_SCHEMA = PHYSICAL_MODEL / "drop_schema.sql"
+VALIDATE_ANALYTICS = ANALYTICS_MODEL / "validate_views.sql"
+
+
+def analytics_view_scripts() -> list[Path]:
+    """Retorna as views analíticas na ordem explícita de dependência."""
+
+    return sorted(ANALYTICS_VIEWS_DIR.glob("[0-9][0-9]_*.sql"))
 
 
 def execute_sql(connection: psycopg.Connection, path: Path) -> None:
@@ -131,6 +140,13 @@ def setup_database(database_url: str, reset: bool = False) -> None:
 
         LOGGER.info("Validando estrutura")
         execute_sql(connection, VALIDATE_SCHEMA)
+
+        LOGGER.info("Criando views analíticas")
+        for view_script in analytics_view_scripts():
+            execute_sql(connection, view_script)
+
+        LOGGER.info("Validando views analíticas")
+        execute_sql(connection, VALIDATE_ANALYTICS)
 
 
 def build_parser() -> argparse.ArgumentParser:

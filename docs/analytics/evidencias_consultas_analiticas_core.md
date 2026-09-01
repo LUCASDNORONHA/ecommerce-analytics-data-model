@@ -89,15 +89,17 @@ Na granularidade vendedor-pedido foram observadas 97.819 participações.
 
 | Indicador associado | Resultado |
 |---|---:|
-| Envio após o limite do item | 8,97% |
+| Participação vendedor-pedido com algum item enviado após o limite | 8,97% |
 | Pedido entregue após a estimativa | 8,02% |
 | Nota média | 4,14 |
 | Avaliação negativa, nota menor ou igual a 2 | 13,25% |
 
-As taxas usam somente observações com informação disponível no denominador.
-Envio após o limite é diretamente relacionado aos itens do vendedor. Atraso da
-entrega e avaliação pertencem ao pedido e não comprovam responsabilidade nem
-causalidade do vendedor.
+As taxas usam somente observações com informação disponível no denominador. O
+resultado de 8,97% possui granularidade vendedor-pedido e indica a presença de
+ao menos um item fora do limite. A taxa calculada na granularidade de item é
+9,32%, conforme estabilizado na M06-05. Envio após o limite é diretamente
+relacionado aos itens do vendedor. Atraso da entrega e avaliação pertencem ao
+pedido e não comprovam responsabilidade nem causalidade do vendedor.
 
 ## 8. Recortes de categoria e geografia
 
