@@ -14,6 +14,12 @@ agregação explícitas.
 7. `07_resumo_indicadores_executivos.sql`: síntese histórica dos indicadores
    financeiros e de concentração.
 
+## Coleção M06-04
+
+8. `08_metricas_cancelamento.sql`: taxa de cancelamento por quantidade e
+   valores de itens, frete, bruto e pagamento associados aos pedidos
+   cancelados.
+
 Todas as medidas financeiras principais utilizam pedidos entregues e
 `core.pedido.data_compra`. Pagamentos, itens e avaliações são pré-agregados na
 granularidade de pedido antes de combinações que poderiam multiplicar valores.

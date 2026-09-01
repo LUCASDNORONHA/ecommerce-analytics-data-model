@@ -16,3 +16,6 @@ premissas, limitações e matrizes de rastreabilidade.
   associados observados durante a etapa M06-02.
 - [`matriz_validacao_requisitos_funcionais.md`](matriz_validacao_requisitos_funcionais.md):
   rastreabilidade entre RF01–RF12, consultas e evidências da etapa M06-03.
+- [`catalogo_metricas_analiticas.md`](catalogo_metricas_analiticas.md):
+  definições, fórmulas, granularidades, resultados e limitações das métricas
+  financeiras e de vendedores consolidadas na etapa M06-04.
