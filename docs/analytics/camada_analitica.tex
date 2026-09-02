@@ -1,0 +1,2684 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage[brazilian]{babel}
+\setmainfont{Arial}
+\setsansfont{Arial}
+\setmonofont{Consolas}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{
+  geometry,
+  setspace,
+  longtable,
+  booktabs,
+  array,
+  calc,
+  etoolbox,
+  graphicx,
+  enumitem,
+  ragged2e,
+  fancyvrb,
+  fvextra,
+  framed
+}
+\usepackage[table]{xcolor}
+\usepackage{titlesec,fancyhdr,xurl,hyperref,bookmark}
+
+\definecolor{AzulCorporativo}{RGB}{0,82,155}
+\definecolor{AzulPetroleo}{RGB}{23,104,133}
+\definecolor{CinzaEscuro}{RGB}{64,64,64}
+\definecolor{CinzaClaro}{RGB}{242,242,242}
+\definecolor{LaranjaDestaque}{RGB}{230,115,0}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AzulPetroleo,
+  urlcolor=AzulCorporativo,
+  citecolor=LaranjaDestaque,
+  pdftitle={Camada Analítica e Extração de Inteligência},
+  pdfauthor={Lucas Dias Noronha}
+}
+
+\titleformat{\section}
+  {\color{AzulCorporativo}\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\color{AzulPetroleo}\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\color{CinzaEscuro}\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+
+\geometry{left=3cm,right=2cm,top=3cm,bottom=2cm,headheight=45pt}
+\onehalfspacing
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{3em}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\setcounter{tocdepth}{2}
+\newcounter{none}
+\AtBeginEnvironment{longtable}{\footnotesize\setstretch{1.0}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{
+  \colorbox{AzulCorporativo}{
+    \makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{
+      \textcolor{white}{\textbf{\ \ Camada Analítica e Extração de Inteligência}}
+    }
+  }
+}
+\fancyfoot[C]{\color{CinzaEscuro}\thepage}
+
+\providecommand{\tightlist}{
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+\newcommand{\passthrough}[1]{#1}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\RecustomVerbatimEnvironment{Highlighting}{Verbatim}{
+  commandchars=\\\{\},breaklines,breakanywhere,fontsize=\small
+}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{
+  breaklines,breakanywhere,fontsize=\small
+}
+
+\begin{document}
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+  {\Huge\textcolor{AzulCorporativo}{\textbf{Camada Analítica e Extração
+de Inteligência}}}\\[0.5cm]
+  {\Large\textcolor{AzulPetroleo}{Modelo Analítico de Dados para E-commerce}}\\[0.8cm]
+\end{center}
+\vspace*{\fill}
+\noindent
+\textbf{\textcolor{AzulCorporativo}{Autor:}} Lucas Dias Noronha
+\hfill
+\textbf{\textcolor{AzulCorporativo}{Data:}} 2 de setembro de 2026
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Documentação
+analítica}\label{docs__analytics__readme.md__documentauxe7uxe3o-analuxedtica}
+
+Documentação destinada à leitura humana sobre métricas, decisões
+analíticas, premissas, limitações e matrizes de rastreabilidade.
+
+\subsection{Artefatos}\label{docs__analytics__readme.md__artefatos}
+
+\begin{itemize}
+\item
+  \href{camada_analitica.tex}{\nolinkurl{camada_analitica.tex}} e
+  \href{camada_analitica.pdf}{\nolinkurl{camada_analitica.pdf}}:
+  documentação consolidada da camada analítica, reunindo os artefatos
+  Markdown abaixo em um único documento.
+\item
+  \href{contrato_analitico.md}{\nolinkurl{contrato_analitico.md}}:
+  problema de negócio, stakeholders, demandas, casos de uso, catálogo
+  preliminar de indicadores, regras semânticas e limitações da camada
+  analítica.
+\item
+  \href{evidencias_consultas_basicas_core.md}{\nolinkurl{evidencias_consultas_basicas_core.md}}:
+  resultados de controle e decisões de granularidade observados durante
+  a etapa M06-01.
+\item
+  \href{evidencias_consultas_analiticas_core.md}{\nolinkurl{evidencias_consultas_analiticas_core.md}}:
+  resultados financeiros, concentração de vendedores, pagamentos e
+  riscos associados observados durante a etapa M06-02.
+\item
+  \href{matriz_validacao_requisitos_funcionais.md}{\nolinkurl{matriz_validacao_requisitos_funcionais.md}}:
+  rastreabilidade entre RF01--RF12, consultas e evidências da etapa
+  M06-03.
+\item
+  \href{catalogo_metricas_analiticas.md}{\nolinkurl{catalogo_metricas_analiticas.md}}:
+  definições, fórmulas, granularidades, resultados e limitações das
+  métricas financeiras e de vendedores consolidadas na etapa M06-04.
+\item
+  \href{estruturas_schema_analytics.md}{\nolinkurl{estruturas_schema_analytics.md}}:
+  finalidade, granularidade, campos, dependências e validação das views
+  criadas na M06-05.
+\item
+  \href{consumo_power_bi_sql.md}{\nolinkurl{consumo_power_bi_sql.md}}:
+  contrato de datasets, relacionamentos, medidas, atualização e
+  controles para consumo no Power BI e por SQL, consolidado na M06-06.
+\end{itemize}
+
+\section{Contrato analítico da camada
+ANALYTICS}\label{docs__analytics__contrato_analitico.md__contrato-analuxedtico-da-camada-analytics}
+
+\subsection{Finalidade}\label{docs__analytics__contrato_analitico.md__finalidade}
+
+Este documento define o problema de negócio, os stakeholders, as
+decisões, as demandas, os casos de uso e o catálogo preliminar de
+indicadores que orientam a fase M06 --- Camada Analítica e Extração de
+Inteligência.
+
+O contrato antecede a implementação das consultas e estruturas
+analíticas. Ele deve orientar a exploração da CORE sem transformar as
+issues da fase em uma sequência mecânica. Exploração, validação de
+requisitos e definição de métricas podem se retroalimentar, desde que
+alterações sejam sustentadas por evidência e registradas de forma
+rastreável.
+
+\subsection{Natureza do
+cenário}\label{docs__analytics__contrato_analitico.md__natureza-do-cenuxe1rio}
+
+O Brazilian E-Commerce Public Dataset by Olist não identifica uma
+empresa demandante nem sua estrutura organizacional. Por isso, os
+stakeholders e as decisões descritos neste documento constituem
+\textbf{personas analíticas hipotéticas}, utilizadas para organizar um
+caso de uso coerente com os dados disponíveis.
+
+Os resultados não devem ser apresentados como diagnóstico da operação
+atual da Olist nem como representação de sua estrutura real de gestão.
+
+\subsection{Cenário e problema de
+negócio}\label{docs__analytics__contrato_analitico.md__cenuxe1rio-e-problema-de-neguxf3cio}
+
+Uma empresa operadora de marketplace precisa compreender seu desempenho
+histórico para orientar decisões financeiras, comerciais e operacionais.
+Embora possua dados integrados sobre pedidos, clientes, itens, produtos,
+vendedores, pagamentos, avaliações e entregas, ainda não dispõe de uma
+visão analítica consolidada e rastreável.
+
+O problema de negócio adotado é:
+
+\begin{quote}
+A gestão do marketplace não dispõe de informações consolidadas e
+rastreáveis para avaliar prioritariamente o desempenho financeiro e a
+contribuição dos vendedores, considerando também os riscos logísticos e
+de experiência do cliente associados aos resultados observados.
+\end{quote}
+
+O produto analítico apoiará a compreensão e a priorização de decisões. O
+dataset não oferece informações suficientes para executar ações
+operacionais ou atribuir causalidade aos padrões encontrados.
+
+\subsection{Objetivo
+analítico}\label{docs__analytics__contrato_analitico.md__objetivo-analuxedtico}
+
+Construir uma camada analítica que transforme os dados históricos do
+marketplace em indicadores financeiros e de desempenho dos vendedores,
+permitindo:
+
+\begin{itemize}
+\tightlist
+\item
+  acompanhar a geração, a composição e a evolução dos valores
+  observados;
+\item
+  reconciliar as representações financeiras presentes em itens e
+  pagamentos;
+\item
+  identificar vendedores relevantes e mensurar a concentração da base;
+\item
+  comparar categorias, regiões e períodos;
+\item
+  contextualizar o desempenho com aspectos logísticos e de experiência;
+\item
+  preparar estruturas reproduzíveis para consumo por SQL e ferramentas
+  de BI.
+\end{itemize}
+
+A pergunta executiva central é:
+
+\begin{quote}
+Quanto valor foi movimentado em pedidos entregues, como esse valor
+evoluiu e foi composto, quais vendedores mais contribuíram e quais
+riscos operacionais ou de experiência estão associados a essa
+contribuição?
+\end{quote}
+
+\subsection{Pilares do produto
+analítico}\label{docs__analytics__contrato_analitico.md__pilares-do-produto-analuxedtico}
+
+\subsubsection{Desempenho financeiro --- foco
+principal}\label{docs__analytics__contrato_analitico.md__desempenho-financeiro-foco-principal}
+
+Compreender a geração, a composição, a evolução e a concentração dos
+valores observados no marketplace. Inclui valores dos itens, frete,
+pagamentos, parcelamento, reconciliação e recortes por período,
+categoria, vendedor e região.
+
+\subsubsection{Desempenho dos vendedores --- foco
+secundário}\label{docs__analytics__contrato_analitico.md__desempenho-dos-vendedores-foco-secunduxe1rio}
+
+Avaliar a contribuição financeira, a concentração, o alcance comercial e
+a qualidade operacional associada aos vendedores.
+
+\subsubsection{Logística e experiência --- pilares
+complementares}\label{docs__analytics__contrato_analitico.md__loguxedstica-e-experiuxeancia-pilares-complementares}
+
+Utilizar prazos, atrasos, frete e avaliações para contextualizar riscos
+e diferenças de desempenho. Associação estatística ou descritiva não
+será tratada como evidência de causalidade.
+
+\subsection{Stakeholders e decisões
+apoiadas}\label{docs__analytics__contrato_analitico.md__stakeholders-e-decisuxf5es-apoiadas}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3077}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Prioridade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Stakeholder hipotético
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interesse
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Decisões apoiadas
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Gestão financeira e executiva & Valores, composição, evolução e
+concentração & Priorizar períodos, segmentos e riscos para
+investigação \\
+2 & Gestão de vendedores & Contribuição e qualidade da base & Priorizar
+acompanhamento e desenvolvimento de vendedores \\
+3 & Gestão comercial & Categorias, regiões e comportamento dos pedidos &
+Identificar fontes de valor e segmentos relevantes \\
+4 & Operações e logística & Frete, prazos e atrasos & Priorizar
+investigações operacionais \\
+5 & Experiência do cliente & Avaliações e fatores associados &
+Identificar jornadas e segmentos insatisfatórios \\
+6 & BI e dados & Definições, rastreabilidade e consumo & Disponibilizar
+indicadores reproduzíveis \\
+\end{longtable}
+}
+
+\subsection{Demandas e perguntas
+analíticas}\label{docs__analytics__contrato_analitico.md__demandas-e-perguntas-analuxedticas}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Prioridade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Stakeholder
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Decisão
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pergunta
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Indicadores principais
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+P0 & Financeiro/executivo & Acompanhar desempenho & Quanto foi
+movimentado e como evoluiu? & Valores dos itens, frete, valor bruto,
+valor pago e crescimento \\
+P0 & Financeiro/executivo & Validar consistência & O valor pago é
+compatível com itens mais frete? & Diferenças absoluta e percentual \\
+P0 & Gestão de vendedores & Identificar vendedores estratégicos & Quais
+vendedores mais contribuem? & Valor dos itens, participação e posição \\
+P0 & Gestão de vendedores & Avaliar dependência & O resultado está
+concentrado? & Top N, curva ABC e HHI \\
+P1 & Financeiro & Entender a composição & Qual é a participação do
+frete? & Frete e participação no valor bruto \\
+P1 & Financeiro & Entender pagamentos & Quais meios e condições são
+utilizados? & Valor e pedidos por tipo e parcelamento \\
+P1 & Comercial & Identificar fontes de valor & Quais categorias e
+regiões contribuem mais? & Valor, pedidos, itens e participação \\
+P1 & Gestão de vendedores & Avaliar produtividade & Quem combina valor,
+pedidos e itens? & Valores, volumes e médias por vendedor \\
+P1 & Gestão de vendedores & Avaliar qualidade associada & Quem participa
+de pedidos com atraso ou avaliação ruim? & Taxas associadas de atraso e
+avaliação negativa \\
+P2 & Operações & Investigar riscos logísticos & Onde estão atrasos e
+fretes elevados? & Taxa de atraso, prazo e frete \\
+P2 & Experiência & Investigar insatisfação & Como avaliações variam por
+entrega e segmento? & Nota média, distribuição e avaliações negativas \\
+P2 & BI e dados & Preparar consumo recorrente & Quais definições
+precisam ser estabilizadas? & Catálogo, queries, views e marts \\
+\end{longtable}
+}
+
+\subsection{Casos de uso
+priorizados}\label{docs__analytics__contrato_analitico.md__casos-de-uso-priorizados}
+
+\subsubsection{Produto
+mínimo}\label{docs__analytics__contrato_analitico.md__produto-muxednimo}
+
+\paragraph{UC01 --- Resumo financeiro
+executivo}\label{docs__analytics__contrato_analitico.md__uc01-resumo-financeiro-executivo}
+
+Apresentar, por mês, pedidos entregues, valor dos itens, frete, valor
+bruto, valor pago registrado, diferença de reconciliação, valor médio
+por pedido e crescimento.
+
+\paragraph{UC02 --- Composição dos
+pagamentos}\label{docs__analytics__contrato_analitico.md__uc02-composiuxe7uxe3o-dos-pagamentos}
+
+Analisar participação por tipo de pagamento, valor médio por modalidade,
+parcelamento, pedidos com múltiplas formas de pagamento e ocorrências
+não definidas.
+
+\paragraph{UC03 --- Desempenho financeiro dos
+vendedores}\label{docs__analytics__contrato_analitico.md__uc03-desempenho-financeiro-dos-vendedores}
+
+Analisar vendedores ativos, valores, itens, pedidos, participação
+individual e acumulada, rankings, curva ABC e concentração.
+
+\paragraph{UC04 --- Reconciliação
+financeira}\label{docs__analytics__contrato_analitico.md__uc04-reconciliauxe7uxe3o-financeira}
+
+Comparar o valor bruto calculado nos itens com o valor registrado nos
+pagamentos, preservando a granularidade de pedido e identificando
+exceções.
+
+\subsubsection{Diagnósticos
+importantes}\label{docs__analytics__contrato_analitico.md__diagnuxf3sticos-importantes}
+
+\paragraph{UC05 --- Perfil e alcance dos
+vendedores}\label{docs__analytics__contrato_analitico.md__uc05-perfil-e-alcance-dos-vendedores}
+
+Analisar categorias comercializadas, origem, regiões atendidas,
+amplitude geográfica e dependência de categorias ou regiões.
+
+\paragraph{UC06 --- Risco operacional associado aos
+vendedores}\label{docs__analytics__contrato_analitico.md__uc06-risco-operacional-associado-aos-vendedores}
+
+Combinar contribuição financeira, envio após o limite, atraso, frete e
+avaliação. O resultado deve separar responsabilidade direta de mera
+associação.
+
+\paragraph{UC07 --- Categorias e regiões
+financeiras}\label{docs__analytics__contrato_analitico.md__uc07-categorias-e-regiuxf5es-financeiras}
+
+Identificar segmentos com maior valor, evolução mensal, valor médio,
+peso do frete, concentração de vendedores e qualidade logística
+associada.
+
+\subsubsection{Análises condicionadas à
+evidência}\label{docs__analytics__contrato_analitico.md__anuxe1lises-condicionadas-uxe0-eviduxeancia}
+
+\begin{itemize}
+\tightlist
+\item
+  segmentação de vendedores em quadrantes;
+\item
+  curva ABC por período;
+\item
+  HHI mensal;
+\item
+  estimativas geográficas de distância;
+\item
+  estruturas persistentes específicas para BI.
+\end{itemize}
+
+Essas análises somente serão consolidadas se a distribuição dos dados e
+a necessidade de consumo justificarem sua implementação.
+
+\subsection{Política
+financeira}\label{docs__analytics__contrato_analitico.md__poluxedtica-financeira}
+
+\subsubsection{Data de
+referência}\label{docs__analytics__contrato_analitico.md__data-de-referuxeancia}
+
+A dimensão temporal principal das métricas financeiras e comerciais será
+\nolinkurl{core.pedido.data_compra}. As demais datas serão utilizadas
+para finalidades específicas:
+
+\begin{itemize}
+\tightlist
+\item
+  \nolinkurl{data_aprovacao}: processo de aprovação;
+\item
+  \nolinkurl{data_envio_transportador}: processo logístico;
+\item
+  \nolinkurl{data_entrega}: realização da entrega;
+\item
+  \nolinkurl{data_estimada}: cumprimento do prazo.
+\end{itemize}
+
+Uma métrica não deve alternar entre datas sem registrar explicitamente a
+mudança de significado.
+
+\subsubsection{Política de
+status}\label{docs__analytics__contrato_analitico.md__poluxedtica-de-status}
+
+A visão principal utilizará pedidos com
+\nolinkurl{status_pedido = 'delivered'}. Essa base representa pedidos
+concluídos, mas não comprova reconhecimento contábil de receita.
+
+Uma visão ampla poderá incluir todos os pedidos com registros
+financeiros para reconciliação e investigação. Pedidos cancelados,
+indisponíveis ou ainda não concluídos serão analisados separadamente.
+
+\subsubsection{Medidas
+observadas}\label{docs__analytics__contrato_analitico.md__medidas-observadas}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fórmula
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Unidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Granularidade de origem
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fonte
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Valor dos itens & \nolinkurl{SUM(preco_item)} & BRL & Item &
+\nolinkurl{core.item_pedido.preco_item} \\
+Valor de frete & \nolinkurl{SUM(valor_frete)} & BRL & Item &
+\nolinkurl{core.item_pedido.valor_frete} \\
+Valor bruto & \nolinkurl{SUM(preco_item + valor_frete)} & BRL & Item,
+agregado por pedido & \nolinkurl{core.item_pedido} \\
+Valor pago registrado & \nolinkurl{SUM(valor_pagamento)} & BRL &
+Sequência, agregada por pedido &
+\nolinkurl{core.pagamento.valor_pagamento} \\
+Diferença de reconciliação & \nolinkurl{valor_pago - valor_bruto} & BRL
+& Pedido & Itens e pagamentos pré-agregados \\
+Diferença percentual &
+\nolinkurl{(valor_pago - valor_bruto) / valor_bruto} & Percentual &
+Pedido & Itens e pagamentos pré-agregados \\
+Participação do frete & \nolinkurl{valor_frete / valor_bruto} &
+Percentual & Período ou segmento & \nolinkurl{core.item_pedido} \\
+Valor médio por pedido & \nolinkurl{valor agregado / pedidos distintos}
+& BRL/pedido & Período ou segmento & Pedido e medida escolhida \\
+Itens por pedido & \nolinkurl{itens / pedidos distintos} & Itens/pedido
+& Período ou segmento & \nolinkurl{core.item_pedido} \\
+\end{longtable}
+}
+
+A medida utilizada no numerador do valor médio deve aparecer em seu nome
+ou em sua definição. Não será adotado um ``ticket médio'' sem
+especificar se a base é o valor dos itens, o valor bruto ou o valor
+pago.
+
+\subsubsection{Reconciliação}\label{docs__analytics__contrato_analitico.md__reconciliauxe7uxe3o}
+
+\nolinkurl{core.item_pedido} e \nolinkurl{core.pagamento} devem ser
+agregadas separadamente por \nolinkurl{id_pedido} antes de qualquer
+combinação. A existência de divergências não autoriza concluir que uma
+representação esteja incorreta sem investigação.
+
+\subsubsection{Atribuição aos
+vendedores}\label{docs__analytics__contrato_analitico.md__atribuiuxe7uxe3o-aos-vendedores}
+
+Podem ser atribuídos diretamente ao vendedor:
+
+\begin{itemize}
+\tightlist
+\item
+  valor dos itens;
+\item
+  frete associado aos itens;
+\item
+  valor bruto dos itens;
+\item
+  quantidade de itens;
+\item
+  quantidade de pedidos distintos com participação.
+\end{itemize}
+
+O valor de pagamento pertence ao pedido. Ele não será atribuído
+integralmente a cada vendedor. Um eventual rateio proporcional deverá
+ser nomeado como \textbf{valor alocado}, acompanhado da fórmula e sem
+ser confundido com pagamento observado.
+
+\subsection{Política de análise dos
+vendedores}\label{docs__analytics__contrato_analitico.md__poluxedtica-de-anuxe1lise-dos-vendedores}
+
+\subsubsection{Métricas
+fundamentais}\label{docs__analytics__contrato_analitico.md__muxe9tricas-fundamentais}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fórmula resumida
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretação
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Vendedores com pedidos & \nolinkurl{COUNT(DISTINCT id_vendedor)} &
+Vendedores presentes na base selecionada \\
+Vendedores ativos & Vendedores com item em pedido entregue no período &
+Base efetivamente ativa segundo a definição adotada \\
+Pedidos por vendedor & \nolinkurl{COUNT(DISTINCT id_pedido)} & Pedidos
+com participação \\
+Itens por vendedor & Contagem de itens & Volume comercializado \\
+Valor dos itens & Soma de \nolinkurl{preco_item} & Contribuição
+comercial direta \\
+Frete associado & Soma de \nolinkurl{valor_frete} & Frete cobrado nos
+itens \\
+Valor bruto & Itens mais frete & Valor bruto associado \\
+Valor médio por item & Valor dos itens dividido pelos itens & Perfil de
+preço \\
+Valor médio por pedido com participação & Valor dos itens dividido pelos
+pedidos distintos & Contribuição média nos pedidos \\
+Participação financeira & Valor do vendedor dividido pelo total &
+Relevância relativa \\
+Categorias comercializadas & Categorias distintas & Diversidade
+observada \\
+Estados atendidos & Estados distintos dos clientes & Alcance geográfico
+observado \\
+\end{longtable}
+}
+
+\subsubsection{Concentração}\label{docs__analytics__contrato_analitico.md__concentrauxe7uxe3o}
+
+Devem ser avaliadas a participação individual e as participações
+acumuladas dos 5, 10 e 20 maiores vendedores e dos 10\% maiores
+vendedores.
+
+A curva ABC poderá utilizar inicialmente os limites acumulados de 80\%
+para a classe A e 95\% para as classes A+B. Esses limites são parâmetros
+descritivos e podem ser revistos após a análise da distribuição.
+
+O índice HHI será calculado pela soma dos quadrados das participações.
+Ele mede concentração na base observada e não deve ser interpretado como
+concentração do mercado brasileiro nem como avaliação regulatória.
+
+\subsubsection{Indicadores
+operacionais}\label{docs__analytics__contrato_analitico.md__indicadores-operacionais}
+
+São diretamente atribuíveis ao vendedor:
+
+\begin{itemize}
+\tightlist
+\item
+  cumprimento da \nolinkurl{data_limite_envio} do item;
+\item
+  valor dos itens e frete;
+\item
+  categorias comercializadas;
+\item
+  origem e alcance geográfico observados.
+\end{itemize}
+
+São apenas associados ao vendedor:
+
+\begin{itemize}
+\tightlist
+\item
+  atraso da entrega final;
+\item
+  tempo total de entrega;
+\item
+  avaliação;
+\item
+  cancelamento do pedido.
+\end{itemize}
+
+Quando houver múltiplos vendedores no mesmo pedido, deve-se utilizar a
+expressão ``pedido associado'' ou ``pedido com participação do
+vendedor''.
+
+\subsubsection{Segmentação
+diagnóstica}\label{docs__analytics__contrato_analitico.md__segmentauxe7uxe3o-diagnuxf3stica}
+
+Uma análise posterior poderá classificar vendedores nos quadrantes
+estratégico, atenção prioritária, potencial e baixa contribuição
+crítica, combinando desempenho financeiro e qualidade operacional. Os
+limites de alto, médio e baixo serão definidos somente após examinar a
+distribuição, por percentis ou faixas justificadas.
+
+\subsection{Catálogo mínimo de
+KPIs}\label{docs__analytics__contrato_analitico.md__catuxe1logo-muxednimo-de-kpis}
+
+\subsubsection{Financeiros}\label{docs__analytics__contrato_analitico.md__financeiros}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Valor dos itens de pedidos entregues.
+\item
+  Valor de frete de pedidos entregues.
+\item
+  Valor bruto de pedidos entregues.
+\item
+  Valor pago registrado em pedidos entregues.
+\item
+  Diferença de reconciliação financeira.
+\item
+  Valor médio por pedido entregue, com medida-base explícita.
+\item
+  Participação do frete no valor bruto.
+\item
+  Crescimento mensal do valor dos itens.
+\item
+  Taxa de cancelamento por quantidade.
+\item
+  Valor associado a pedidos cancelados.
+\end{enumerate}
+
+\subsubsection{Vendedores}\label{docs__analytics__contrato_analitico.md__vendedores}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{10}
+\tightlist
+\item
+  Vendedores ativos.
+\item
+  Valor dos itens por vendedor.
+\item
+  Participação financeira por vendedor.
+\item
+  Participação acumulada dos maiores vendedores.
+\item
+  Pedidos com participação do vendedor.
+\item
+  Itens por vendedor.
+\item
+  Valor médio do vendedor por pedido com participação.
+\item
+  Taxa de itens enviados após o limite.
+\item
+  Taxa de pedidos atrasados associados ao vendedor.
+\item
+  Nota média dos pedidos associados ao vendedor.
+\end{enumerate}
+
+O catálogo é preliminar. A exploração deve validar disponibilidade,
+qualidade, distribuição e utilidade antes de promover uma métrica a
+estrutura persistente ou KPI de consumo.
+
+\subsection{Limitações}\label{docs__analytics__contrato_analitico.md__limitauxe7uxf5es}
+
+\subsubsection{Financeiras}\label{docs__analytics__contrato_analitico.md__financeiras}
+
+O dataset não contém custos dos produtos, comissões, impostos, descontos
+explicitamente separados, tarifas de pagamento, custos logísticos reais,
+estornos completos, margem ou lucro. Valores registrados não comprovam
+liquidação contábil.
+
+\subsubsection{Temporais}\label{docs__analytics__contrato_analitico.md__temporais}
+
+Os dados representam um período histórico encerrado. Não permitem
+monitoramento em tempo real e não representam a operação atual. Meses
+incompletos devem ser identificados antes de comparações ou cálculos de
+crescimento.
+
+\subsubsection{Vendedores}\label{docs__analytics__contrato_analitico.md__vendedores-1}
+
+Um pedido pode envolver vários vendedores. Pagamentos e avaliações
+pertencem ao pedido. O atraso final também pode depender de fatores não
+representados. Não há custos, contratos, comissões ou metas individuais.
+
+\subsubsection{Clientes e
+mercado}\label{docs__analytics__contrato_analitico.md__clientes-e-mercado}
+
+Somente clientes com transações observadas estão presentes. Não há
+visitantes, abandono, conversão ou dimensão completa do mercado.
+Participação no dataset não equivale a participação de mercado.
+
+\subsubsection{Logística e
+geografia}\label{docs__analytics__contrato_analitico.md__loguxedstica-e-geografia}
+
+Não há transportadora, rota, veículo nem rastreamento detalhado.
+Coordenadas são associadas a prefixos de CEP e podem possuir múltiplos
+registros. Distâncias derivadas serão aproximações geográficas, não
+distâncias percorridas.
+
+\subsection{Convenções de
+nomenclatura}\label{docs__analytics__contrato_analitico.md__convenuxe7uxf5es-de-nomenclatura}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Evitar
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Utilizar
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Receita & Valor dos itens ou valor movimentado, com definição \\
+Faturamento & Valor bruto dos pedidos \\
+Lucro & Não disponível \\
+Rentabilidade do vendedor & Desempenho financeiro do vendedor \\
+Ticket médio do vendedor & Valor médio do vendedor por pedido com
+participação \\
+Custo de frete & Valor de frete cobrado \\
+Vendas concluídas & Pedidos entregues \\
+Atraso do vendedor & Pedido atrasado associado ao vendedor \\
+Cliente ativo & Cliente com pedido no período, quando definido \\
+Participação de mercado & Participação no valor observado no dataset \\
+\end{longtable}
+}
+
+\subsection{Regras de qualidade
+analítica}\label{docs__analytics__contrato_analitico.md__regras-de-qualidade-analuxedtica}
+
+Toda métrica consolidada deve informar, quando aplicável:
+
+\begin{itemize}
+\tightlist
+\item
+  nome e objetivo;
+\item
+  fórmula e unidade;
+\item
+  granularidade;
+\item
+  data de referência;
+\item
+  filtros e status incluídos;
+\item
+  regras de inclusão e exclusão;
+\item
+  dimensões permitidas;
+\item
+  tabelas e colunas de origem;
+\item
+  interpretação e limitações.
+\end{itemize}
+
+Toda consulta financeira deve:
+
+\begin{itemize}
+\tightlist
+\item
+  declarar a granularidade final;
+\item
+  agregar pagamentos antes de combiná-los com itens;
+\item
+  contar pedidos distintos após joins 1:N;
+\item
+  impedir a repetição de valores de pedido por item ou pagamento;
+\item
+  declarar se utiliza todos os pedidos ou apenas entregues;
+\item
+  possuir consulta de controle;
+\item
+  separar medidas observadas de medidas alocadas.
+\end{itemize}
+
+\subsection{Rastreabilidade com os requisitos
+aprovados}\label{docs__analytics__contrato_analitico.md__rastreabilidade-com-os-requisitos-aprovados}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Demanda deste contrato
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Requisito existente
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidência futura
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Desempenho financeiro multidimensional & RF03 & Queries financeiras e
+estruturas de consumo \\
+Desempenho de produtos, categorias e vendedores & RF05 & Queries e
+catálogo de vendedores \\
+Formas, valores e condições de pagamento & RF06 & Análise de pagamentos
+e parcelamento \\
+Análises geográficas & RF09 & Recortes de origem e alcance \\
+Consumo por BI & RF12 & Views, marts ou consultas de exportação
+justificadas \\
+Preservação de granularidade & Regra aprovada de joins analíticos &
+Consultas de controle e validação \\
+\end{longtable}
+}
+
+\subsection{Impacto no fluxo
+M06}\label{docs__analytics__contrato_analitico.md__impacto-no-fluxo-m06}
+
+\begin{itemize}
+\tightlist
+\item
+  M06-01 deve explorar a CORE a partir das perguntas priorizadas neste
+  contrato.
+\item
+  M06-02 deve combinar entidades para responder aos casos de uso
+  aprovados.
+\item
+  M06-03 deve validar a cobertura dos requisitos e registrar evidências.
+\item
+  M06-04 deve validar e consolidar o catálogo preliminar de métricas.
+\item
+  M06-05 deve persistir somente regras reutilizáveis e semanticamente
+  estáveis.
+\item
+  M06-06 deve preparar datasets com nomes, granularidade e métricas
+  explícitos.
+\end{itemize}
+
+O contrato pode ser refinado durante essas entregas. Qualquer mudança
+deve registrar a evidência, a decisão e o impacto sobre consultas,
+métricas e estruturas já produzidas.
+
+\section{Evidências das consultas básicas sobre a
+CORE}\label{docs__analytics__evidencias_consultas_basicas_core.md__eviduxeancias-das-consultas-buxe1sicas-sobre-a-core}
+
+\subsection{Finalidade}\label{docs__analytics__evidencias_consultas_basicas_core.md__finalidade}
+
+Este documento registra os principais resultados de controle obtidos
+durante a implementação das consultas básicas da etapa M06-01. Os
+resultados foram produzidos sobre a CORE local validada e servem para
+confirmar decisões de granularidade do contrato analítico.
+
+As evidências não substituem os SQLs versionados em \nolinkurl{queries/}
+e não transformam características observadas no dataset em regras de
+negócio.
+
+\subsection{Base
+executada}\label{docs__analytics__evidencias_consultas_basicas_core.md__base-executada}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Relação CORE & Registros \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\nolinkurl{core.pedido} & 99.441 \\
+\nolinkurl{core.item_pedido} & 112.650 \\
+\nolinkurl{core.pagamento} & 103.886 \\
+\nolinkurl{core.vendedor} & 3.095 \\
+\end{longtable}
+}
+
+As consultas foram executadas no PostgreSQL 18 contra o resultado
+aprovado do ELT.
+
+\subsection{Status dos
+pedidos}\label{docs__analytics__evidencias_consultas_basicas_core.md__status-dos-pedidos}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Status & Pedidos & Participação \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+delivered & 96.478 & 97,02\% \\
+shipped & 1.107 & 1,11\% \\
+canceled & 625 & 0,63\% \\
+unavailable & 609 & 0,61\% \\
+invoiced & 314 & 0,32\% \\
+processing & 301 & 0,30\% \\
+created & 5 & 0,01\% \\
+approved & 2 & menor que 0,01\% \\
+\end{longtable}
+}
+
+Decisão: os KPIs financeiros principais utilizarão pedidos entregues. Os
+demais status permanecerão disponíveis para cobertura, reconciliação e
+investigação.
+
+\subsection{Cobertura
+temporal}\label{docs__analytics__evidencias_consultas_basicas_core.md__cobertura-temporal}
+
+\nolinkurl{core.pedido.data_compra} varia de setembro de 2016 a outubro
+de 2018. Os meses de borda e transição que não possuem pedidos em todos
+os dias são:
+
+\begin{itemize}
+\tightlist
+\item
+  setembro, outubro e dezembro de 2016;
+\item
+  janeiro de 2017;
+\item
+  setembro e outubro de 2018.
+\end{itemize}
+
+Fevereiro de 2017 a agosto de 2018 possuem ao menos um pedido em todos
+os dias do respectivo mês. A ausência de pedidos em parte de um mês é um
+sinal de cobertura parcial, não uma prova isolada de perda de dados.
+
+Decisão: comparações mensais e taxas de crescimento devem destacar ou
+excluir meses sem cobertura diária completa, conforme o objetivo da
+análise.
+
+\subsection{Cobertura das relações de
+pedido}\label{docs__analytics__evidencias_consultas_basicas_core.md__cobertura-das-relauxe7uxf5es-de-pedido}
+
+A maior parte dos pedidos possui itens e pagamentos. Foram observadas
+exceções:
+
+\begin{itemize}
+\tightlist
+\item
+  um pedido entregue possui itens e não possui pagamento;
+\item
+  164 pedidos cancelados possuem pagamentos e não possuem itens;
+\item
+  603 pedidos indisponíveis possuem pagamentos e não possuem itens;
+\item
+  ocorrências menores também existem nos status \nolinkurl{created},
+  \nolinkurl{invoiced} e \nolinkurl{shipped}.
+\end{itemize}
+
+Decisão: métricas que exigem itens e pagamentos devem utilizar
+\nolinkurl{INNER JOIN} após pré-agregação e declarar que sua população
+exclui pedidos sem uma das relações. Consultas de cobertura devem
+preservar as exceções.
+
+\subsection{Risco de multiplicação entre itens e
+pagamentos}\label{docs__analytics__evidencias_consultas_basicas_core.md__risco-de-multiplicauxe7uxe3o-entre-itens-e-pagamentos}
+
+O join direto entre \nolinkurl{core.item_pedido} e
+\nolinkurl{core.pagamento} produziu 117.601 linhas. Sem pré-agregação,
+itens são repetidos pela quantidade de pagamentos e pagamentos são
+repetidos pela quantidade de itens do pedido.
+
+A consulta de controle compara o join direto somente com pedidos
+presentes nas duas relações. O resultado comprova que somas financeiras
+realizadas após esse join não são válidas.
+
+Decisão: itens e pagamentos devem ser agregados separadamente por
+\nolinkurl{id_pedido} antes da combinação.
+
+\subsection{Reconciliação
+financeira}\label{docs__analytics__evidencias_consultas_basicas_core.md__reconciliauxe7uxe3o-financeira}
+
+Entre os pedidos entregues que possuem itens e pagamentos:
+
+\begin{itemize}
+\tightlist
+\item
+  96.178 estão conciliados dentro da tolerância de R\$ 0,01;
+\item
+  260 possuem pagamento registrado maior que o valor bruto;
+\item
+  39 possuem valor bruto maior que o pagamento registrado;
+\item
+  a maior diferença absoluta observada é R\$ 182,81.
+\end{itemize}
+
+A tolerância absorve somente diferenças de centavos. Divergências
+maiores não comprovam erro, estorno ou perda financeira, pois a fonte
+não contém todo o ciclo contábil.
+
+Decisão: a reconciliação será mantida como indicador de qualidade e
+investigação, não como ajuste automático dos valores.
+
+\subsection{Pedidos com múltiplos
+vendedores}\label{docs__analytics__evidencias_consultas_basicas_core.md__pedidos-com-muxfaltiplos-vendedores}
+
+Na base de pedidos entregues com itens:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Classificação & Pedidos & Participação \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Um vendedor & 95.203 & 98,6785\% \\
+Múltiplos vendedores & 1.275 & 1,3215\% \\
+\end{longtable}
+}
+
+Os pedidos multivendedor contêm 3.097 itens e R\$ 268.630,76 em valor
+dos itens.
+
+Decisão: pagamentos, avaliações, cancelamentos e atrasos de entrega não
+serão atribuídos integralmente a cada vendedor. Quando usados, serão
+descritos como indicadores associados ao pedido com participação do
+vendedor.
+
+\subsection{Reconciliação da atribuição aos
+vendedores}\label{docs__analytics__evidencias_consultas_basicas_core.md__reconciliauxe7uxe3o-da-atribuiuxe7uxe3o-aos-vendedores}
+
+Para pedidos entregues:
+
+\begin{itemize}
+\tightlist
+\item
+  110.197 itens da base foram atribuídos a vendedores;
+\item
+  a diferença entre itens da base e itens atribuídos foi zero;
+\item
+  R\$ 13.221.498,11 em valor dos itens foram atribuídos;
+\item
+  a diferença monetária da atribuição foi R\$ 0,00;
+\item
+  existem 1.341 participações adicionais em pedidos devido a pedidos com
+  mais de um vendedor.
+\end{itemize}
+
+Decisão: valores e itens podem ser atribuídos diretamente aos
+vendedores. A contagem de participações por vendedor não deve ser
+confundida com pedidos distintos do marketplace.
+
+\subsection{Consultas
+relacionadas}\label{docs__analytics__evidencias_consultas_basicas_core.md__consultas-relacionadas}
+
+\begin{itemize}
+\tightlist
+\item
+  \nolinkurl{queries/basic/01_pedidos_por_status.sql};
+\item
+  \nolinkurl{queries/basic/02_cobertura_temporal.sql};
+\item
+  \nolinkurl{queries/basic/08_pedidos_multivendedor.sql};
+\item
+  \nolinkurl{queries/validation/01_reconciliacao_financeira.sql};
+\item
+  \nolinkurl{queries/validation/02_controle_join_itens_pagamentos.sql};
+\item
+  \nolinkurl{queries/validation/03_cobertura_relacoes_pedido.sql};
+\item
+  \nolinkurl{queries/validation/04_granularidade_vendedor.sql}.
+\end{itemize}
+
+\section{Evidências das consultas analíticas sobre a
+CORE}\label{docs__analytics__evidencias_consultas_analiticas_core.md__eviduxeancias-das-consultas-analuxedticas-sobre-a-core}
+
+\subsection{Escopo}\label{docs__analytics__evidencias_consultas_analiticas_core.md__escopo}
+
+Este documento registra evidências da etapa M06-02, orientada
+prioritariamente ao desempenho financeiro e à contribuição dos
+vendedores. As consultas-fonte estão em \nolinkurl{queries/analysis/} e
+utilizam pedidos entregues como base principal.
+
+Os resultados descrevem o período histórico do dataset. Não representam
+a operação atual, receita contábil, lucro ou participação no mercado
+brasileiro.
+
+\subsection{Resumo financeiro
+histórico}\label{docs__analytics__evidencias_consultas_analiticas_core.md__resumo-financeiro-histuxf3rico}
+
+A população que possui simultaneamente pedido entregue, itens e
+pagamentos contém 96.477 pedidos e 110.194 itens.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Indicador & Resultado \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Valor dos itens & R\$ 13.221.363,14 \\
+Valor de frete & R\$ 2.198.267,15 \\
+Valor bruto & R\$ 15.419.630,29 \\
+Valor pago registrado & R\$ 15.422.461,77 \\
+Diferença agregada de reconciliação & R\$ 2.831,48 \\
+Valor bruto médio por pedido & R\$ 159,83 \\
+Participação do frete & 14,26\% \\
+\end{longtable}
+}
+
+A diferença agregada não significa que todos os pedidos estejam
+conciliados. Diferenças positivas e negativas podem se compensar; a
+validação por pedido permanece necessária.
+
+\subsection{Evolução
+mensal}\label{docs__analytics__evidencias_consultas_analiticas_core.md__evoluuxe7uxe3o-mensal}
+
+A consulta mensal:
+
+\begin{itemize}
+\tightlist
+\item
+  utiliza \nolinkurl{core.pedido.data_compra};
+\item
+  agrega itens e pagamentos separadamente por pedido;
+\item
+  sinaliza meses sem pedidos em todos os dias do calendário;
+\item
+  calcula crescimento somente quando o mês atual e o anterior possuem
+  cobertura diária completa.
+\end{itemize}
+
+Essa regra evita comparar automaticamente os meses de borda ou transição
+já identificados na etapa M06-01.
+
+\subsection{Concentração dos
+vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__concentrauxe7uxe3o-dos-vendedores}
+
+Foram observados 2.970 vendedores ativos em pedidos entregues.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Indicador & Resultado \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Participação acumulada dos 5 maiores & 7,71\% \\
+Participação acumulada dos 10 maiores & 13,27\% \\
+HHI da base observada & 0,003631 \\
+\end{longtable}
+}
+
+Os resultados indicam dispersão do valor dos itens entre muitos
+vendedores no período completo. O HHI é utilizado somente como medida
+descritiva interna. Não permite concluir sobre concentração
+concorrencial ou participação de mercado.
+
+A curva ABC usa inicialmente os limites acumulados de 80\% e 95\%. Esses
+limites são parâmetros analíticos e poderão ser revistos na definição
+final das métricas.
+
+\subsection{Pedidos com múltiplos
+vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__pedidos-com-muxfaltiplos-vendedores}
+
+Entre os pedidos entregues com itens e pagamentos, 1.275 possuem mais de
+um vendedor. Por isso:
+
+\begin{itemize}
+\tightlist
+\item
+  valor dos itens e frete podem ser atribuídos diretamente ao vendedor;
+\item
+  pagamentos não são repetidos nem integralmente atribuídos aos
+  vendedores;
+\item
+  atrasos e avaliações são descritos como associados ao pedido com
+  participação do vendedor.
+\end{itemize}
+
+\subsection{Formas e condições de
+pagamento}\label{docs__analytics__evidencias_consultas_analiticas_core.md__formas-e-condiuxe7uxf5es-de-pagamento}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1579}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Tipo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Registros
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Pedidos distintos
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Valor pago registrado
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Parcelas médias
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Cartão de crédito & 74.586 & 74.304 & R\$ 12.101.094,88 & 3,50 \\
+Boleto & 19.191 & 19.191 & R\$ 2.769.932,58 & 1,00 \\
+Voucher & 5.493 & 3.679 & R\$ 343.013,19 & 1,00 \\
+Cartão de débito & 1.486 & 1.485 & R\$ 208.421,12 & 1,00 \\
+\end{longtable}
+}
+
+Um pedido pode possuir vários registros e tipos de pagamento. As
+contagens por tipo não formam grupos mutuamente exclusivos de pedidos. A
+consulta de perfil consolida as sequências por pedido antes de
+classificá-lo por faixa de valor, parcelamento e composição dos meios de
+pagamento.
+
+\subsection{Risco operacional associado aos
+vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__risco-operacional-associado-aos-vendedores}
+
+Na granularidade vendedor-pedido foram observadas 97.819 participações.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.4286}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5714}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Indicador associado
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Resultado
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Participação vendedor-pedido com algum item enviado após o limite &
+8,97\% \\
+Pedido entregue após a estimativa & 8,02\% \\
+Nota média & 4,14 \\
+Avaliação negativa, nota menor ou igual a 2 & 13,25\% \\
+\end{longtable}
+}
+
+As taxas usam somente observações com informação disponível no
+denominador. O resultado de 8,97\% possui granularidade vendedor-pedido
+e indica a presença de ao menos um item fora do limite. A taxa calculada
+na granularidade de item é 9,32\%, conforme estabilizado na M06-05.
+Envio após o limite é diretamente relacionado aos itens do vendedor.
+Atraso da entrega e avaliação pertencem ao pedido e não comprovam
+responsabilidade nem causalidade do vendedor.
+
+\subsection{Recortes de categoria e
+geografia}\label{docs__analytics__evidencias_consultas_analiticas_core.md__recortes-de-categoria-e-geografia}
+
+As consultas de vendedor-categoria e alcance geográfico permitem:
+
+\begin{itemize}
+\tightlist
+\item
+  medir a participação de uma categoria no valor do vendedor;
+\item
+  medir a participação do vendedor dentro da categoria;
+\item
+  contar estados e cidades de clientes atendidos;
+\item
+  comparar o peso do frete no valor bruto por vendedor.
+\end{itemize}
+
+O estado e a cidade do cliente representam seu cadastro, não o endereço
+exato da entrega. Alcance geográfico não equivale a cobertura
+operacional formal.
+
+\subsection{Decisões para as próximas
+etapas}\label{docs__analytics__evidencias_consultas_analiticas_core.md__decisuxf5es-para-as-pruxf3ximas-etapas}
+
+\begin{itemize}
+\tightlist
+\item
+  manter as bases de item, pagamento e avaliação pré-agregadas;
+\item
+  preservar meses parciais, mas impedir seu uso automático em
+  crescimento;
+\item
+  tratar concentração como característica interna da base;
+\item
+  separar medidas diretamente atribuíveis de indicadores apenas
+  associados;
+\item
+  validar fórmulas e cobertura contra os requisitos na M06-03;
+\item
+  consolidar como métricas somente os indicadores aprovados na M06-04.
+\end{itemize}
+
+\section{Matriz de validação dos requisitos
+funcionais}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__matriz-de-validauxe7uxe3o-dos-requisitos-funcionais}
+
+\subsection{Finalidade}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__finalidade}
+
+Esta matriz registra como os requisitos funcionais RF01 a RF12 são
+sustentados pelo modelo CORE e pelas consultas versionadas nas etapas
+M06-01 e M06-02. A validação comprova capacidade analítica e cobertura
+observada; não declara que toda análise possível já foi implementada nem
+antecipa as estruturas de BI das etapas posteriores.
+
+Classificações utilizadas:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{atendido}: há estrutura, consulta e resultado reproduzível
+  suficientes para demonstrar a capacidade;
+\item
+  \textbf{atendido com limitação}: a capacidade existe, mas a cobertura
+  ou a interpretação é restringida pelos dados;
+\item
+  \textbf{preparado para etapa futura}: a base está disponível, mas a
+  entrega final pertence explicitamente a uma issue posterior.
+\end{itemize}
+
+\subsection{Matriz requisito → consulta →
+evidência}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__matriz-requisito-consulta-eviduxeancia}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Requisito
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Capacidade validada
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Consulta ou artefato
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidência observada
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Resultado
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+RF01 & Integração de clientes, pedidos, itens, produtos, vendedores,
+pagamentos, avaliações e geolocalização &
+\nolinkurl{queries/validation/05_cobertura_requisitos_funcionais.sql},
+bloco RF01 & Pedidos se relacionam integralmente a clientes e itens a
+produtos e vendedores. Pagamentos, avaliações e geolocalização possuem
+cobertura parcial da fonte, preservada sem fabricação de registros. &
+Atendido com limitação \\
+RF02 & Recuperação do histórico de pedidos e relações &
+\nolinkurl{queries/basic/01_pedidos_por_status.sql},
+\nolinkurl{queries/validation/03_cobertura_relacoes_pedido.sql} e bloco
+RF02/RF04 da consulta 05 & 99.441 pedidos entre 2016-09-04 e 2018-10-17;
+exceções de itens e pagamentos permanecem identificáveis por status. &
+Atendido \\
+RF03 & Análise multidimensional por período, produto, categoria,
+cliente, vendedor e localização &
+\nolinkurl{queries/basic/09_valor_por_categoria_regiao.sql},
+\nolinkurl{queries/analysis/01_evolucao_financeira_mensal.sql},
+\nolinkurl{03_desempenho_vendedor_categoria.sql} e
+\nolinkurl{04_alcance_geografico_vendedores.sql} & Resultados
+reproduzíveis nas granularidades mês, categoria-estado,
+vendedor-categoria e vendedor, com dimensões ligadas ao pedido. &
+Atendido \\
+RF04 & Comportamento de compra a partir do histórico disponível & Bloco
+RF02/RF04 de
+\nolinkurl{queries/validation/05_cobertura_requisitos_funcionais.sql} &
+O identificador persistente permite contar recorrência, intervalo de
+compras e máximo de pedidos por cliente observado. Não há navegação,
+abandono ou conversão. & Atendido com limitação \\
+RF05 & Desempenho comercial de produtos, categorias e vendedores &
+\nolinkurl{queries/basic/09_valor_por_categoria_regiao.sql},
+\nolinkurl{queries/analysis/02_concentracao_vendedores.sql} e
+\nolinkurl{03_desempenho_vendedor_categoria.sql} & Valor, itens,
+pedidos, participação, ranking, concentração e recortes por categoria
+são calculáveis sem atribuir pagamentos ao vendedor. & Atendido \\
+RF06 & Formas, valores e condições de pagamento &
+\nolinkurl{queries/basic/06_composicao_pagamentos.sql} e
+\nolinkurl{queries/analysis/06_perfil_pagamentos_pedido.sql} & Tipos,
+valores, parcelas e composição de meios de pagamento são preservados;
+pedidos com múltiplas sequências são agregados antes da análise. &
+Atendido \\
+RF07 & Relação entre avaliações e demais informações do pedido &
+\nolinkurl{queries/analysis/05_risco_operacional_vendedores.sql} e bloco
+RF07/RF08 da consulta 05 & Avaliações podem ser pré-agregadas por pedido
+e associadas a itens e vendedores. A associação não comprova
+responsabilidade ou causalidade. & Atendido com limitação \\
+RF08 & Análise de datas previstas e efetivas de processamento e entrega
+& \nolinkurl{queries/analysis/05_risco_operacional_vendedores.sql} e
+bloco RF07/RF08 da consulta 05 & Aprovação, envio, entrega, estimativa e
+envio após limite permitem medir cobertura e atrasos quando as datas
+estão disponíveis. & Atendido com limitação \\
+RF09 & Análises geográficas de clientes e vendedores &
+\nolinkurl{queries/analysis/04_alcance_geografico_vendedores.sql},
+\nolinkurl{queries/basic/09_valor_por_categoria_regiao.sql} e bloco RF09
+da consulta 05 & Estados e cidades permitem recortes comerciais;
+prefixos podem ser relacionados à geolocalização quando cobertos.
+Coordenadas representam aproximações do prefixo, não rotas. & Atendido
+com limitação \\
+RF10 & Combinação de entidades com integridade dos relacionamentos &
+\nolinkurl{queries/validation/01_reconciliacao_financeira.sql},
+\nolinkurl{02_controle_join_itens_pagamentos.sql} e
+\nolinkurl{04_granularidade_vendedor.sql} & A pré-agregação por pedido
+evita multiplicar itens e pagamentos; a atribuição de itens e valor aos
+vendedores reconciliou sem diferença. & Atendido \\
+RF11 & Agregações e filtros temporais, comerciais, geográficos e de
+pedido & Coleções \nolinkurl{queries/basic/} e
+\nolinkurl{queries/analysis/} & Consultas filtram status, controlam
+meses parciais e agregam por mês, categoria, região, vendedor, pagamento
+e pedido. & Atendido \\
+RF12 & Base estruturada para ferramentas analíticas e BI & Schemas
+\nolinkurl{core} e \nolinkurl{analytics}, contrato analítico e consultas
+versionadas & A CORE validada e as regras reproduzíveis formam a base de
+consumo. Views, marts e datasets finais serão materializados nas issues
+M06-05 e M06-06. & Preparado para etapa futura \\
+\end{longtable}
+}
+
+\subsection{Evidências complementares da consulta de
+cobertura}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__eviduxeancias-complementares-da-consulta-de-cobertura}
+
+\subsubsection{Integração e
+cobertura}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__integrauxe7uxe3o-e-cobertura}
+
+As chaves estrangeiras asseguram as relações obrigatórias. Relações
+opcionais ou incompletas refletem a fonte: a ausência de pagamento,
+avaliação ou geolocalização não deve ser preenchida artificialmente. A
+consulta registra a quantidade relacionada e não relacionada para tornar
+essa cobertura auditável.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+Relação validada & Origem & Relacionados & Sem relação \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Item → produto e vendedor & 112.650 & 112.650 & 0 \\
+Pedido → cliente & 99.441 & 99.441 & 0 \\
+Pedido → pagamento & 99.441 & 99.440 & 1 \\
+Pedido → avaliação & 99.441 & 98.673 & 768 \\
+Prefixo de CEP → geolocalização & 19.177 & 19.015 & 162 \\
+\end{longtable}
+}
+
+\subsubsection{Histórico e comportamento de
+clientes}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__histuxf3rico-e-comportamento-de-clientes}
+
+O histórico usa \nolinkurl{core.cliente.id_cliente_unico} como
+identidade persistente e \nolinkurl{core.pedido.data_compra} como
+referência temporal. A análise fica limitada a clientes com transações
+observadas; não existem dados de sessão, visita, abandono ou exposição
+comercial.
+
+Foram observados 96.096 clientes persistentes; 2.997 (3,12\%) possuem
+mais de um pedido, e o máximo observado é 17 pedidos por cliente. O
+histórico varia de 2016-09-04 a 2018-10-17.
+
+\subsubsection{Avaliação, entrega e
+geografia}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__avaliauxe7uxe3o-entrega-e-geografia}
+
+Avaliações e datas são associadas ao pedido somente quando disponíveis.
+Cidade, estado e prefixo de CEP representam os atributos cadastrais
+presentes na base. As múltiplas ocorrências de geolocalização por
+prefixo não devem ser ligadas diretamente a fatos sem agregação prévia.
+
+Entre os 99.441 pedidos, 98.673 possuem avaliação, 99.281 possuem data
+de aprovação, 97.658 possuem envio ao transportador, 96.476 possuem
+entrega e todos possuem estimativa. Foram observados 7.827 pedidos
+entregues após a data estimada, sem atribuição causal.
+
+A geolocalização cobre 99.163 de 99.441 registros de cliente e 3.088 de
+3.095 vendedores. Os cadastros abrangem 27 estados e 4.119 cidades de
+clientes, além de 23 estados e 611 cidades de vendedores.
+
+\subsection{Decisões e impacto nas próximas
+etapas}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__decisuxf5es-e-impacto-nas-pruxf3ximas-etapas}
+
+\begin{itemize}
+\tightlist
+\item
+  RF01 a RF11 possuem cobertura suficiente para prosseguir à definição
+  formal das métricas, respeitadas as limitações registradas.
+\item
+  RF04 não autoriza métricas de conversão, abandono ou navegação.
+\item
+  RF07 e RF08 sustentam indicadores associados ao vendedor, mas não
+  atribuição causal de avaliações ou atraso final.
+\item
+  RF09 não sustenta distância percorrida nem cobertura logística formal.
+\item
+  RF12 somente será classificado como entrega final após a criação das
+  estruturas reutilizáveis e dos datasets de consumo das issues M06-05 e
+  M06-06.
+\item
+  Nenhuma evidência exige alterar os modelos conceitual, lógico, físico
+  ou a transformação CORE já aprovados.
+\end{itemize}
+
+\subsection{Reprodutibilidade}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__reprodutibilidade}
+
+As evidências devem ser reproduzidas no PostgreSQL 18 sobre a CORE
+aprovada, executando as consultas referenciadas nesta matriz. As
+contagens documentadas correspondem à carga local validada e podem
+variar somente se a fonte ou o ELT forem formalmente alterados.
+
+\section{Catálogo de métricas
+analíticas}\label{docs__analytics__catalogo_metricas_analiticas.md__catuxe1logo-de-muxe9tricas-analuxedticas}
+
+\subsection{Finalidade e
+escopo}\label{docs__analytics__catalogo_metricas_analiticas.md__finalidade-e-escopo}
+
+Este catálogo consolida as métricas aprovadas para responder
+prioritariamente ao desempenho financeiro e, em seguida, ao desempenho
+dos vendedores. As definições utilizam exclusivamente a CORE validada e
+correspondem ao período histórico do dataset.
+
+Os valores observados não representam receita contábil, lucro, margem,
+liquidação financeira nem a operação atual da Olist. Todas as métricas
+são descritivas e não demonstram causalidade.
+
+\subsection{Políticas
+comuns}\label{docs__analytics__catalogo_metricas_analiticas.md__poluxedticas-comuns}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Data financeira e comercial:}
+  \nolinkurl{core.pedido.data_compra}.
+\item
+  \textbf{Base principal:} pedidos com
+  \nolinkurl{status_pedido = 'delivered'}.
+\item
+  \textbf{Base financeira completa:} pedidos entregues com itens e
+  pagamentos, quando a métrica compara essas duas representações.
+\item
+  \textbf{Cancelamento:} todos os pedidos compõem o denominador; o
+  numerador contém somente \nolinkurl{status_pedido = 'canceled'}.
+\item
+  \textbf{Granularidade:} itens e pagamentos são agregados separadamente
+  por pedido antes de qualquer combinação.
+\item
+  \textbf{Vendedores:} valor dos itens, frete e quantidade de itens são
+  diretamente atribuíveis. Entrega final e avaliação são apenas
+  associadas ao pedido com participação do vendedor.
+\item
+  \textbf{Percentuais:} são expressos na escala de 0 a 100. HHI
+  permanece na escala de 0 a 1.
+\item
+  \textbf{Valores monetários:} BRL com precisão exata; arredondamento é
+  aplicado somente à apresentação de médias, taxas e percentuais.
+\end{itemize}
+
+\subsection{Métricas
+financeiras}\label{docs__analytics__catalogo_metricas_analiticas.md__muxe9tricas-financeiras}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nome e finalidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fórmula e unidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Granularidade e tempo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Filtros e exclusões
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fontes e SQL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretação e limitações
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FIN01 & \textbf{Valor dos itens entregues} --- medir o valor comercial
+dos produtos & \nolinkurl{SUM(preco_item)}; BRL & Origem item; saída
+histórica, mensal ou segmento; \nolinkurl{data_compra} & Pedidos
+entregues; na comparação financeira, exige item e pagamento &
+\nolinkurl{core.item_pedido.preco_item}; consultas 01 e 07 de
+\nolinkurl{queries/analysis/} & Valor observado dos itens; não é receita
+líquida, margem ou lucro. \\
+FIN02 & \textbf{Valor de frete entregue} --- medir o frete cobrado nos
+itens & \nolinkurl{SUM(valor_frete)}; BRL & Origem item; saída
+histórica, mensal ou segmento; \nolinkurl{data_compra} & Mesma base da
+FIN01 & \nolinkurl{core.item_pedido.valor_frete}; consultas 01 e 07 &
+Frete cobrado, não custo logístico real. \\
+FIN03 & \textbf{Valor bruto entregue} --- medir itens mais frete &
+\nolinkurl{SUM(preco_item + valor_frete)}; BRL & Item, pré-agregado por
+pedido; saída histórica, mensal ou segmento & Mesma base da FIN01 &
+\nolinkurl{core.item_pedido}; consultas 01 e 07 & Valor bruto observado;
+não comprova reconhecimento contábil. \\
+FIN04 & \textbf{Valor pago registrado} --- medir pagamentos associados
+aos pedidos & \nolinkurl{SUM(valor_pagamento)}; BRL & Sequência de
+pagamento, pré-agregada por pedido; saída histórica ou mensal & Pedidos
+entregues com itens e pagamentos &
+\nolinkurl{core.pagamento.valor_pagamento}; consultas 01 e 07 & Registro
+da fonte; não comprova liquidação, estorno ou recebimento. \\
+FIN05 & \textbf{Diferença de reconciliação} --- comparar pagamento e
+valor bruto & \nolinkurl{valor_pago_registrado - valor_bruto}; BRL por
+pedido, com soma e classificação & Origem e controle por pedido; saída
+mensal ou histórica; \nolinkurl{data_compra} & Somente pedidos presentes
+em itens e pagamentos; tolerância de R\$ 0,01 apenas na classificação &
+\nolinkurl{core.item_pedido}, \nolinkurl{core.pagamento}; análise 01 e
+validação 01 & Divergência para investigação; somas positivas e
+negativas podem se compensar. \\
+FIN06 & \textbf{Valor bruto médio por pedido entregue} --- medir valor
+bruto médio da base &
+\nolinkurl{SUM(valor_bruto) / COUNT(DISTINCT id_pedido)}; BRL/pedido &
+Pedido; saída histórica, mensal ou segmento; \nolinkurl{data_compra} &
+Pedidos entregues com itens e pagamentos & Análises 01 e 07 & Não
+utilizar o nome ambíguo ``ticket médio''; a base monetária é
+explícita. \\
+FIN07 & \textbf{Participação do frete} --- medir o peso do frete no
+valor bruto & \nolinkurl{100 × SUM(valor_frete) / SUM(valor_bruto)};
+percentual & Saída histórica, mensal ou segmento;
+\nolinkurl{data_compra} & Pedidos entregues; denominador diferente de
+zero & Análises 01 e 07 & Mede composição do valor cobrado, não
+eficiência ou custo logístico. \\
+FIN08 & \textbf{Crescimento mensal do valor dos itens} --- comparar
+evolução mensal &
+\nolinkurl{100 × (valor_itens_mês / valor_itens_mês_anterior - 1)};
+percentual & Mês de compra & Mês atual e anterior devem possuir
+cobertura diária completa; pedidos entregues com itens e pagamentos &
+\nolinkurl{queries/analysis/01_evolucao_financeira_mensal.sql} & Meses
+parciais retornam nulo; variação não explica causa. \\
+FIN09 & \textbf{Taxa de cancelamento por quantidade} --- medir
+participação de pedidos cancelados &
+\nolinkurl{100 × pedidos_cancelados / todos_pedidos}; percentual &
+Pedido, com saída mensal ou histórica; \nolinkurl{data_compra} & Todos
+os status no denominador; \nolinkurl{canceled} no numerador &
+\nolinkurl{core.pedido.status_pedido}; análise 08 & Mede registros
+cancelados na base, não probabilidade futura. Meses parciais devem ser
+sinalizados. \\
+FIN10 & \textbf{Valores associados a pedidos cancelados} --- dimensionar
+registros financeiros presentes & Somas separadas de itens, frete, bruto
+e pagamento; BRL & Itens e pagamentos pré-agregados por pedido; saída
+mensal ou histórica & Somente pedidos cancelados; ausências preservadas
+como cobertura &
+\nolinkurl{queries/analysis/08_metricas_cancelamento.sql} & Não
+representa perda, estorno ou receita cancelada; as representações não
+devem ser fundidas. \\
+\end{longtable}
+}
+
+\subsection{Métricas de
+vendedores}\label{docs__analytics__catalogo_metricas_analiticas.md__muxe9tricas-de-vendedores}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nome e finalidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fórmula e unidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Granularidade e tempo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Filtros e exclusões
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fontes e SQL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretação e limitações
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+VEN01 & \textbf{Vendedores ativos} --- medir a base com atividade
+observada & \nolinkurl{COUNT(DISTINCT id_vendedor)}; vendedores & Item,
+saída histórica ou por período; \nolinkurl{data_compra} & Ao menos um
+item em pedido entregue no período & \nolinkurl{core.item_pedido},
+\nolinkurl{core.pedido}; análises 02 e 07 & Atividade no dataset, não
+situação contratual ou operacional atual. \\
+VEN02 & \textbf{Valor dos itens por vendedor} --- medir contribuição
+comercial direta & \nolinkurl{SUM(preco_item)}; BRL/vendedor & Vendedor;
+histórica, período ou segmento; \nolinkurl{data_compra} & Itens de
+pedidos entregues & Análise 02 e consulta básica 07 & Diretamente
+atribuível ao vendedor; não é receita, lucro ou pagamento recebido. \\
+VEN03 & \textbf{Participação financeira do vendedor} --- medir
+relevância relativa &
+\nolinkurl{100 × valor_itens_vendedor / valor_itens_total}; percentual &
+Vendedor no mesmo período e população & Mesma base da VEN02; denominador
+diferente de zero &
+\nolinkurl{queries/analysis/02_concentracao_vendedores.sql} &
+Participação na base observada, não participação de mercado. \\
+VEN04 & \textbf{Participação acumulada dos maiores vendedores} --- medir
+concentração & Soma das participações ordenadas por valor; percentual
+Top 5, 10, 20 e 10\% da base & Ranking de vendedor por período & Mesma
+base da VEN02; desempate por \nolinkurl{id_vendedor} & Análises 02 e 07
+& Curva descritiva; classes ABC usam inicialmente 80\% e 95\%. \\
+VEN05 & \textbf{Pedidos com participação do vendedor} --- medir alcance
+em pedidos & \nolinkurl{COUNT(DISTINCT id_pedido)}; pedidos/vendedor &
+Vendedor; histórica ou por período; \nolinkurl{data_compra} & Pedidos
+entregues com item do vendedor & Consulta básica 07 & Em pedido
+multivendedor, cada vendedor recebe uma participação; a soma excede
+pedidos do marketplace. \\
+VEN06 & \textbf{Itens por vendedor} --- medir volume comercializado &
+\nolinkurl{COUNT(*)}; itens/vendedor & Vendedor; histórica ou por
+período; \nolinkurl{data_compra} & Itens de pedidos entregues & Consulta
+básica 07 & Mede linhas de item, não quantidade física além da
+representação da fonte. \\
+VEN07 & \textbf{Valor médio do vendedor por pedido com participação} ---
+medir contribuição média &
+\nolinkurl{valor_itens_vendedor / pedidos_distintos_com_participação};
+BRL/pedido participante & Vendedor; histórica ou por período;
+\nolinkurl{data_compra} & Mesma base da VEN02 & Consulta básica 07 &
+Considera somente a parcela de itens do vendedor; não é o valor total
+nem o pagamento do pedido. \\
+VEN08 & \textbf{Taxa de itens enviados após o limite} --- medir
+cumprimento do prazo diretamente relacionado ao item &
+\nolinkurl{100 × itens após data_limite_envio / itens com observação};
+percentual & Vendedor-item, consolidada por vendedor;
+\nolinkurl{data_compra} & Pedidos entregues; somente observações não
+nulas & \nolinkurl{core.item_pedido.data_limite_envio},
+\nolinkurl{core.pedido.data_envio_transportador};
+\nolinkurl{analytics.vw_desempenho_vendedor} & O envio é comparado ao
+limite de cada item; não confundir com a proporção de pares
+vendedor-pedido que possuem algum item fora do limite. \\
+VEN09 & \textbf{Taxa de pedidos atrasados associados ao vendedor} ---
+contextualizar risco de entrega &
+\nolinkurl{100 × pedidos entregues após estimativa / pedidos com datas};
+percentual & Vendedor-pedido; histórica ou por período;
+\nolinkurl{data_compra} & Pedidos entregues com datas de entrega e
+estimativa & \nolinkurl{core.pedido};
+\nolinkurl{queries/analysis/05_risco_operacional_vendedores.sql} &
+Atraso pertence ao pedido; usar ``associado'', sem atribuir
+responsabilidade ao vendedor. \\
+VEN10 & \textbf{Nota média associada ao vendedor} --- contextualizar
+experiência & Média da nota média pré-agregada por pedido; pontos de 1 a
+5 & Vendedor-pedido; histórica ou por período; \nolinkurl{data_compra} &
+Pedidos entregues com avaliação &
+\nolinkurl{core.avaliacao.nota_avaliacao}; análise 05 & Avaliação
+pertence ao pedido e pode envolver vários vendedores; não mede
+causalidade. \\
+\end{longtable}
+}
+
+\subsection{Resultados históricos de
+referência}\label{docs__analytics__catalogo_metricas_analiticas.md__resultados-histuxf3ricos-de-referuxeancia}
+
+Na base de 96.477 pedidos entregues com itens e pagamentos:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Métrica & Resultado \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FIN01 --- valor dos itens & R\$ 13.221.363,14 \\
+FIN02 --- valor de frete & R\$ 2.198.267,15 \\
+FIN03 --- valor bruto & R\$ 15.419.630,29 \\
+FIN04 --- valor pago registrado & R\$ 15.422.461,77 \\
+FIN05 --- diferença agregada & R\$ 2.831,48 \\
+FIN06 --- valor bruto médio por pedido & R\$ 159,83 \\
+FIN07 --- participação do frete & 14,26\% \\
+\end{longtable}
+}
+
+No histórico completo, 625 de 99.441 pedidos estão cancelados (FIN09:
+0,6285\%). Para esses pedidos, foram observados R\$ 95.235,27 em itens,
+R\$ 10.650,45 em frete, R\$ 105.885,72 em valor bruto e R\$ 143.255,60
+em pagamentos registrados. Há 164 cancelados sem itens e nenhum sem
+pagamento, o que impede tratar as representações como equivalentes.
+
+Para vendedores, foram observados 2.970 ativos. Os 5, 10 e 20 maiores
+representam, respectivamente, 7,71\%, 13,27\% e 21,28\% do valor dos
+itens; os 10\% maiores representam 67,11\%. Na granularidade de item, a
+taxa de envio após o limite é 9,32\%. Na granularidade vendedor-pedido,
+8,97\% das participações possuem ao menos um item fora do limite. A taxa
+de atraso associado é 8,02\% e a nota média associada é 4,14.
+
+\subsection{Validação e
+controles}\label{docs__analytics__catalogo_metricas_analiticas.md__validauxe7uxe3o-e-controles}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Risco
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Controle
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Resultado
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Multiplicação de itens e pagamentos &
+\nolinkurl{queries/validation/02_controle_join_itens_pagamentos.sql} & O
+join direto multiplica linhas e não pode sustentar somas. \\
+Diferenças entre bruto e pagamento &
+\nolinkurl{queries/validation/01_reconciliacao_financeira.sql} &
+Reconciliação preservada por pedido e classificada com tolerância de R\$
+0,01. \\
+Cobertura de itens e pagamentos &
+\nolinkurl{queries/validation/03_cobertura_relacoes_pedido.sql} &
+Exceções permanecem visíveis e determinam a população de cada
+métrica. \\
+Atribuição a vendedores &
+\nolinkurl{queries/validation/04_granularidade_vendedor.sql} & Itens e
+valor atribuído reconciliam sem diferença; participações adicionais
+refletem pedidos multivendedor. \\
+Requisitos e relações &
+\nolinkurl{queries/validation/05_cobertura_requisitos_funcionais.sql} &
+Cobertura e limitações das relações estão documentadas por requisito. \\
+\end{longtable}
+}
+
+\subsection{Decisões para ANALYTICS e
+BI}\label{docs__analytics__catalogo_metricas_analiticas.md__decisuxf5es-para-analytics-e-bi}
+
+\begin{itemize}
+\tightlist
+\item
+  A base financeira por pedido deve estabilizar as pré-agregações de
+  itens e pagamentos e informar flags de cobertura.
+\item
+  A estrutura de vendedor deve preservar as granularidades vendedor e
+  vendedor-pedido, sem repetir o pagamento integral.
+\item
+  Métricas mensais devem expor a completude da cobertura antes de
+  permitir comparação temporal.
+\item
+  Valores de pedidos cancelados devem permanecer em colunas separadas
+  por representação financeira.
+\item
+  Nomes de campos de BI devem incluir a medida-base e, para vendedor, o
+  termo \nolinkurl{associado} quando a informação pertencer ao pedido.
+\item
+  HHI e classe ABC são diagnósticos complementares à VEN04, não métricas
+  de mercado nem critérios regulatórios.
+\end{itemize}
+
+\section{Estruturas do schema
+ANALYTICS}\label{docs__analytics__estruturas_schema_analytics.md__estruturas-do-schema-analytics}
+
+\subsection{Finalidade}\label{docs__analytics__estruturas_schema_analytics.md__finalidade}
+
+As views do schema \nolinkurl{analytics} estabilizam combinações e
+regras recorrentes validadas nas etapas M06-01 a M06-04. Elas reduzem
+repetição, tornam explícita a granularidade de consumo e preservam
+rastreabilidade até a CORE.
+
+Não são cópias das tabelas de origem, não alteram a CORE e não
+materializam dados. A seleção final de campos, relacionamentos e visuais
+para Power BI pertence à etapa M06-06.
+
+\subsection{Mapa de
+dependências}\label{docs__analytics__estruturas_schema_analytics.md__mapa-de-dependuxeancias}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{core.pedido ─┬─ core.cliente}
+\NormalTok{             ├─ core.item\_pedido}
+\NormalTok{             ├─ core.pagamento}
+\NormalTok{             └─ core.avaliacao}
+\NormalTok{                      │}
+\NormalTok{                      ▼}
+\NormalTok{        analytics.vw\_pedido\_financeiro}
+\NormalTok{                      │}
+\NormalTok{                      ▼}
+\NormalTok{        analytics.vw\_financeiro\_mensal}
+
+\NormalTok{core.item\_pedido ─┬─ core.pedido ─ core.cliente}
+\NormalTok{                  ├─ core.vendedor}
+\NormalTok{                  └─ core.avaliacao}
+\NormalTok{                           │}
+\NormalTok{                           ▼}
+\NormalTok{           analytics.vw\_vendedor\_pedido}
+\NormalTok{                           │}
+\NormalTok{              core.produto ┤}
+\NormalTok{                           ▼}
+\NormalTok{        analytics.vw\_desempenho\_vendedor}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{\texorpdfstring{\nolinkurl{analytics.vw_pedido_financeiro}}{}}\label{docs__analytics__estruturas_schema_analytics.md__analytics.vw_pedido_financeiro}
+
+\textbf{Finalidade:} fornecer a base financeira e operacional
+reutilizável de pedido, evitando o join direto entre itens, pagamentos e
+avaliações.
+
+\textbf{Granularidade:} uma linha por \nolinkurl{id_pedido}, incluindo
+todos os status.
+
+\textbf{População observada:} 99.441 linhas, sem duplicação de pedido.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Grupo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Campos
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Definição
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Identidade & \nolinkurl{id_pedido}, \nolinkurl{id_cliente},
+\nolinkurl{id_cliente_unico} & Chaves do pedido e identidade persistente
+do cliente. \\
+Cliente & \nolinkurl{cidade_cliente}, \nolinkurl{estado_cliente} &
+Localização cadastral, não endereço exato da entrega. \\
+Pedido & \nolinkurl{status_pedido}, \nolinkurl{data_compra},
+\nolinkurl{mes_compra}, \nolinkurl{data_aprovacao},
+\nolinkurl{data_envio_transportador}, \nolinkurl{data_entrega},
+\nolinkurl{data_estimada} & Estado e marcos temporais preservados da
+CORE. \\
+Entrega & \nolinkurl{entrega_atrasada} &
+\nolinkurl{data_entrega > data_estimada}; nulo quando não calculável. \\
+Cobertura & \nolinkurl{possui_itens}, \nolinkurl{possui_pagamentos},
+\nolinkurl{possui_avaliacao} & Flags que impedem interpretar ausência
+como valor zero. \\
+Itens & \nolinkurl{quantidade_itens}, \nolinkurl{quantidade_vendedores},
+\nolinkurl{valor_itens}, \nolinkurl{valor_frete},
+\nolinkurl{valor_bruto} & Itens pré-agregados por pedido; valores ficam
+nulos quando não há item. \\
+Pagamentos & \nolinkurl{quantidade_pagamentos},
+\nolinkurl{quantidade_tipos_pagamento}, \nolinkurl{maximo_parcelas},
+\nolinkurl{valor_pago_registrado} & Sequências pré-agregadas por pedido;
+valores ficam nulos quando não há pagamento. \\
+Reconciliação & \nolinkurl{diferenca_reconciliacao} & Pagamento menos
+bruto, somente quando ambas as relações existem. \\
+Avaliação & \nolinkurl{quantidade_avaliacoes},
+\nolinkurl{nota_media_pedido} & Avaliações pré-agregadas por pedido. \\
+\end{longtable}
+}
+
+\subsection{\texorpdfstring{\nolinkurl{analytics.vw_financeiro_mensal}}{}}\label{docs__analytics__estruturas_schema_analytics.md__analytics.vw_financeiro_mensal}
+
+\textbf{Finalidade:} disponibilizar os KPIs financeiros recorrentes por
+mês de compra, incluindo cobertura temporal e cancelamentos.
+
+\textbf{Granularidade:} uma linha por \nolinkurl{mes_compra}.
+
+\textbf{População observada:} 25 meses.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Grupo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Campos
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Definição
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Tempo & \nolinkurl{mes_compra}, \nolinkurl{cobertura_diaria_completa} &
+Mês de compra e sinalização de presença de pedidos em todos os dias do
+mês. \\
+Pedidos & \nolinkurl{pedidos}, \nolinkurl{pedidos_entregues},
+\nolinkurl{pedidos_entregues_completos}, \nolinkurl{pedidos_cancelados}
+& Volumes total, entregue, entregue com itens e pagamentos, e
+cancelado. \\
+Cancelamento & \nolinkurl{taxa_cancelamento_quantidade_percentual} &
+Cancelados divididos por todos os pedidos do mês. \\
+Financeiro entregue & \nolinkurl{valor_itens_entregues},
+\nolinkurl{valor_frete_entregue}, \nolinkurl{valor_bruto_entregue},
+\nolinkurl{valor_pago_registrado_entregue} & Somas sobre pedidos
+entregues com itens e pagamentos. \\
+Reconciliação & \nolinkurl{diferenca_reconciliacao_entregue} & Soma das
+diferenças por pedido; não substitui o controle individual. \\
+Médias e composição & \nolinkurl{valor_bruto_medio_pedido_entregue},
+\nolinkurl{participacao_frete_percentual} & Média explícita do bruto e
+participação do frete. \\
+Evolução & \nolinkurl{crescimento_mensal_valor_itens_percentual} &
+Calculado apenas quando mês atual e anterior têm cobertura diária
+completa. \\
+Cancelados & \nolinkurl{valor_itens_associado_cancelados},
+\nolinkurl{valor_frete_associado_cancelados},
+\nolinkurl{valor_bruto_associado_cancelados},
+\nolinkurl{valor_pago_registrado_associado_cancelados} & Representações
+separadas; não significam perda ou estorno. \\
+\end{longtable}
+}
+
+\subsection{\texorpdfstring{\nolinkurl{analytics.vw_vendedor_pedido}}{}}\label{docs__analytics__estruturas_schema_analytics.md__analytics.vw_vendedor_pedido}
+
+\textbf{Finalidade:} estabilizar a combinação entre contribuição direta
+do vendedor e informações apenas associadas ao pedido.
+
+\textbf{Granularidade:} uma linha por par \nolinkurl{id_vendedor},
+\nolinkurl{id_pedido}, somente para pedidos entregues.
+
+\textbf{População observada:} 97.819 linhas.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Grupo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Campos
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Definição
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Identidade e tempo & \nolinkurl{id_vendedor}, \nolinkurl{id_pedido},
+\nolinkurl{data_compra}, \nolinkurl{mes_compra} & Participação do
+vendedor no pedido e referência temporal. \\
+Geografia & \nolinkurl{cidade_vendedor}, \nolinkurl{estado_vendedor},
+\nolinkurl{cidade_cliente}, \nolinkurl{estado_cliente} & Origem
+cadastral do vendedor e destino cadastral do cliente. \\
+Itens diretos & \nolinkurl{quantidade_itens}, \nolinkurl{valor_itens},
+\nolinkurl{valor_frete}, \nolinkurl{valor_bruto} & Medidas diretamente
+atribuíveis aos itens do vendedor. \\
+Envio direto & \nolinkurl{itens_com_envio_observado},
+\nolinkurl{itens_enviados_apos_limite},
+\nolinkurl{possui_item_enviado_apos_limite} & Contagens por item e flag
+de presença no par vendedor-pedido. \\
+Pedido associado & \nolinkurl{entrega_atrasada_associada},
+\nolinkurl{nota_media_associada} & Entrega final e avaliação pertencem
+ao pedido; não atribuem responsabilidade. \\
+\end{longtable}
+}
+
+\subsection{\texorpdfstring{\nolinkurl{analytics.vw_desempenho_vendedor}}{}}\label{docs__analytics__estruturas_schema_analytics.md__analytics.vw_desempenho_vendedor}
+
+\textbf{Finalidade:} fornecer uma visão histórica consolidada de
+contribuição, concentração, alcance e qualidade associada dos
+vendedores.
+
+\textbf{Granularidade:} uma linha por vendedor com item em pedido
+entregue.
+
+\textbf{População observada:} 2.970 linhas.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Grupo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Campos
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Definição
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Identidade & \nolinkurl{id_vendedor}, \nolinkurl{cidade_vendedor},
+\nolinkurl{estado_vendedor} & Vendedor e localização cadastral de
+origem. \\
+Ranking & \nolinkurl{posicao_valor_itens},
+\nolinkurl{participacao_valor_itens_percentual},
+\nolinkurl{participacao_acumulada_percentual}, \nolinkurl{classe_abc},
+\nolinkurl{hhi_base_observada} & Concentração interna da base; não
+representa mercado ou avaliação regulatória. \\
+Volumes e valores & \nolinkurl{pedidos_com_participacao},
+\nolinkurl{quantidade_itens}, \nolinkurl{valor_itens},
+\nolinkurl{valor_frete}, \nolinkurl{valor_bruto} & Contribuição direta
+histórica em pedidos entregues. \\
+Médias & \nolinkurl{valor_medio_por_item},
+\nolinkurl{valor_medio_por_pedido_com_participacao} & Médias com
+numerador e denominador explícitos. \\
+Diversidade e alcance & \nolinkurl{categorias_comercializadas},
+\nolinkurl{estados_clientes_atendidos},
+\nolinkurl{cidades_clientes_atendidas} & Diversidade e alcance
+observados, não cobertura comercial formal. \\
+Envio & \nolinkurl{itens_com_envio_observado},
+\nolinkurl{itens_enviados_apos_limite},
+\nolinkurl{taxa_itens_enviados_apos_limite_percentual} & VEN08 na
+granularidade correta de item. \\
+Entrega associada & \nolinkurl{pedidos_com_prazo_entrega_observado},
+\nolinkurl{pedidos_atrasados_associados},
+\nolinkurl{taxa_pedidos_atrasados_associados_percentual} & Atraso final
+associado à participação do vendedor. \\
+Avaliação associada & \nolinkurl{pedidos_com_avaliacao_associada},
+\nolinkurl{nota_media_associada},
+\nolinkurl{pedidos_com_avaliacao_negativa_associada},
+\nolinkurl{taxa_avaliacao_negativa_associada_percentual} & Avaliações do
+pedido, sem atribuição causal ao vendedor. \\
+\end{longtable}
+}
+
+\subsection{Instalação e
+validação}\label{docs__analytics__estruturas_schema_analytics.md__instalauxe7uxe3o-e-validauxe7uxe3o}
+
+O \nolinkurl{database.setup} executa as views na ordem numérica de
+dependência e valida a existência das quatro estruturas com
+\nolinkurl{models/analytics/validate_views.sql}.
+
+Após a carga, \nolinkurl{queries/validation/06_views_analytics.sql}
+compara as granularidades e os valores atribuídos aos vendedores contra
+a CORE. Na carga aprovada, todas as diferenças de contagem e valor
+resultaram em zero.
+
+As views são normais, não materializadas. Essa decisão evita duplicar
+dados e criar política de atualização antes de existir evidência de
+necessidade de desempenho. Materialização ou índices específicos
+exigirão medição própria.
+
+\subsection{Decisões e
+limitações}\label{docs__analytics__estruturas_schema_analytics.md__decisuxf5es-e-limitauxe7uxf5es}
+
+\begin{itemize}
+\tightlist
+\item
+  Valores nulos em relações ausentes são preservados; contagens usam
+  zero.
+\item
+  Pagamentos não são alocados aos vendedores.
+\item
+  A visão mensal principal compara itens e pagamentos somente na
+  população entregue que possui ambas as relações.
+\item
+  O crescimento mensal permanece nulo em comparações com cobertura
+  parcial.
+\item
+  A taxa VEN08 é calculada por item (9,32\%). O indicador exploratório
+  anterior de 8,97\% representa pares vendedor-pedido com algum item
+  fora do limite.
+\item
+  As estruturas são adequadas ao consumo SQL recorrente. O contrato
+  final de importação, relacionamentos e medidas do Power BI está
+  documentado em
+  \href{consumo_power_bi_sql.md}{\nolinkurl{consumo_power_bi_sql.md}}.
+\end{itemize}
+
+\section{Contrato de consumo no Power BI e
+SQL}\label{docs__analytics__consumo_power_bi_sql.md__contrato-de-consumo-no-power-bi-e-sql}
+
+\subsection{Objetivo}\label{docs__analytics__consumo_power_bi_sql.md__objetivo}
+
+Este documento consolida o contrato de consumo da M06-06. Ele organiza
+as views aprovadas do schema \nolinkurl{analytics} como datasets para
+exploração SQL e construção futura de um modelo semântico no Power BI,
+sem copiar dados da CORE nem criar novas estruturas sem necessidade
+demonstrada.
+
+O contrato cobre nomes, granularidades, chaves, relacionamentos,
+medidas, filtros, atualização, controles e limitações. A criação de um
+arquivo \nolinkurl{.pbix}, de páginas ou de visuais não faz parte desta
+entrega.
+
+\subsection{Decisão de
+arquitetura}\label{docs__analytics__consumo_power_bi_sql.md__decisuxe3o-de-arquitetura}
+
+As quatro views criadas na M06-05 já estabilizam as regras recorrentes e
+são as fontes canônicas de consumo. A M06-06 não cria marts adicionais
+porque:
+
+\begin{itemize}
+\tightlist
+\item
+  as granularidades de pedido, mês, vendedor-pedido e vendedor já estão
+  explícitas;
+\item
+  as combinações de itens, pagamentos e avaliações já são protegidas
+  contra multiplicação de medidas;
+\item
+  não existe evidência de requisito de desempenho que justifique
+  materialização;
+\item
+  novas cópias aumentariam o risco de divergência sem acrescentar
+  semântica.
+\end{itemize}
+
+Para exportações controladas, \nolinkurl{queries/consumption/} expõe
+listas explícitas de colunas. Consumidores com acesso direto ao
+PostgreSQL podem consultar as views ou usar essas consultas como
+instruções SQL no conector.
+
+\subsection{Datasets}\label{docs__analytics__consumo_power_bi_sql.md__datasets}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Nome recomendado no BI
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fonte canônica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Granularidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Chave
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Uso principal
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\nolinkurl{fato_pedido_financeiro} &
+\nolinkurl{analytics.vw_pedido_financeiro} & Um pedido, incluindo todos
+os status & \nolinkurl{id_pedido} & Detalhe financeiro, operacional e
+reconciliação \\
+\nolinkurl{agregado_financeiro_mensal} &
+\nolinkurl{analytics.vw_financeiro_mensal} & Um mês de compra &
+\nolinkurl{mes_compra} & Série executiva pronta para SQL e controles
+mensais \\
+\nolinkurl{fato_vendedor_pedido} &
+\nolinkurl{analytics.vw_vendedor_pedido} & Um vendedor em um pedido
+entregue & \nolinkurl{id_vendedor}, \nolinkurl{id_pedido} & Evolução,
+alcance e risco associado ao vendedor \\
+\nolinkurl{resumo_desempenho_vendedor} &
+\nolinkurl{analytics.vw_desempenho_vendedor} & Um vendedor ativo no
+histórico entregue & \nolinkurl{id_vendedor} & Ranking, curva ABC e
+perfil histórico \\
+\end{longtable}
+}
+
+Os valores de \nolinkurl{fato_vendedor_pedido} são contribuições diretas
+dos itens do vendedor. Entrega e avaliação são apenas associadas ao
+pedido. Pagamentos não são alocados ao vendedor.
+
+\subsection{Perfil recomendado de
+importação}\label{docs__analytics__consumo_power_bi_sql.md__perfil-recomendado-de-importauxe7uxe3o}
+
+\subsubsection{Modelo semântico
+principal}\label{docs__analytics__consumo_power_bi_sql.md__modelo-semuxe2ntico-principal}
+
+Importar:
+
+\begin{itemize}
+\tightlist
+\item
+  \nolinkurl{fato_pedido_financeiro} para análises financeiras e
+  operacionais;
+\item
+  \nolinkurl{fato_vendedor_pedido} para análises temporais de
+  vendedores;
+\item
+  \nolinkurl{resumo_desempenho_vendedor} para ranking e segmentação
+  histórica.
+\end{itemize}
+
+Criar no Power BI uma dimensão calendário contínua entre as datas mínima
+e máxima de compra. A coluna de data deve ser relacionada, com direção
+única, a \nolinkurl{data_compra} das duas tabelas fato. Para uso mensal,
+a dimensão deve expor ano, mês, número do mês e uma chave
+\nolinkurl{AAAA-MM} com ordenação cronológica.
+
+Relacionamento permitido:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dim\_calendario[data]}
+\NormalTok{    1 ─── * fato\_pedido\_financeiro[data\_compra\_data]}
+\NormalTok{    1 ─── * fato\_vendedor\_pedido[data\_compra\_data]}
+
+\NormalTok{resumo\_desempenho\_vendedor[id\_vendedor]}
+\NormalTok{    1 ─── * fato\_vendedor\_pedido[id\_vendedor]}
+\end{Highlighting}
+\end{Shaded}
+
+\nolinkurl{data_compra_data} representa uma coluna derivada somente com
+a data de \nolinkurl{data_compra}. O filtro deve fluir da dimensão para
+os fatos. Não usar direção bidirecional como configuração padrão.
+
+\subsubsection{Agregado
+mensal}\label{docs__analytics__consumo_power_bi_sql.md__agregado-mensal}
+
+\nolinkurl{agregado_financeiro_mensal} é opcional no modelo Power BI.
+Ele é recomendado para consulta SQL direta, validação e protótipos
+executivos. Quando importado no mesmo modelo, deve permanecer separado
+ou ser relacionado por uma dimensão de mês com chave única.
+
+Não somar suas medidas com medidas calculadas a partir de
+\nolinkurl{fato_pedido_financeiro}; ambas representam o mesmo domínio em
+granularidades diferentes.
+
+\subsubsection{Relacionamentos
+proibidos}\label{docs__analytics__consumo_power_bi_sql.md__relacionamentos-proibidos}
+
+\begin{itemize}
+\tightlist
+\item
+  não relacionar diretamente \nolinkurl{fato_pedido_financeiro} e
+  \nolinkurl{fato_vendedor_pedido} por \nolinkurl{id_pedido} para
+  calcular valores financeiros;
+\item
+  não usar \nolinkurl{id_cliente} como dimensão persistente de pessoa; a
+  identidade recorrente disponível é \nolinkurl{id_cliente_unico};
+\item
+  não combinar as tabelas por cidade sem estado;
+\item
+  não expandir geolocalização por prefixo de CEP, pois ela possui
+  múltiplas ocorrências e multiplicaria linhas.
+\end{itemize}
+
+\subsection{Propriedade das
+medidas}\label{docs__analytics__consumo_power_bi_sql.md__propriedade-das-medidas}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Tema
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dataset proprietário
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Regra
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Valores e contagens de pedido & \nolinkurl{fato_pedido_financeiro} &
+Agregar uma vez por \nolinkurl{id_pedido} \\
+Evolução financeira pronta & \nolinkurl{agregado_financeiro_mensal} &
+Usar somente como agregado mensal \\
+Valores e volumes do vendedor & \nolinkurl{fato_vendedor_pedido} & Somar
+contribuições diretas do vendedor \\
+Ranking e concentração histórica &
+\nolinkurl{resumo_desempenho_vendedor} & Não recalcular como série
+temporal \\
+Pagamentos & \nolinkurl{fato_pedido_financeiro} & Nunca atribuir
+integralmente ao vendedor \\
+Entrega e avaliação por vendedor & \nolinkurl{fato_vendedor_pedido} &
+Nomear como informação associada \\
+\end{longtable}
+}
+
+Medidas de pedido devem ser calculadas em
+\nolinkurl{fato_pedido_financeiro}; medidas de vendedor devem ser
+calculadas em \nolinkurl{fato_vendedor_pedido}. Essa separação evita que
+um pedido multivendedor repita valor bruto, pagamento ou avaliação.
+
+\subsection{Medidas mínimas no Power
+BI}\label{docs__analytics__consumo_power_bi_sql.md__medidas-muxednimas-no-power-bi}
+
+As medidas abaixo são referências para o modelo semântico. Os
+percentuais são razões e devem receber formatação percentual no Power
+BI, sem multiplicação adicional por 100.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Pedidos =}
+\NormalTok{DISTINCTCOUNT ( fato\_pedido\_financeiro[id\_pedido] )}
+
+\NormalTok{Pedidos Entregues =}
+\NormalTok{CALCULATE (}
+\NormalTok{    [Pedidos],}
+\NormalTok{    fato\_pedido\_financeiro[status\_pedido] = "delivered"}
+\NormalTok{)}
+
+\NormalTok{Pedidos Entregues Completos =}
+\NormalTok{CALCULATE (}
+\NormalTok{    [Pedidos Entregues],}
+\NormalTok{    fato\_pedido\_financeiro[possui\_itens] = TRUE (),}
+\NormalTok{    fato\_pedido\_financeiro[possui\_pagamentos] = TRUE ()}
+\NormalTok{)}
+
+\NormalTok{Valor dos Itens Entregues =}
+\NormalTok{CALCULATE (}
+\NormalTok{    SUM ( fato\_pedido\_financeiro[valor\_itens] ),}
+\NormalTok{    fato\_pedido\_financeiro[status\_pedido] = "delivered",}
+\NormalTok{    fato\_pedido\_financeiro[possui\_itens] = TRUE (),}
+\NormalTok{    fato\_pedido\_financeiro[possui\_pagamentos] = TRUE ()}
+\NormalTok{)}
+
+\NormalTok{Valor Bruto Entregue =}
+\NormalTok{CALCULATE (}
+\NormalTok{    SUM ( fato\_pedido\_financeiro[valor\_bruto] ),}
+\NormalTok{    fato\_pedido\_financeiro[status\_pedido] = "delivered",}
+\NormalTok{    fato\_pedido\_financeiro[possui\_itens] = TRUE (),}
+\NormalTok{    fato\_pedido\_financeiro[possui\_pagamentos] = TRUE ()}
+\NormalTok{)}
+
+\NormalTok{Valor Pago Registrado Entregue =}
+\NormalTok{CALCULATE (}
+\NormalTok{    SUM ( fato\_pedido\_financeiro[valor\_pago\_registrado] ),}
+\NormalTok{    fato\_pedido\_financeiro[status\_pedido] = "delivered",}
+\NormalTok{    fato\_pedido\_financeiro[possui\_itens] = TRUE (),}
+\NormalTok{    fato\_pedido\_financeiro[possui\_pagamentos] = TRUE ()}
+\NormalTok{)}
+
+\NormalTok{Diferença de Reconciliação Entregue =}
+\NormalTok{[Valor Pago Registrado Entregue] {-} [Valor Bruto Entregue]}
+
+\NormalTok{Valor Bruto Médio por Pedido Entregue =}
+\NormalTok{DIVIDE (}
+\NormalTok{    [Valor Bruto Entregue],}
+\NormalTok{    [Pedidos Entregues Completos]}
+\NormalTok{)}
+
+\NormalTok{Participação do Frete =}
+\NormalTok{DIVIDE (}
+\NormalTok{    CALCULATE (}
+\NormalTok{        SUM ( fato\_pedido\_financeiro[valor\_frete] ),}
+\NormalTok{        fato\_pedido\_financeiro[status\_pedido] = "delivered",}
+\NormalTok{        fato\_pedido\_financeiro[possui\_itens] = TRUE (),}
+\NormalTok{        fato\_pedido\_financeiro[possui\_pagamentos] = TRUE ()}
+\NormalTok{    ),}
+\NormalTok{    [Valor Bruto Entregue]}
+\NormalTok{)}
+
+\NormalTok{Taxa de Cancelamento =}
+\NormalTok{VAR PedidosCancelados =}
+\NormalTok{    CALCULATE (}
+\NormalTok{        [Pedidos],}
+\NormalTok{        REMOVEFILTERS ( fato\_pedido\_financeiro[status\_pedido] ),}
+\NormalTok{        fato\_pedido\_financeiro[status\_pedido] = "canceled"}
+\NormalTok{    )}
+\NormalTok{VAR TodosPedidos =}
+\NormalTok{    CALCULATE (}
+\NormalTok{        [Pedidos],}
+\NormalTok{        REMOVEFILTERS ( fato\_pedido\_financeiro[status\_pedido] )}
+\NormalTok{    )}
+\NormalTok{RETURN}
+\NormalTok{    DIVIDE ( PedidosCancelados, TodosPedidos )}
+
+\NormalTok{Valor dos Itens por Vendedor =}
+\NormalTok{SUM ( fato\_vendedor\_pedido[valor\_itens] )}
+
+\NormalTok{Taxa de Itens Enviados Após o Limite =}
+\NormalTok{DIVIDE (}
+\NormalTok{    SUM ( fato\_vendedor\_pedido[itens\_enviados\_apos\_limite] ),}
+\NormalTok{    SUM ( fato\_vendedor\_pedido[itens\_com\_envio\_observado] )}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+O crescimento mensal deve ser calculado apenas entre meses de cobertura
+diária completa. A definição canônica já está em
+\nolinkurl{agregado_financeiro_mensal[crescimento_mensal_valor_itens_percentual]};
+reimplementações em DAX devem reproduzir essa condição.
+
+\subsection{Tipos e
+formatação}\label{docs__analytics__consumo_power_bi_sql.md__tipos-e-formatauxe7uxe3o}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Grupo & Tratamento recomendado \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Identificadores & Texto; nunca resumir \\
+Datas e timestamps & Data ou data/hora conforme a coluna original \\
+Valores monetários & Número decimal fixo, moeda BRL \\
+Contagens & Número inteiro \\
+Flags & Booleano \\
+Taxas das views & Número decimal já expresso em pontos percentuais \\
+Taxas DAX com \nolinkurl{DIVIDE} & Número decimal formatado como
+percentual \\
+Notas & Número decimal, sem formatação percentual \\
+\end{longtable}
+}
+
+As colunas percentuais das views SQL já estão multiplicadas por 100. Por
+exemplo, \nolinkurl{9.32} significa \nolinkurl{9,32%}. Medidas DAX
+baseadas em \nolinkurl{DIVIDE} retornam \nolinkurl{0.0932} e devem
+apenas receber o formato percentual.
+
+\subsection{Filtros e
+interpretação}\label{docs__analytics__consumo_power_bi_sql.md__filtros-e-interpretauxe7uxe3o}
+
+\begin{itemize}
+\tightlist
+\item
+  a data principal é \nolinkurl{data_compra};
+\item
+  a visão financeira principal usa pedidos \nolinkurl{delivered} com
+  itens e pagamentos;
+\item
+  meses sem cobertura diária completa não sustentam comparações de
+  crescimento;
+\item
+  valores associados a cancelados não representam perda, estorno ou
+  receita;
+\item
+  \nolinkurl{cidade_cliente} e \nolinkurl{estado_cliente} representam
+  localização cadastral, não o endereço exato da entrega;
+\item
+  alcance geográfico é observado na base, não cobertura comercial
+  formal;
+\item
+  atraso e avaliação associados ao vendedor não demonstram
+  responsabilidade ou causalidade;
+\item
+  HHI e participação representam somente a base histórica observada.
+\end{itemize}
+
+\subsection{Atualização e
+segurança}\label{docs__analytics__consumo_power_bi_sql.md__atualizauxe7uxe3o-e-seguranuxe7a}
+
+As views são normais e refletem o estado corrente da CORE. A sequência
+de atualização é:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CSV → RAW → CORE → validações do ELT → views ANALYTICS → atualização do BI}
+\end{Highlighting}
+\end{Shaded}
+
+O Power BI deve usar uma credencial PostgreSQL de leitura com acesso
+apenas aos objetos necessários. \nolinkurl{DATABASE_URL}, senhas e
+arquivos locais não devem ser incorporados ao repositório ou às
+consultas versionadas.
+
+O modo \textbf{Importação} é o padrão recomendado para esta base
+histórica. O uso de DirectQuery, atualização incremental, agregações
+automáticas ou views materializadas depende de medição de desempenho e
+de um requisito operacional futuro.
+
+\subsection{Controles antes da
+publicação}\label{docs__analytics__consumo_power_bi_sql.md__controles-antes-da-publicauxe7uxe3o}
+
+Antes de atualizar ou publicar um modelo semântico:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  executar o ELT e a validação independente;
+\item
+  executar \nolinkurl{queries/validation/06_views_analytics.sql};
+\item
+  confirmar unicidade de \nolinkurl{id_pedido}, \nolinkurl{mes_compra} e
+  \nolinkurl{id_vendedor} nas fontes correspondentes;
+\item
+  confirmar unicidade do par \nolinkurl{id_vendedor},
+  \nolinkurl{id_pedido};
+\item
+  comparar totais financeiros do BI com
+  \nolinkurl{vw_financeiro_mensal};
+\item
+  verificar tipos, formatos, direção de filtros e relacionamentos
+  ativos;
+\item
+  registrar data da atualização e período coberto.
+\end{enumerate}
+
+\subsection{Limitações e
+evolução}\label{docs__analytics__consumo_power_bi_sql.md__limitauxe7uxf5es-e-evoluuxe7uxe3o}
+
+Este contrato prepara o consumo, mas não entrega monitoramento em tempo
+real, governança de workspace, gateway, política de acesso, atualização
+agendada ou design visual. Esses elementos dependem do ambiente Power BI
+de destino.
+
+Também não há evidência atual para materializar views ou criar índices
+específicos. Qualquer evolução deve partir de medição reproduzível e
+preservar a rastreabilidade até as tabelas CORE.
+
+\end{document}
