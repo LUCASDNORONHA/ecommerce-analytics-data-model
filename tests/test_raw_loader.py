@@ -27,7 +27,7 @@ class SourceValidationTests(unittest.TestCase):
     def test_validates_utf8_bom_and_counts_rows(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / self.contract.filename
-            path.write_text("\ufeffid,value\r\n1,a\r\n2,b\r\n", encoding="utf-8")
+            path.write_bytes(b"\xef\xbb\xbfid,value\r\n1,a\r\n2,b\r\n")
 
             profile = validate_source(path, self.contract)
 
@@ -216,7 +216,7 @@ class TransactionTests(unittest.TestCase):
             data_dir = root / "data"
             data_dir.mkdir()
             source_path = data_dir / "source.csv"
-            source_path.write_text("id,value\n1,a\n2,\n", encoding="utf-8")
+            source_path.write_bytes(b"id,value\n1,a\n2,\n")
             contract = SourceContract("source.csv", "source_table", ("id", "value"))
             settings = LoadSettings(
                 repository_root=root,
