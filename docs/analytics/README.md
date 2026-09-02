@@ -5,6 +5,10 @@ premissas, limitações e matrizes de rastreabilidade.
 
 ## Artefatos
 
+- [`camada_analitica.tex`](camada_analitica.tex) e
+  [`camada_analitica.pdf`](camada_analitica.pdf): documentação consolidada da
+  camada analítica, reunindo os artefatos Markdown abaixo em um único documento.
+
 - [`contrato_analitico.md`](contrato_analitico.md): problema de negócio,
   stakeholders, demandas, casos de uso, catálogo preliminar de indicadores,
   regras semânticas e limitações da camada analítica.
