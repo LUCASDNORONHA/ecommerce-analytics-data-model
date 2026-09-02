@@ -21,3 +21,6 @@ premissas, limitações e matrizes de rastreabilidade.
   financeiras e de vendedores consolidadas na etapa M06-04.
 - [`estruturas_schema_analytics.md`](estruturas_schema_analytics.md): finalidade,
   granularidade, campos, dependências e validação das views criadas na M06-05.
+- [`consumo_power_bi_sql.md`](consumo_power_bi_sql.md): contrato de datasets,
+  relacionamentos, medidas, atualização e controles para consumo no Power BI e
+  por SQL, consolidado na M06-06.
