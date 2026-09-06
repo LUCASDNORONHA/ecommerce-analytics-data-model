@@ -166,17 +166,15 @@ ANALYTICS}\label{docs__analytics__contrato_analitico.md__contrato-analuxedtico-d
 
 \subsection{Finalidade}\label{docs__analytics__contrato_analitico.md__finalidade}
 
-Este documento define o problema de negócio, os stakeholders, as
-decisões, as demandas, os casos de uso e o catálogo preliminar de
-indicadores que orientam a fase M06 --- Camada Analítica e Extração de
-Inteligência.
+Este documento consolida o problema de negócio, os stakeholders, as
+decisões, as demandas, os casos de uso e o catálogo de indicadores que
+orientaram a fase M06 --- Camada Analítica e Extração de Inteligência.
 
-O contrato antecede a implementação das consultas e estruturas
-analíticas. Ele deve orientar a exploração da CORE sem transformar as
-issues da fase em uma sequência mecânica. Exploração, validação de
-requisitos e definição de métricas podem se retroalimentar, desde que
-alterações sejam sustentadas por evidência e registradas de forma
-rastreável.
+O contrato antecedeu e orientou a implementação das consultas e
+estruturas analíticas, sem transformar as issues da fase em uma sequência
+mecânica. Exploração, validação de requisitos e definição de métricas se
+retroalimentaram, com alterações sustentadas por evidência e registradas
+de forma rastreável.
 
 \subsection{Natureza do
 cenário}\label{docs__analytics__contrato_analitico.md__natureza-do-cenuxe1rio}
@@ -193,11 +191,12 @@ atual da Olist nem como representação de sua estrutura real de gestão.
 \subsection{Cenário e problema de
 negócio}\label{docs__analytics__contrato_analitico.md__cenuxe1rio-e-problema-de-neguxf3cio}
 
-Uma empresa operadora de marketplace precisa compreender seu desempenho
-histórico para orientar decisões financeiras, comerciais e operacionais.
-Embora possua dados integrados sobre pedidos, clientes, itens, produtos,
-vendedores, pagamentos, avaliações e entregas, ainda não dispõe de uma
-visão analítica consolidada e rastreável.
+O cenário analítico partiu de uma empresa operadora de marketplace que
+precisava compreender seu desempenho histórico para orientar decisões
+financeiras, comerciais e operacionais. Embora possuísse dados integrados
+sobre pedidos, clientes, itens, produtos, vendedores, pagamentos,
+avaliações e entregas, ainda não dispunha de uma visão analítica
+consolidada e rastreável.
 
 O problema de negócio adotado é:
 
@@ -726,9 +725,10 @@ KPIs}\label{docs__analytics__contrato_analitico.md__catuxe1logo-muxednimo-de-kpi
   Nota média dos pedidos associados ao vendedor.
 \end{enumerate}
 
-O catálogo é preliminar. A exploração deve validar disponibilidade,
-qualidade, distribuição e utilidade antes de promover uma métrica a
-estrutura persistente ou KPI de consumo.
+Esta lista registra a formulação preliminar que orientou a exploração. A
+disponibilidade, a qualidade, a distribuição e a utilidade foram
+validadas antes da consolidação das métricas e estruturas de consumo nas
+seções seguintes.
 
 \subsection{Limitações}\label{docs__analytics__contrato_analitico.md__limitauxe7uxf5es}
 
@@ -859,7 +859,7 @@ Demanda deste contrato
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Requisito existente
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Evidência futura
+Evidência produzida
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
@@ -872,8 +872,7 @@ catálogo de vendedores \\
 Formas, valores e condições de pagamento & RF06 & Análise de pagamentos
 e parcelamento \\
 Análises geográficas & RF09 & Recortes de origem e alcance \\
-Consumo por BI & RF12 & Views, marts ou consultas de exportação
-justificadas \\
+Consumo por BI & RF12 & Views e consultas de exportação versionadas \\
 Preservação de granularidade & Regra aprovada de joins analíticos &
 Consultas de controle e validação \\
 \end{longtable}
@@ -885,26 +884,25 @@ M06}\label{docs__analytics__contrato_analitico.md__impacto-no-fluxo-m06}
 \begin{itemize}
 \tightlist
 \item
-  M06-01 deve explorar a CORE a partir das perguntas priorizadas neste
-  contrato.
+  M06-01 explorou a CORE a partir das perguntas priorizadas neste
+  contrato;
 \item
-  M06-02 deve combinar entidades para responder aos casos de uso
-  aprovados.
+  M06-02 combinou entidades para responder aos casos de uso aprovados;
 \item
-  M06-03 deve validar a cobertura dos requisitos e registrar evidências.
+  M06-03 validou a cobertura dos requisitos e registrou evidências;
 \item
-  M06-04 deve validar e consolidar o catálogo preliminar de métricas.
+  M06-04 validou e consolidou o catálogo preliminar de métricas;
 \item
-  M06-05 deve persistir somente regras reutilizáveis e semanticamente
-  estáveis.
+  M06-05 persistiu somente regras reutilizáveis e semanticamente
+  estáveis;
 \item
-  M06-06 deve preparar datasets com nomes, granularidade e métricas
+  M06-06 preparou datasets com nomes, granularidade e métricas
   explícitos.
 \end{itemize}
 
-O contrato pode ser refinado durante essas entregas. Qualquer mudança
-deve registrar a evidência, a decisão e o impacto sobre consultas,
-métricas e estruturas já produzidas.
+O contrato foi refinado durante essas entregas. As mudanças registram a
+evidência, a decisão e o impacto sobre consultas, métricas e estruturas
+produzidas.
 
 \section{Evidências das consultas básicas sobre a
 CORE}\label{docs__analytics__evidencias_consultas_basicas_core.md__eviduxeancias-das-consultas-buxe1sicas-sobre-a-core}
@@ -1330,8 +1328,8 @@ O estado e a cidade do cliente representam seu cadastro, não o endereço
 exato da entrega. Alcance geográfico não equivale a cobertura
 operacional formal.
 
-\subsection{Decisões para as próximas
-etapas}\label{docs__analytics__evidencias_consultas_analiticas_core.md__decisuxf5es-para-as-pruxf3ximas-etapas}
+\subsection{Decisões incorporadas às etapas
+seguintes}\label{docs__analytics__evidencias_consultas_analiticas_core.md__decisuxf5es-para-as-pruxf3ximas-etapas}
 
 \begin{itemize}
 \tightlist
@@ -1359,8 +1357,8 @@ funcionais}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__ma
 Esta matriz registra como os requisitos funcionais RF01 a RF12 são
 sustentados pelo modelo CORE e pelas consultas versionadas nas etapas
 M06-01 e M06-02. A validação comprova capacidade analítica e cobertura
-observada; não declara que toda análise possível já foi implementada nem
-antecipa as estruturas de BI das etapas posteriores.
+observada; não declara que toda análise possível foi implementada nem que
+um arquivo Power BI ou seu projeto visual integrem o escopo entregue.
 
 Classificações utilizadas:
 
@@ -1372,9 +1370,6 @@ Classificações utilizadas:
 \item
   \textbf{atendido com limitação}: a capacidade existe, mas a cobertura
   ou a interpretação é restringida pelos dados;
-\item
-  \textbf{preparado para etapa futura}: a base está disponível, mas a
-  entrega final pertence explicitamente a uma issue posterior.
 \end{itemize}
 
 \subsection{Matriz requisito → consulta →
@@ -1472,10 +1467,11 @@ pedido & Coleções \nolinkurl{queries/basic/} e
 meses parciais e agregam por mês, categoria, região, vendedor, pagamento
 e pedido. & Atendido \\
 RF12 & Base estruturada para ferramentas analíticas e BI & Schemas
-\nolinkurl{core} e \nolinkurl{analytics}, contrato analítico e consultas
-versionadas & A CORE validada e as regras reproduzíveis formam a base de
-consumo. Views, marts e datasets finais serão materializados nas issues
-M06-05 e M06-06. & Preparado para etapa futura \\
+\nolinkurl{core} e \nolinkurl{analytics}, fontes em
+\nolinkurl{models/analytics/views/}, consultas em
+\nolinkurl{queries/consumption/} e contrato de consumo & A CORE validada,
+quatro views reutilizáveis e quatro consultas de exportação formam a base
+documentada para consumo por SQL e Power BI. & Atendido \\
 \end{longtable}
 }
 
@@ -1537,14 +1533,14 @@ A geolocalização cobre 99.163 de 99.441 registros de cliente e 3.088 de
 3.095 vendedores. Os cadastros abrangem 27 estados e 4.119 cidades de
 clientes, além de 23 estados e 611 cidades de vendedores.
 
-\subsection{Decisões e impacto nas próximas
-etapas}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__decisuxf5es-e-impacto-nas-pruxf3ximas-etapas}
+\subsection{Decisões consolidadas após a
+validação}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__decisuxf5es-e-impacto-nas-pruxf3ximas-etapas}
 
 \begin{itemize}
 \tightlist
 \item
-  RF01 a RF11 possuem cobertura suficiente para prosseguir à definição
-  formal das métricas, respeitadas as limitações registradas.
+  RF01 a RF12 possuem cobertura suficiente, respeitadas as limitações
+  registradas.
 \item
   RF04 não autoriza métricas de conversão, abandono ou navegação.
 \item
@@ -1553,9 +1549,8 @@ etapas}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__decisu
 \item
   RF09 não sustenta distância percorrida nem cobertura logística formal.
 \item
-  RF12 somente será classificado como entrega final após a criação das
-  estruturas reutilizáveis e dos datasets de consumo das issues M06-05 e
-  M06-06.
+  RF12 é classificado como atendido após a criação das estruturas
+  reutilizáveis e dos datasets de consumo nas issues M06-05 e M06-06.
 \item
   Nenhuma evidência exige alterar os modelos conceitual, lógico, físico
   ou a transformação CORE já aprovados.
@@ -1932,8 +1927,9 @@ repetição, tornam explícita a granularidade de consumo e preservam
 rastreabilidade até a CORE.
 
 Não são cópias das tabelas de origem, não alteram a CORE e não
-materializam dados. A seleção final de campos, relacionamentos e visuais
-para Power BI pertence à etapa M06-06.
+materializam dados. A etapa M06-06 definiu os campos e relacionamentos de
+consumo; a criação de um arquivo Power BI e de seu projeto visual
+permanece fora do escopo.
 
 \subsection{Mapa de
 dependências}\label{docs__analytics__estruturas_schema_analytics.md__mapa-de-dependuxeancias}

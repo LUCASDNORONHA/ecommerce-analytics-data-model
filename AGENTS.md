@@ -18,11 +18,11 @@ O desenvolvimento segue uma sequência progressiva de etapas:
 8. consultas e análises;
 9. construção da camada analítica e preparação para consumo em BI.
 
-A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados e o processo de carga e preparação dos dados estão concluídos e constituem a base aprovada para as etapas seguintes.
+A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados, o processo de carga e preparação dos dados e a camada analítica estão concluídos e constituem a base aprovada do projeto.
 
 A arquitetura física foi implementada e validada no PostgreSQL 18 utilizando os schemas `raw`, `core` e `analytics`. O processo ELT também está concluído e validado, contemplando preparação do banco, ingestão dos arquivos de origem na RAW, transformação para a CORE, reconciliação de volumes, validações de integridade e regras de qualidade.
 
-A etapa atualmente em desenvolvimento é a **Camada Analítica e Extração de Inteligência**, com foco na exploração do modelo CORE, desenvolvimento de consultas SQL, definição de métricas, validação dos requisitos analíticos, criação de estruturas de consumo no schema `analytics` e preparação dos dados para utilização em ferramentas de Business Intelligence.
+A etapa de **Camada Analítica e Extração de Inteligência** foi concluída, abrangendo a exploração do modelo CORE, o desenvolvimento de consultas SQL, a definição de métricas, a validação dos requisitos analíticos, a criação de estruturas de consumo no schema `analytics` e a preparação dos dados para utilização em ferramentas de Business Intelligence. Qualquer evolução posterior deve partir de uma nova issue priorizada no GitHub Project.
 
 Consulte o GitHub Project nº 6 antes de iniciar qualquer tarefa.
 
@@ -310,13 +310,13 @@ e:
 
 A CORE aprovada deve ser tratada como ponto de partida da etapa analítica.
 
-## Diretrizes para a Camada Analítica
+## Estado consolidado e diretrizes para a Camada Analítica
 
-A etapa atual deve utilizar a CORE validada para responder aos requisitos analíticos do projeto.
+A camada analítica consolidada utiliza a CORE validada para responder aos requisitos analíticos do projeto.
 
-O trabalho deve evoluir de consultas exploratórias para estruturas de consumo reproduzíveis, respeitando a ordem definida pela issue ativa.
+O trabalho evoluiu de consultas exploratórias para estruturas de consumo reproduzíveis, respeitando a ordem definida pelas issues da fase M06.
 
-A sequência prevista inclui:
+A sequência implementada inclui:
 
 1. desenvolver consultas SQL fundamentais sobre o modelo CORE;
 2. combinar as entidades em consultas analíticas;
@@ -327,7 +327,7 @@ A sequência prevista inclui:
 7. preparar os dados para consumo por SQL e ferramentas de Business Intelligence;
 8. documentar resultados, premissas, limitações e decisões analíticas.
 
-Durante essa etapa:
+Na manutenção ou evolução dessa camada:
 
 - utilize a CORE como fonte principal para análise;
 - não consulte diretamente a RAW para produzir métricas finais, salvo investigação de qualidade ou rastreabilidade;

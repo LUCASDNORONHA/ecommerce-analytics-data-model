@@ -14,9 +14,9 @@ A partir do conjunto de dados público **Brazilian E-Commerce Public Dataset by 
 
 O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados, carga e preparação dos dados e disponibilização das informações para consultas e análises.
 
-As etapas de análise de requisitos, modelagem, implementação do banco de dados e carga dos dados estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade.
+Todas as etapas planejadas do projeto estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo destinados à exploração por SQL e à integração com ferramentas de Business Intelligence.
 
-O projeto encontra-se atualmente na etapa de **análise de dados e construção da camada analítica**, na qual serão desenvolvidas consultas, métricas, estruturas de consumo e artefatos destinados à exploração dos dados e à futura integração com ferramentas de Business Intelligence.
+A fonte canônica da documentação analítica está disponível em [`docs/analytics/camada_analitica.tex`](docs/analytics/camada_analitica.tex), acompanhada da versão final em [`docs/analytics/camada_analitica.pdf`](docs/analytics/camada_analitica.pdf).
 
 ## Objetivos
 
@@ -148,7 +148,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 └── uv.lock                          # Dependências com versões reproduzíveis
 ```
 
-A estrutura poderá evoluir conforme novos artefatos forem desenvolvidos, especialmente durante a construção da camada analítica.
+A estrutura poderá evoluir quando novos artefatos forem formalmente incorporados ao escopo do projeto.
 
 ## Ordem de desenvolvimento e navegação
 
@@ -164,13 +164,15 @@ O projeto evolui pelas etapas abaixo. A numeração representa a sequência de d
 | 06 | Implementação do banco de dados | [`database/`](database/) |
 | 07 | Carga, transformação e validação | [`elt/`](elt/), [`validation/`](validation/), [`config/`](config/), [`notebooks/data-loading/`](notebooks/data-loading/) e [`docs/data-loading/`](docs/data-loading/) |
 | 08 | Consultas e análises | [`queries/`](queries/) |
-| **09** | **Camada analítica e preparação para BI — etapa atual** | [`models/analytics/`](models/analytics/), [`docs/analytics/`](docs/analytics/) e [`notebooks/analytics/`](notebooks/analytics/) |
+| 09 | Camada analítica e preparação para BI | [`models/analytics/`](models/analytics/), [`docs/analytics/`](docs/analytics/) e [`notebooks/analytics/`](notebooks/analytics/) |
 
 Prefixos numéricos como `01_`, `02_` e `03_` são utilizados somente dentro de coleções cuja ordem de leitura ou execução seja real, como sequências de notebooks e consultas SQL. Diretórios arquiteturais, módulos Python, testes e arquivos independentes mantêm nomes descritivos sem numeração artificial.
 
 ## Roadmap
 
 <img src="./assets/project-roadmap.png" alt="Roadmap do projeto" width="100%">
+
+No escopo concluído da M06, a frente de BI/visualização corresponde à preparação dos datasets, relacionamentos, medidas e controles de consumo. A criação de um arquivo Power BI e de seu projeto visual não integra esta entrega.
 
 ## Configuração do ambiente
 
@@ -230,7 +232,7 @@ A camada `raw` preserva os dados provenientes dos arquivos de origem.
 
 A camada `core` materializa o modelo relacional consolidado, aplicando transformações, restrições e regras de integridade.
 
-A camada `analytics` é destinada às estruturas de consumo analítico desenvolvidas nas etapas posteriores do projeto.
+A camada `analytics` materializa as estruturas derivadas e reutilizáveis destinadas ao consumo analítico.
 
 ### Preparação do banco
 
@@ -343,7 +345,7 @@ A modelagem física traduz o modelo lógico para PostgreSQL 18 e materializa a a
 
 O processo ELT extrai os dados dos arquivos de origem, carrega-os na camada RAW e executa as transformações necessárias dentro do banco para produzir a camada CORE. A carga é acompanhada por reconciliação de volumes, testes automatizados e validações independentes de integridade e qualidade.
 
-Com a preparação e a validação dos dados concluídas, a etapa atual concentra-se na exploração do modelo CORE e na construção da camada ANALYTICS. Essa fase inclui consultas SQL, métricas analíticas, validação dos requisitos funcionais, criação de estruturas de consumo e preparação dos dados para utilização em ferramentas de Business Intelligence.
+A etapa final utiliza a CORE validada para consultas SQL, métricas analíticas e validação dos requisitos funcionais. As estruturas reutilizáveis do schema `analytics`, as consultas de exportação e o contrato documentado de consumo completam a preparação dos dados para SQL e ferramentas de Business Intelligence.
 
 O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), enquanto o fluxo de contribuição está documentado em [CONTRIBUTING.md](CONTRIBUTING.md).
 
