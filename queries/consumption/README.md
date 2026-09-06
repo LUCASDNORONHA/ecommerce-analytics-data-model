@@ -13,8 +13,8 @@ schema `analytics`, evitando contratos dependentes de `SELECT *`.
 
 Os nomes à esquerda são nomes recomendados para as tabelas no modelo semântico;
 as views permanecem como fontes canônicas. O contrato de importação,
-relacionamentos e medidas está documentado em
-[`../../docs/analytics/consumo_power_bi_sql.md`](../../docs/analytics/consumo_power_bi_sql.md).
+relacionamentos e medidas está documentado na seção correspondente de
+[`../../docs/analytics/camada_analitica.pdf`](../../docs/analytics/camada_analitica.pdf).
 
 As consultas não devem ser combinadas por joins ad hoc. Em especial, medidas
 de pedido não podem ser somadas após relacionamento ou join com

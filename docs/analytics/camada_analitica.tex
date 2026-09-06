@@ -134,56 +134,32 @@ de Inteligência}}}\\[0.5cm]
 \noindent
 \textbf{\textcolor{AzulCorporativo}{Autor:}} Lucas Dias Noronha
 \hfill
-\textbf{\textcolor{AzulCorporativo}{Data:}} 2 de setembro de 2026
+\textbf{\textcolor{AzulCorporativo}{Data:}} 6 de setembro de 2026
 
 \newpage
 \tableofcontents
 \newpage
 
 \section{Documentação
-analítica}\label{docs__analytics__readme.md__documentauxe7uxe3o-analuxedtica}
+analítica}\label{documentacao-analitica}
 
-Documentação destinada à leitura humana sobre métricas, decisões
-analíticas, premissas, limitações e matrizes de rastreabilidade.
+Documentação consolidada da camada analítica, destinada à leitura humana
+e ao consumo por SQL e ferramentas de Business Intelligence.
 
 \subsection{Artefatos}\label{docs__analytics__readme.md__artefatos}
 
 \begin{itemize}
 \item
-  \href{camada_analitica.tex}{\nolinkurl{camada_analitica.tex}} e
-  \href{camada_analitica.pdf}{\nolinkurl{camada_analitica.pdf}}:
-  documentação consolidada da camada analítica, reunindo os artefatos
-  Markdown abaixo em um único documento.
+  \href{camada_analitica.tex}{\nolinkurl{camada_analitica.tex}}: fonte
+  canônica e editável da documentação consolidada;
 \item
-  \href{contrato_analitico.md}{\nolinkurl{contrato_analitico.md}}:
-  problema de negócio, stakeholders, demandas, casos de uso, catálogo
-  preliminar de indicadores, regras semânticas e limitações da camada
-  analítica.
-\item
-  \href{evidencias_consultas_basicas_core.md}{\nolinkurl{evidencias_consultas_basicas_core.md}}:
-  resultados de controle e decisões de granularidade observados durante
-  a etapa M06-01.
-\item
-  \href{evidencias_consultas_analiticas_core.md}{\nolinkurl{evidencias_consultas_analiticas_core.md}}:
-  resultados financeiros, concentração de vendedores, pagamentos e
-  riscos associados observados durante a etapa M06-02.
-\item
-  \href{matriz_validacao_requisitos_funcionais.md}{\nolinkurl{matriz_validacao_requisitos_funcionais.md}}:
-  rastreabilidade entre RF01--RF12, consultas e evidências da etapa
-  M06-03.
-\item
-  \href{catalogo_metricas_analiticas.md}{\nolinkurl{catalogo_metricas_analiticas.md}}:
-  definições, fórmulas, granularidades, resultados e limitações das
-  métricas financeiras e de vendedores consolidadas na etapa M06-04.
-\item
-  \href{estruturas_schema_analytics.md}{\nolinkurl{estruturas_schema_analytics.md}}:
-  finalidade, granularidade, campos, dependências e validação das views
-  criadas na M06-05.
-\item
-  \href{consumo_power_bi_sql.md}{\nolinkurl{consumo_power_bi_sql.md}}:
-  contrato de datasets, relacionamentos, medidas, atualização e
-  controles para consumo no Power BI e por SQL, consolidado na M06-06.
+  \href{camada_analitica.pdf}{\nolinkurl{camada_analitica.pdf}}: versão
+  final para leitura e distribuição.
 \end{itemize}
+
+O documento reúne contrato analítico, evidências das consultas,
+validação dos requisitos funcionais, catálogo de métricas, estruturas do
+schema \nolinkurl{analytics} e contrato de consumo no Power BI e SQL.
 
 \section{Contrato analítico da camada
 ANALYTICS}\label{docs__analytics__contrato_analitico.md__contrato-analuxedtico-da-camada-analytics}
@@ -2250,8 +2226,7 @@ limitações}\label{docs__analytics__estruturas_schema_analytics.md__decisuxf5es
 \item
   As estruturas são adequadas ao consumo SQL recorrente. O contrato
   final de importação, relacionamentos e medidas do Power BI está
-  documentado em
-  \href{consumo_power_bi_sql.md}{\nolinkurl{consumo_power_bi_sql.md}}.
+  documentado na seção seguinte.
 \end{itemize}
 
 \section{Contrato de consumo no Power BI e
