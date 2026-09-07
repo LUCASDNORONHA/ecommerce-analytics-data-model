@@ -19,13 +19,13 @@ O desenvolvimento segue uma sequência progressiva de etapas:
 9. construção da camada analítica e preparação para consumo em BI;
 10. construção do relatório Power BI e do modelo semântico versionável.
 
-A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados, o processo de carga e preparação dos dados e a camada analítica estão concluídos e constituem a base aprovada do projeto.
+A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados, o processo de carga e preparação dos dados, a camada analítica e a fase M07 — Power BI estão concluídos e constituem a base aprovada do projeto.
 
 A arquitetura física foi implementada e validada no PostgreSQL 18 utilizando os schemas `raw`, `core` e `analytics`. O processo ELT também está concluído e validado, contemplando preparação do banco, ingestão dos arquivos de origem na RAW, transformação para a CORE, reconciliação de volumes, validações de integridade e regras de qualidade.
 
 A etapa de **Camada Analítica e Extração de Inteligência** foi concluída, abrangendo a exploração do modelo CORE, o desenvolvimento de consultas SQL, a definição de métricas, a validação dos requisitos analíticos, a criação de estruturas de consumo no schema `analytics` e a preparação dos dados para utilização em ferramentas de Business Intelligence.
 
-A fase **M07 — Power BI** está em execução por meio da issue #97. Seu objetivo é materializar o contrato de consumo aprovado em um projeto versionável sob `bi/power-bi/`, utilizando PBIP, PBIR e TMDL. Alterações dessa fase devem preservar as granularidades e as limitações documentadas na M06, em especial a separação entre medidas de pedido e de vendedor-pedido.
+A fase **M07 — Power BI** materializou o contrato de consumo aprovado em um projeto versionável sob `bi/power-bi/`, utilizando PBIP, PBIR e TMDL. O relatório e o modelo semântico foram validados no Power BI Desktop. Evoluções futuras devem preservar as granularidades e as limitações documentadas na M06, em especial a separação entre medidas de pedido e de vendedor-pedido.
 
 Consulte o GitHub Project nº 6 antes de iniciar qualquer tarefa.
 
@@ -105,9 +105,10 @@ Use `database/`, `elt/` e `validation/` para código executável responsável, r
 
 Utilize prefixos numéricos de dois dígitos apenas em coleções com ordem real de leitura ou execução, como notebooks sequenciais e consultas SQL ordenadas. Não numere diretórios arquiteturais, módulos Python, testes ou arquivos independentes para representar a cronologia geral; essa sequência deve permanecer documentada no README principal.
 
-## Estado da M07 — Power BI
+## Estado consolidado da M07 — Power BI
 
-A issue ativa #97 materializa a camada de consumo em um projeto Power BI versionável.
+A M07 foi concluída e versionada em um projeto Power BI composto por PBIP,
+relatório PBIR e modelo semântico TMDL.
 
 Diretrizes obrigatórias:
 
@@ -120,7 +121,12 @@ Diretrizes obrigatórias:
 - tratar atraso e avaliação associados ao vendedor como associação descritiva, nunca como causalidade;
 - validar totais do Power BI contra as consultas e controles aprovados da M06.
 
-Os artefatos da fase encontram-se em `bi/power-bi/`. A validação final de abertura e renderização deve ser realizada no Power BI Desktop e registrada antes do encerramento da issue.
+Os artefatos da fase encontram-se em `bi/power-bi/`. A abertura, a renderização,
+a revisão das páginas e a validação visual final foram realizadas no Power BI
+Desktop. O relatório final também foi publicado no Power BI Service.
+
+Não presuma uma nova issue ativa. Consulte o GitHub Project nº 6 antes de
+iniciar qualquer trabalho futuro.
 
 ## Estado consolidado da modelagem conceitual
 

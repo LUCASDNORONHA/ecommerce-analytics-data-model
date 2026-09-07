@@ -1,6 +1,12 @@
 # Power BI — M07
 
-Implementação versionável da issue #97, composta por um projeto PBIP, relatório PBIR e modelo semântico TMDL.
+Implementação concluída e versionada na M07, composta por um projeto PBIP, relatório PBIR e modelo semântico TMDL.
+
+## Relatório publicado
+
+A versão pública do relatório está disponível em:
+
+[**Acessar relatório no Power BI**](https://app.powerbi.com/view?r=eyJrIjoiMzhlMDkwMzQtOTA5NC00M2QzLWEyMmUtZmJlOTExNTE5ZTBmIiwidCI6Ijk5ZjUxNTc1LWQ2ODEtNDMyYS1iZDNmLTZhNjhjMDVmMGJhNiJ9&pageName=615f03d6ed5ce2afbc03)
 
 ## Abrir localmente
 
@@ -29,7 +35,7 @@ O modelo preserva a separação entre a granularidade de pedido e a granularidad
 
 ## Páginas
 
-1. Visão Executiva;
+1. Visão Geral;
 2. Financeiro e Reconciliação;
 3. Vendedores e Concentração;
 4. Operação e Experiência;

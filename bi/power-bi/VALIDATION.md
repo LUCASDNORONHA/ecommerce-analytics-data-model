@@ -1,10 +1,24 @@
 # Validação manual da M07 no Power BI Desktop
 
-A validação abaixo deve ser executada após abrir `EcommerceAnalytics.pbip` e atualizar o modelo.
+A validação final foi realizada no Power BI Desktop após abrir
+`EcommerceAnalytics.pbip`. O relatório foi renderizado, suas páginas foram
+revisadas e o dashboard foi ajustado e validado visualmente. A versão final foi
+publicada no Power BI Service.
+
+## Evidências finais registradas
+
+- [x] O PBIP foi aberto no Power BI Desktop.
+- [x] O relatório foi renderizado.
+- [x] As cinco páginas foram revisadas.
+- [x] O dashboard foi ajustado e validado visualmente.
+- [x] A versão final foi publicada no Power BI Service.
+
+Os itens detalhados abaixo permanecem como checklist técnico. Verificações sem
+evidência específica registrada não são marcadas automaticamente.
 
 ## Estrutura
 
-- [ ] O PBIP abre sem erro estrutural.
+- [x] O PBIP abre sem erro estrutural.
 - [ ] O modelo semântico é carregado em TMDL.
 - [ ] As quatro views do schema `analytics` são importadas.
 - [ ] Não há solicitação de credenciais armazenadas no projeto; a autenticação ocorre pelo Desktop.

@@ -14,7 +14,7 @@ A partir do conjunto de dados público **Brazilian E-Commerce Public Dataset by 
 
 O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados, carga e preparação dos dados e disponibilização das informações para consultas e análises.
 
-As fases M01 a M06 estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo. A fase M07 transforma esses contratos em um relatório Power BI versionável, organizado em PBIP, PBIR e TMDL.
+As fases M01 a M07 estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo. A M07 materializou esses contratos em um relatório Power BI e um modelo semântico versionável, organizados em PBIP, PBIR e TMDL.
 
 A fonte canônica da documentação analítica está disponível em [`docs/analytics/camada_analitica.tex`](docs/analytics/camada_analitica.tex), acompanhada da versão final em [`docs/analytics/camada_analitica.pdf`](docs/analytics/camada_analitica.pdf).
 
@@ -182,7 +182,21 @@ Prefixos numéricos como `01_`, `02_` e `03_` são utilizados somente dentro de 
 
 <img src="./assets/project-roadmap.png" alt="Roadmap do projeto" width="100%">
 
-A M06 concluiu a preparação dos datasets, relacionamentos, métricas e controles de consumo. A M07 utiliza esses contratos para construir o projeto Power BI em [`bi/power-bi/`](bi/power-bi/), mantendo o relatório PBIR e o modelo semântico TMDL sob controle de versão.
+A M06 concluiu a preparação dos datasets, relacionamentos, métricas e controles de consumo. A M07 utilizou esses contratos para implementar o projeto Power BI em [`bi/power-bi/`](bi/power-bi/), mantendo o relatório PBIR e o modelo semântico TMDL sob controle de versão.
+
+## Dashboard interativo
+
+O relatório desenvolvido na M07 está disponível publicamente no Power BI:
+
+[**Acessar dashboard interativo no Power BI**](https://app.powerbi.com/view?r=eyJrIjoiMzhlMDkwMzQtOTA5NC00M2QzLWEyMmUtZmJlOTExNTE5ZTBmIiwidCI6Ijk5ZjUxNTc1LWQ2ODEtNDMyYS1iZDNmLTZhNjhjMDVmMGJhNiJ9&pageName=615f03d6ed5ce2afbc03)
+
+O relatório possui as páginas:
+
+- Visão Geral;
+- Financeiro e Reconciliação;
+- Vendedores e Concentração;
+- Operação e Experiência;
+- Detalhe do Vendedor.
 
 ## Configuração do ambiente
 
@@ -357,7 +371,7 @@ A modelagem física traduz o modelo lógico para PostgreSQL 18 e materializa a a
 
 O processo ELT extrai os dados dos arquivos de origem, carrega-os na camada RAW e executa as transformações necessárias dentro do banco para produzir a camada CORE. A carga é acompanhada por reconciliação de volumes, testes automatizados e validações independentes de integridade e qualidade.
 
-A camada analítica utiliza a CORE validada para consultas SQL, métricas e validação dos requisitos funcionais. As estruturas reutilizáveis do schema `analytics` e as consultas de exportação formam o contrato de consumo. A M07 materializa esse contrato em um projeto Power BI versionável, sem relacionar diretamente fatos de granularidades incompatíveis.
+A camada analítica utiliza a CORE validada para consultas SQL, métricas e validação dos requisitos funcionais. As estruturas reutilizáveis do schema `analytics` e as consultas de exportação formam o contrato de consumo. A M07 materializou esse contrato em um projeto Power BI versionável, sem relacionar diretamente fatos de granularidades incompatíveis.
 
 O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), enquanto o fluxo de contribuição está documentado em [CONTRIBUTING.md](CONTRIBUTING.md).
 
