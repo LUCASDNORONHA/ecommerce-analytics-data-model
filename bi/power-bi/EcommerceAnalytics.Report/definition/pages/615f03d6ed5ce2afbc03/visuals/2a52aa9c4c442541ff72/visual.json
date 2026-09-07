@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "2a52aa9c4c442541ff72",
+  "position": {
+    "x": 49.129411764705878,
+    "y": 245.64705882352942,
+    "z": 80,
+    "height": 434.5411764705882,
+    "width": 708.98823529411766,
+    "tabOrder": 80
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_mes"
+                    }
+                  },
+                  "Property": "mes_ano"
+                }
+              },
+              "queryRef": "dim_mes.mes_ano",
+              "nativeQueryRef": "mes_ano",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fato_pedido_financeiro"
+                    }
+                  },
+                  "Property": "Valor Bruto Entregue"
+                }
+              },
+              "queryRef": "fato_pedido_financeiro.Valor Bruto Entregue",
+              "nativeQueryRef": "Valor Bruto Entregue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fato_pedido_financeiro"
+                    }
+                  },
+                  "Property": "Valor Pago Registrado Entregue"
+                }
+              },
+              "queryRef": "fato_pedido_financeiro.Valor Pago Registrado Entregue",
+              "nativeQueryRef": "Valor Pago Registrado Entregue"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Evolução mensal dos valores'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#183153'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

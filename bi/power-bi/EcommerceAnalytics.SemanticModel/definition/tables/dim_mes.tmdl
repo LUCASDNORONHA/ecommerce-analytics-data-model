@@ -1,0 +1,64 @@
+table dim_mes
+	lineageTag: d7592fbe-c8a0-466c-9a8f-d8cd45c9b20b
+
+	column mes_compra
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7f3e9f2b-6fbf-4ccf-929f-d95190d91209
+		summarizeBy: none
+		sourceColumn: mes_compra
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ano
+		dataType: int64
+		lineageTag: 1d677fb0-27f2-41d6-abef-1a615b6de8bb
+		summarizeBy: none
+		sourceColumn: ano
+
+		annotation SummarizationSetBy = User
+
+	column mes_numero
+		dataType: int64
+		lineageTag: 85f584de-e53f-4c25-bd89-123e9b6c050c
+		summarizeBy: none
+		sourceColumn: mes_numero
+
+		annotation SummarizationSetBy = User
+
+	column mes_nome
+		dataType: string
+		lineageTag: 87ec432e-1716-4a49-a4f0-a955aa2c2e66
+		summarizeBy: none
+		sourceColumn: mes_nome
+		sortByColumn: mes_numero
+
+		annotation SummarizationSetBy = User
+
+	column mes_ano
+		dataType: string
+		lineageTag: 00c33753-5ef4-4850-9f95-79929a2a8b82
+		summarizeBy: none
+		sourceColumn: mes_ano
+		sortByColumn: mes_compra
+
+		annotation SummarizationSetBy = User
+
+	partition dim_mes = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_pedido_financeiro"]}[Data],
+				    Meses = Table.Distinct(Table.SelectColumns(View, {"mes_compra"})),
+				    Ano = Table.AddColumn(Meses, "ano", each Date.Year(Date.From([mes_compra])), Int64.Type),
+				    MesNumero = Table.AddColumn(Ano, "mes_numero", each Date.Month(Date.From([mes_compra])), Int64.Type),
+				    MesNome = Table.AddColumn(MesNumero, "mes_nome", each Date.ToText(Date.From([mes_compra]), "MMM", "pt-BR"), type text),
+				    MesAno = Table.AddColumn(MesNome, "mes_ano", each Date.ToText(Date.From([mes_compra]), "MMM/yyyy", "pt-BR"), type text)
+				in
+				    MesAno
+
+	annotation PBI_ResultType = Table
+

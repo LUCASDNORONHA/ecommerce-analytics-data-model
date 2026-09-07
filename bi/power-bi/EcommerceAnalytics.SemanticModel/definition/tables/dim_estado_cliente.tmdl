@@ -1,0 +1,24 @@
+table dim_estado_cliente
+	lineageTag: 0ccdbf07-46f3-42ad-9479-713aa2962e90
+
+	column estado
+		dataType: string
+		lineageTag: d1fa7011-82c9-4a49-8439-f087602a775c
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = User
+
+	partition dim_estado_cliente = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_pedido_financeiro"]}[Data],
+				    Estados = Table.Distinct(Table.SelectColumns(View, {"estado_cliente"})),
+				    Renomeado = Table.RenameColumns(Estados, {{"estado_cliente", "estado"}})
+				in
+				    Renomeado
+
+	annotation PBI_ResultType = Table
+

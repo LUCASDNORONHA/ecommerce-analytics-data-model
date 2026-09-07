@@ -14,7 +14,7 @@ A partir do conjunto de dados público **Brazilian E-Commerce Public Dataset by 
 
 O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento profissional de soluções de dados: análise de requisitos, compreensão e validação das fontes, modelagem conceitual, modelagem lógica, modelagem física, implementação do banco de dados, carga e preparação dos dados e disponibilização das informações para consultas e análises.
 
-Todas as etapas planejadas do projeto estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo destinados à exploração por SQL e à integração com ferramentas de Business Intelligence.
+As fases M01 a M06 estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo. A fase M07 transforma esses contratos em um relatório Power BI versionável, organizado em PBIP, PBIR e TMDL.
 
 A fonte canônica da documentação analítica está disponível em [`docs/analytics/camada_analitica.tex`](docs/analytics/camada_analitica.tex), acompanhada da versão final em [`docs/analytics/camada_analitica.pdf`](docs/analytics/camada_analitica.pdf).
 
@@ -28,7 +28,8 @@ A fonte canônica da documentação analítica está disponível em [`docs/analy
 - Integrar as diferentes entidades do dataset em uma estrutura relacional coerente;
 - Implementar um processo reproduzível de ingestão, transformação e validação dos dados;
 - Disponibilizar uma base de dados adequada para consultas e análises multidimensionais de e-commerce;
-- Estruturar uma camada analítica destinada ao consumo por SQL e ferramentas de Business Intelligence.
+- Estruturar uma camada analítica destinada ao consumo por SQL e ferramentas de Business Intelligence;
+- Construir um relatório Power BI versionável, preservando granularidade, rastreabilidade e controles de reconciliação.
 
 ## Escopo
 
@@ -100,6 +101,13 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   │   └── 02_raw_to_core_quality_validation.ipynb
 │   └── analytics/                   # Exploração e evidências analíticas
 │
+├── bi/                              # Produtos de Business Intelligence versionáveis
+│   ├── README.md
+│   └── power-bi/                    # PBIP + PBIR + TMDL da M07
+│       ├── EcommerceAnalytics.pbip
+│       ├── EcommerceAnalytics.Report/
+│       └── EcommerceAnalytics.SemanticModel/
+│
 ├── config/
 │   ├── raw_load.toml                # Contrato operacional da ingestão RAW
 │   └── core_load.toml               # Configuração da transformação CORE
@@ -134,6 +142,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── test_database_setup.py
 │   ├── test_elt_validation.py
 │   ├── test_pipeline.py
+│   ├── test_power_bi_project.py
 │   └── test_raw_loader.py
 │
 ├── .github/
@@ -165,6 +174,7 @@ O projeto evolui pelas etapas abaixo. A numeração representa a sequência de d
 | 07 | Carga, transformação e validação | [`elt/`](elt/), [`validation/`](validation/), [`config/`](config/), [`notebooks/data-loading/`](notebooks/data-loading/) e [`docs/data-loading/`](docs/data-loading/) |
 | 08 | Consultas e análises | [`queries/`](queries/) |
 | 09 | Camada analítica e preparação para BI | [`models/analytics/`](models/analytics/), [`docs/analytics/`](docs/analytics/) e [`notebooks/analytics/`](notebooks/analytics/) |
+| 10 | Relatório Power BI e modelo semântico | [`bi/power-bi/`](bi/power-bi/) |
 
 Prefixos numéricos como `01_`, `02_` e `03_` são utilizados somente dentro de coleções cuja ordem de leitura ou execução seja real, como sequências de notebooks e consultas SQL. Diretórios arquiteturais, módulos Python, testes e arquivos independentes mantêm nomes descritivos sem numeração artificial.
 
@@ -172,7 +182,7 @@ Prefixos numéricos como `01_`, `02_` e `03_` são utilizados somente dentro de 
 
 <img src="./assets/project-roadmap.png" alt="Roadmap do projeto" width="100%">
 
-No escopo concluído da M06, a frente de BI/visualização corresponde à preparação dos datasets, relacionamentos, medidas e controles de consumo. A criação de um arquivo Power BI e de seu projeto visual não integra esta entrega.
+A M06 concluiu a preparação dos datasets, relacionamentos, métricas e controles de consumo. A M07 utiliza esses contratos para construir o projeto Power BI em [`bi/power-bi/`](bi/power-bi/), mantendo o relatório PBIR e o modelo semântico TMDL sob controle de versão.
 
 ## Configuração do ambiente
 
@@ -335,6 +345,8 @@ Validação do ELT
 Consultas e análises
         ↓
 Camada analítica e consumo em BI
+        ↓
+Relatório Power BI e modelo semântico
 ```
 
 A modelagem conceitual estabelece as entidades, atributos, identificadores, relacionamentos e cardinalidades do domínio.
@@ -345,7 +357,7 @@ A modelagem física traduz o modelo lógico para PostgreSQL 18 e materializa a a
 
 O processo ELT extrai os dados dos arquivos de origem, carrega-os na camada RAW e executa as transformações necessárias dentro do banco para produzir a camada CORE. A carga é acompanhada por reconciliação de volumes, testes automatizados e validações independentes de integridade e qualidade.
 
-A etapa final utiliza a CORE validada para consultas SQL, métricas analíticas e validação dos requisitos funcionais. As estruturas reutilizáveis do schema `analytics`, as consultas de exportação e o contrato documentado de consumo completam a preparação dos dados para SQL e ferramentas de Business Intelligence.
+A camada analítica utiliza a CORE validada para consultas SQL, métricas e validação dos requisitos funcionais. As estruturas reutilizáveis do schema `analytics` e as consultas de exportação formam o contrato de consumo. A M07 materializa esse contrato em um projeto Power BI versionável, sem relacionar diretamente fatos de granularidades incompatíveis.
 
 O trabalho é planejado no [GitHub Project](https://github.com/users/LUCASDNORONHA/projects/6). As regras de status, prioridade, iteração e conclusão estão descritas em [docs/WORKFLOW.md](docs/WORKFLOW.md), enquanto o fluxo de contribuição está documentado em [CONTRIBUTING.md](CONTRIBUTING.md).
 

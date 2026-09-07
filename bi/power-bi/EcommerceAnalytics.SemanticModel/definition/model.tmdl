@@ -1,0 +1,24 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["dim_calendario","dim_mes","dim_estado_cliente","dim_estado_vendedor","fato_pedido_financeiro","agregado_financeiro_mensal","resumo_desempenho_vendedor","fato_vendedor_pedido","p_servidor","p_banco"]
+
+ref table dim_calendario
+ref table dim_mes
+ref table dim_estado_cliente
+ref table dim_estado_vendedor
+ref table fato_pedido_financeiro
+ref table agregado_financeiro_mensal
+ref table resumo_desempenho_vendedor
+ref table fato_vendedor_pedido
+

@@ -1,0 +1,189 @@
+table agregado_financeiro_mensal
+	lineageTag: 6cb65833-7125-4fc4-941d-039d204981f5
+
+	column mes_compra
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5769c87d-3517-477e-9e43-8845fa0d6e97
+		summarizeBy: none
+		sourceColumn: mes_compra
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cobertura_diaria_completa
+		dataType: boolean
+		lineageTag: e58f4075-d621-43dd-b7b4-d18e598883c9
+		summarizeBy: none
+		sourceColumn: cobertura_diaria_completa
+
+		annotation SummarizationSetBy = User
+
+	column pedidos
+		dataType: int64
+		lineageTag: 900383e2-bb88-471c-b09b-49ef66650c58
+		summarizeBy: none
+		sourceColumn: pedidos
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_entregues
+		dataType: int64
+		lineageTag: b3f22953-3ee6-4a3f-99ac-135780c7a280
+		summarizeBy: none
+		sourceColumn: pedidos_entregues
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_entregues_completos
+		dataType: int64
+		lineageTag: 0c64bac5-620e-401c-ae3e-1c3c9f0b5226
+		summarizeBy: none
+		sourceColumn: pedidos_entregues_completos
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_cancelados
+		dataType: int64
+		lineageTag: 9d178421-eb37-482d-acc2-bff2b27f839a
+		summarizeBy: none
+		sourceColumn: pedidos_cancelados
+
+		annotation SummarizationSetBy = User
+
+	column taxa_cancelamento_quantidade_percentual
+		dataType: double
+		lineageTag: 1e044ff6-701c-4498-a674-0acb6f318d8d
+		summarizeBy: none
+		sourceColumn: taxa_cancelamento_quantidade_percentual
+
+		annotation SummarizationSetBy = User
+
+	column valor_itens_entregues
+		dataType: double
+		lineageTag: a0b166e2-4d71-4fec-b0a4-1a6a58790263
+		summarizeBy: none
+		sourceColumn: valor_itens_entregues
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_frete_entregue
+		dataType: double
+		lineageTag: 6850aebc-aee5-422a-b597-cfe92427639c
+		summarizeBy: none
+		sourceColumn: valor_frete_entregue
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_bruto_entregue
+		dataType: double
+		lineageTag: 0a910a3c-0771-42e5-b3de-c933a261c835
+		summarizeBy: none
+		sourceColumn: valor_bruto_entregue
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_pago_registrado_entregue
+		dataType: double
+		lineageTag: e65c6e29-d9a6-49a5-8648-ab1007044a21
+		summarizeBy: none
+		sourceColumn: valor_pago_registrado_entregue
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column diferenca_reconciliacao_entregue
+		dataType: double
+		lineageTag: 84203c5f-380c-4269-9f91-1850b00b2385
+		summarizeBy: none
+		sourceColumn: diferenca_reconciliacao_entregue
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_bruto_medio_pedido_entregue
+		dataType: double
+		lineageTag: 1ce49350-04d6-4e0f-9f7e-67cdb5d02524
+		summarizeBy: none
+		sourceColumn: valor_bruto_medio_pedido_entregue
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column participacao_frete_percentual
+		dataType: double
+		lineageTag: 9f813a72-e2bb-4aaf-aded-4761ea9ff34b
+		summarizeBy: none
+		sourceColumn: participacao_frete_percentual
+
+		annotation SummarizationSetBy = User
+
+	column crescimento_mensal_valor_itens_percentual
+		dataType: double
+		lineageTag: 6ee9f6f7-4ab4-4568-86a5-ca22a3ffd6f6
+		summarizeBy: none
+		sourceColumn: crescimento_mensal_valor_itens_percentual
+
+		annotation SummarizationSetBy = User
+
+	column valor_itens_associado_cancelados
+		dataType: double
+		lineageTag: b7767f63-e8d1-4bcd-bc15-1b4f539c0694
+		summarizeBy: none
+		sourceColumn: valor_itens_associado_cancelados
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_frete_associado_cancelados
+		dataType: double
+		lineageTag: 108f4899-2067-4bfc-9cca-6b15cd55c943
+		summarizeBy: none
+		sourceColumn: valor_frete_associado_cancelados
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_bruto_associado_cancelados
+		dataType: double
+		lineageTag: c617e550-d82b-4411-abdd-e0990840e7c5
+		summarizeBy: none
+		sourceColumn: valor_bruto_associado_cancelados
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_pago_registrado_associado_cancelados
+		dataType: double
+		lineageTag: b433d29d-7245-4f95-9ae3-d11bb7b482fe
+		summarizeBy: none
+		sourceColumn: valor_pago_registrado_associado_cancelados
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition agregado_financeiro_mensal = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_financeiro_mensal"]}[Data]
+				in
+				    View
+
+	annotation PBI_ResultType = Table
+

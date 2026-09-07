@@ -1,0 +1,24 @@
+table dim_estado_vendedor
+	lineageTag: 5bb4203d-0989-4bce-b4dd-ef1cc1bb86db
+
+	column estado
+		dataType: string
+		lineageTag: 2f89ee64-b638-4cce-b973-b71f3189d014
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = User
+
+	partition dim_estado_vendedor = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_desempenho_vendedor"]}[Data],
+				    Estados = Table.Distinct(Table.SelectColumns(View, {"estado_vendedor"})),
+				    Renomeado = Table.RenameColumns(Estados, {{"estado_vendedor", "estado"}})
+				in
+				    Renomeado
+
+	annotation PBI_ResultType = Table
+

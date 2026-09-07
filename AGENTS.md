@@ -16,13 +16,16 @@ O desenvolvimento segue uma sequência progressiva de etapas:
 6. implementação do banco de dados;
 7. carga e preparação dos dados;
 8. consultas e análises;
-9. construção da camada analítica e preparação para consumo em BI.
+9. construção da camada analítica e preparação para consumo em BI;
+10. construção do relatório Power BI e do modelo semântico versionável.
 
 A análise de requisitos, as modelagens conceitual, lógica e física, a implementação do banco de dados, o processo de carga e preparação dos dados e a camada analítica estão concluídos e constituem a base aprovada do projeto.
 
 A arquitetura física foi implementada e validada no PostgreSQL 18 utilizando os schemas `raw`, `core` e `analytics`. O processo ELT também está concluído e validado, contemplando preparação do banco, ingestão dos arquivos de origem na RAW, transformação para a CORE, reconciliação de volumes, validações de integridade e regras de qualidade.
 
-A etapa de **Camada Analítica e Extração de Inteligência** foi concluída, abrangendo a exploração do modelo CORE, o desenvolvimento de consultas SQL, a definição de métricas, a validação dos requisitos analíticos, a criação de estruturas de consumo no schema `analytics` e a preparação dos dados para utilização em ferramentas de Business Intelligence. Qualquer evolução posterior deve partir de uma nova issue priorizada no GitHub Project.
+A etapa de **Camada Analítica e Extração de Inteligência** foi concluída, abrangendo a exploração do modelo CORE, o desenvolvimento de consultas SQL, a definição de métricas, a validação dos requisitos analíticos, a criação de estruturas de consumo no schema `analytics` e a preparação dos dados para utilização em ferramentas de Business Intelligence.
+
+A fase **M07 — Power BI** está em execução por meio da issue #97. Seu objetivo é materializar o contrato de consumo aprovado em um projeto versionável sob `bi/power-bi/`, utilizando PBIP, PBIR e TMDL. Alterações dessa fase devem preservar as granularidades e as limitações documentadas na M06, em especial a separação entre medidas de pedido e de vendedor-pedido.
 
 Consulte o GitHub Project nº 6 antes de iniciar qualquer tarefa.
 
@@ -83,6 +86,7 @@ Quando houver divergência entre requisitos, modelo conceitual, modelo lógico, 
 - `queries/`: consultas SQL exploratórias, analíticas e de validação sobre a CORE;
 - `models/analytics/`: fontes SQL das estruturas persistentes do schema `analytics`;
 - `docs/analytics/`: métricas, decisões, limitações e rastreabilidade analítica;
+- `bi/power-bi/`: projeto Power BI da M07, incluindo PBIP, relatório PBIR, modelo semântico TMDL e documentação de validação;
 - `notebooks/analytics/`: exploração e evidências empíricas da camada analítica;
 - `notebooks/data-modeling/`: evidências da modelagem;
 - `notebooks/data-loading/`: evidências da carga e da qualidade dos dados;
@@ -100,6 +104,23 @@ Use `models/` para fontes editáveis de modelos, esquemas, definições estrutur
 Use `database/`, `elt/` e `validation/` para código executável responsável, respectivamente, pela preparação do banco, pelo processamento dos dados e pela validação independente do resultado.
 
 Utilize prefixos numéricos de dois dígitos apenas em coleções com ordem real de leitura ou execução, como notebooks sequenciais e consultas SQL ordenadas. Não numere diretórios arquiteturais, módulos Python, testes ou arquivos independentes para representar a cronologia geral; essa sequência deve permanecer documentada no README principal.
+
+## Estado da M07 — Power BI
+
+A issue ativa #97 materializa a camada de consumo em um projeto Power BI versionável.
+
+Diretrizes obrigatórias:
+
+- usar as quatro views canônicas de `models/analytics/views/` em modo Importação;
+- preservar as granularidades pedido, mês, vendedor-pedido e vendedor;
+- não relacionar `fato_pedido_financeiro` a `fato_vendedor_pedido` por `id_pedido`;
+- relacionar `resumo_desempenho_vendedor` a `fato_vendedor_pedido` por `id_vendedor`;
+- manter calendário, mês e estados como dimensões de filtro unidirecional;
+- não versionar credenciais, cache, arquivos PBIX/PBIT ou configurações locais;
+- tratar atraso e avaliação associados ao vendedor como associação descritiva, nunca como causalidade;
+- validar totais do Power BI contra as consultas e controles aprovados da M06.
+
+Os artefatos da fase encontram-se em `bi/power-bi/`. A validação final de abertura e renderização deve ser realizada no Power BI Desktop e registrada antes do encerramento da issue.
 
 ## Estado consolidado da modelagem conceitual
 

@@ -1,0 +1,10 @@
+expression p_servidor = "localhost:5432" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 99bbf845-4ca1-49d1-b94b-b57f8812b38d
+
+	annotation PBI_ResultType = Text
+
+expression p_banco = "ecommerce_analytics" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: bd04c89c-11e9-4c5c-9a3a-c3ad0f787edd
+
+	annotation PBI_ResultType = Text
+

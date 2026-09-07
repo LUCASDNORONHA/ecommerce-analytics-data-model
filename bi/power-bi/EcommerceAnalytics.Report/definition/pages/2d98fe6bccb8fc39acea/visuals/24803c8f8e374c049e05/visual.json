@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "24803c8f8e374c049e05",
+  "position": {
+    "x": 44.047058823529412,
+    "y": 249.03529411764706,
+    "z": 90,
+    "height": 431.15294117647056,
+    "width": 1200.2823529411764,
+    "tabOrder": 90
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_mes"
+                    }
+                  },
+                  "Property": "mes_ano"
+                }
+              },
+              "queryRef": "dim_mes.mes_ano",
+              "nativeQueryRef": "mes_ano",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fato_pedido_financeiro"
+                    }
+                  },
+                  "Property": "Taxa Atraso Entrega %"
+                }
+              },
+              "queryRef": "fato_pedido_financeiro.Taxa Atraso Entrega %",
+              "nativeQueryRef": "Taxa Atraso Entrega %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fato_pedido_financeiro"
+                    }
+                  },
+                  "Property": "Taxa Avaliação Negativa %"
+                }
+              },
+              "queryRef": "fato_pedido_financeiro.Taxa Avaliação Negativa %",
+              "nativeQueryRef": "Taxa Avaliação Negativa %"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Evolução operacional e de experiência'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#123a63'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
