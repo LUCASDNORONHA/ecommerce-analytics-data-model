@@ -1,0 +1,58 @@
+table dim_calendario
+	lineageTag: c4927b57-e129-4aa2-b78f-9e58485dfd75
+
+	column data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f19951d6-6c8a-483a-8924-cc4bd079ff2d
+		summarizeBy: none
+		sourceColumn: data
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ano
+		dataType: int64
+		lineageTag: c1f01649-5b2f-41e4-8ba2-5fd9977275d9
+		summarizeBy: none
+		sourceColumn: ano
+
+		annotation SummarizationSetBy = User
+
+	column mes_numero
+		dataType: int64
+		lineageTag: 4e2d38bf-0e95-45d8-82b8-14c69a8a996a
+		summarizeBy: none
+		sourceColumn: mes_numero
+
+		annotation SummarizationSetBy = User
+
+	column dia
+		dataType: int64
+		lineageTag: 9af1b399-fedf-4537-9d2b-f743d2d1c140
+		summarizeBy: none
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = User
+
+	partition dim_calendario = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_pedido_financeiro"]}[Data],
+				    Datas = List.RemoveNulls(List.Transform(View[data_compra], each Date.From(_))),
+				    MinData = List.Min(Datas),
+				    MaxData = List.Max(Datas),
+				    Lista = List.Dates(MinData, Duration.Days(MaxData-MinData)+1, #duration(1,0,0,0)),
+				    Tabela = Table.FromList(Lista, Splitter.SplitByNothing(), {"data"}),
+				    Tipo = Table.TransformColumnTypes(Tabela, {{"data", type date}}),
+				    Ano = Table.AddColumn(Tipo, "ano", each Date.Year([data]), Int64.Type),
+				    MesNumero = Table.AddColumn(Ano, "mes_numero", each Date.Month([data]), Int64.Type),
+				    Dia = Table.AddColumn(MesNumero, "dia", each Date.Day([data]), Int64.Type)
+				in
+				    Dia
+
+	annotation PBI_ResultType = Table
+

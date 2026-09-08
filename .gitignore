@@ -56,3 +56,10 @@ outputs/*
 *.snm
 *.vrb
 *.xdv
+
+# Power BI project local artifacts
+**/.pbi/
+**/localSettings.json
+*.pbix
+*.pbit
+*.abf

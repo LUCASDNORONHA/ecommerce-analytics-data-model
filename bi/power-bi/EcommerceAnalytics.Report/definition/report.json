@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "customTheme": {
+      "name": "EcommerceAnalytics-7e5b1a9c.json",
+      "reportVersionAtImport": {
+        "visual": "2.9.0",
+        "report": "3.3.0",
+        "page": "2.3.1"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "true"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Detalhes_do_Vendedor_(2)24961056162409379.png",
+          "path": "Detalhes_do_Vendedor_(2)24961056162409379.png",
+          "type": "Image"
+        },
+        {
+          "name": "EcommerceAnalytics-7e5b1a9c.json",
+          "path": "EcommerceAnalytics-7e5b1a9c.json",
+          "type": "CustomTheme"
+        },
+        {
+          "name": "Finaceiro_e_Reconcilia__o_(1)5953270943543931.png",
+          "path": "Finaceiro_e_Reconcilia__o_(1)5953270943543931.png",
+          "type": "Image"
+        },
+        {
+          "name": "Finaceiro_e_Reconcilia__o5080507647204621.png",
+          "path": "Finaceiro_e_Reconcilia__o5080507647204621.png",
+          "type": "Image"
+        },
+        {
+          "name": "Opera__o_e_Experi_ncia_(2)43510204247825557.png",
+          "path": "Opera__o_e_Experi_ncia_(2)43510204247825557.png",
+          "type": "Image"
+        },
+        {
+          "name": "Vis_o_Geral7023561560940241.png",
+          "path": "Vis_o_Geral7023561560940241.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

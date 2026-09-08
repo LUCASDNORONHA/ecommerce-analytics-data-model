@@ -1,0 +1,310 @@
+table fato_pedido_financeiro
+	lineageTag: c836149d-c996-4a83-9814-409c4fb849a3
+
+	measure Pedidos = COUNTROWS(fato_pedido_financeiro)
+		formatString: #,##0
+		lineageTag: ca03c192-4221-46cc-95eb-34343e00053e
+
+	measure 'Pedidos Entregues' = CALCULATE([Pedidos], fato_pedido_financeiro[status_pedido] = "delivered")
+		formatString: #,##0
+		lineageTag: bb88e48c-cafc-49c4-bdd6-6f4f8a70987f
+
+	measure 'Pedidos Entregues Completos' = CALCULATE([Pedidos], fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: #,##0
+		lineageTag: fb243a8a-f5ef-4dda-a86f-125eafe8b072
+
+	measure 'Pedidos Cancelados' = CALCULATE([Pedidos], fato_pedido_financeiro[status_pedido] = "canceled")
+		formatString: #,##0
+		lineageTag: dedfa91c-1580-4dcb-a4d5-63c24ce68fc9
+
+	measure 'Taxa Cancelamento %' = DIVIDE([Pedidos Cancelados], [Pedidos])
+		formatString: 0.00 %
+		lineageTag: 73bcfacb-517e-4911-8ccc-ee66a690f3c4
+
+	measure 'Valor Itens Entregues' = CALCULATE(SUM(fato_pedido_financeiro[valor_itens]), fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: R$ #,##0.00
+		lineageTag: 0c3e0d38-7a34-48cc-86c8-0768a5903296
+
+	measure 'Valor Frete Entregue' = CALCULATE(SUM(fato_pedido_financeiro[valor_frete]), fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: R$ #,##0.00
+		lineageTag: 394e47eb-f3cc-4adf-9cdc-918e17d35931
+
+	measure 'Valor Bruto Entregue' = CALCULATE(SUM(fato_pedido_financeiro[valor_bruto]), fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: R$ #,##0.00
+		lineageTag: fc68e0ec-6899-4e59-8b44-de8055c51a0c
+
+	measure 'Valor Pago Registrado Entregue' = CALCULATE(SUM(fato_pedido_financeiro[valor_pago_registrado]), fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: R$ #,##0.00
+		lineageTag: 0d8a7bbb-3809-41f4-9440-c5987f0a679c
+
+	measure 'Diferença Reconciliação Entregue' = CALCULATE(SUM(fato_pedido_financeiro[diferenca_reconciliacao]), fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[possui_itens] = TRUE(), fato_pedido_financeiro[possui_pagamentos] = TRUE())
+		formatString: R$ #,##0.00
+		lineageTag: 1794dc0f-b00e-44e2-8b88-c50a5bcba7d0
+
+	measure 'Ticket Médio Bruto' = DIVIDE([Valor Bruto Entregue], [Pedidos Entregues Completos])
+		formatString: R$ #,##0.00
+		lineageTag: c84fca2e-b15f-47bd-920c-7330d1f327ee
+
+	measure 'Participação Frete %' = DIVIDE([Valor Frete Entregue], [Valor Bruto Entregue])
+		formatString: 0.00 %
+		lineageTag: 5aaca84e-8a4d-4917-80b3-2ef6de373077
+
+	measure 'Taxa Atraso Entrega %' = DIVIDE(CALCULATE([Pedidos], fato_pedido_financeiro[status_pedido] = "delivered", fato_pedido_financeiro[entrega_atrasada] = TRUE()), [Pedidos Entregues])
+		formatString: 0.00 %
+		lineageTag: 4affb19c-2111-4578-93d7-9873aaa6402c
+
+	measure 'Nota Média' = CALCULATE(AVERAGE(fato_pedido_financeiro[nota_media_pedido]), fato_pedido_financeiro[possui_avaliacao] = TRUE())
+		formatString: 0.00
+		lineageTag: 108c99a8-1294-4e68-9462-54e8207ef7b4
+
+	measure 'Taxa Avaliação Negativa %' = DIVIDE(CALCULATE([Pedidos], fato_pedido_financeiro[possui_avaliacao] = TRUE(), fato_pedido_financeiro[nota_media_pedido] <= 2), CALCULATE([Pedidos], fato_pedido_financeiro[possui_avaliacao] = TRUE()))
+		formatString: 0.00 %
+		lineageTag: 63d60abf-6feb-4462-886a-e28543f38f5f
+
+	column id_pedido
+		dataType: string
+		isHidden
+		lineageTag: e249fe6d-872d-48be-919e-ffeefb53aba9
+		summarizeBy: none
+		sourceColumn: id_pedido
+
+		annotation SummarizationSetBy = User
+
+	column id_cliente
+		dataType: string
+		isHidden
+		lineageTag: 57f2e46a-dc59-4868-aac3-26f367a59882
+		summarizeBy: none
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = User
+
+	column id_cliente_unico
+		dataType: string
+		isHidden
+		lineageTag: 4022d35f-3c4a-4ab9-b25d-1130e95f668c
+		summarizeBy: none
+		sourceColumn: id_cliente_unico
+
+		annotation SummarizationSetBy = User
+
+	column cidade_cliente
+		dataType: string
+		lineageTag: fde6138a-361e-48f1-baca-fb12fe8ca85c
+		summarizeBy: none
+		sourceColumn: cidade_cliente
+
+		annotation SummarizationSetBy = User
+
+	column estado_cliente
+		dataType: string
+		lineageTag: 7f5a3fcc-5aa5-4d25-8351-1c32884cac73
+		summarizeBy: none
+		sourceColumn: estado_cliente
+
+		annotation SummarizationSetBy = User
+
+	column status_pedido
+		dataType: string
+		lineageTag: a14ab4a2-0bf1-443f-a4a9-6b4be01a3cc1
+		summarizeBy: none
+		sourceColumn: status_pedido
+
+		annotation SummarizationSetBy = User
+
+	column data_compra
+		dataType: dateTime
+		lineageTag: df9f854e-db73-45d6-86c6-7f85077fa67b
+		summarizeBy: none
+		sourceColumn: data_compra
+
+		annotation SummarizationSetBy = User
+
+	column mes_compra
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dad626ff-ee58-46b8-a924-71087101b1a4
+		summarizeBy: none
+		sourceColumn: mes_compra
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column data_aprovacao
+		dataType: dateTime
+		lineageTag: 6ea3547f-0394-4f72-98ba-e40d44d88b88
+		summarizeBy: none
+		sourceColumn: data_aprovacao
+
+		annotation SummarizationSetBy = User
+
+	column data_envio_transportador
+		dataType: dateTime
+		lineageTag: 1a9449d7-fc43-4024-bc5a-cd0815596fd7
+		summarizeBy: none
+		sourceColumn: data_envio_transportador
+
+		annotation SummarizationSetBy = User
+
+	column data_entrega
+		dataType: dateTime
+		lineageTag: 7451654c-b6c8-4432-956c-96280a84c43f
+		summarizeBy: none
+		sourceColumn: data_entrega
+
+		annotation SummarizationSetBy = User
+
+	column data_estimada
+		dataType: dateTime
+		lineageTag: 0cbfc606-9335-41a2-b95e-f4a4741ef7e0
+		summarizeBy: none
+		sourceColumn: data_estimada
+
+		annotation SummarizationSetBy = User
+
+	column entrega_atrasada
+		dataType: boolean
+		lineageTag: 4621de67-936f-46d4-94c9-b2f6de85155b
+		summarizeBy: none
+		sourceColumn: entrega_atrasada
+
+		annotation SummarizationSetBy = User
+
+	column possui_itens
+		dataType: boolean
+		lineageTag: 1f102669-fd1f-4ced-a879-7a6693b9e37e
+		summarizeBy: none
+		sourceColumn: possui_itens
+
+		annotation SummarizationSetBy = User
+
+	column possui_pagamentos
+		dataType: boolean
+		lineageTag: abadcac6-d55e-48ac-9888-8d268371363a
+		summarizeBy: none
+		sourceColumn: possui_pagamentos
+
+		annotation SummarizationSetBy = User
+
+	column possui_avaliacao
+		dataType: boolean
+		lineageTag: 2fd9e99a-98ef-4cf6-867f-73e49eb9a3c2
+		summarizeBy: none
+		sourceColumn: possui_avaliacao
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_itens
+		dataType: int64
+		lineageTag: 3f56c998-b74e-409c-a7f3-14848e36390a
+		summarizeBy: none
+		sourceColumn: quantidade_itens
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_vendedores
+		dataType: int64
+		lineageTag: 662cd4de-cef4-4a61-b318-af788c874c73
+		summarizeBy: none
+		sourceColumn: quantidade_vendedores
+
+		annotation SummarizationSetBy = User
+
+	column valor_itens
+		dataType: double
+		formatString: 0.00
+		lineageTag: ea9bc9c3-e45b-4712-85d1-09213c0a3e5b
+		summarizeBy: none
+		sourceColumn: valor_itens
+
+		annotation SummarizationSetBy = User
+
+	column valor_frete
+		dataType: double
+		formatString: 0.00
+		lineageTag: 3ad82a06-946d-43d0-be07-0b8d194b3814
+		summarizeBy: none
+		sourceColumn: valor_frete
+
+		annotation SummarizationSetBy = User
+
+	column valor_bruto
+		dataType: double
+		formatString: 0.00
+		lineageTag: fc55f260-77fd-40fe-a634-6f291b633976
+		summarizeBy: none
+		sourceColumn: valor_bruto
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_pagamentos
+		dataType: int64
+		lineageTag: 8287a9ba-a6bb-4096-a0e7-a68b4b67640b
+		summarizeBy: none
+		sourceColumn: quantidade_pagamentos
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_tipos_pagamento
+		dataType: int64
+		lineageTag: f07fe5be-7c0f-48d4-8b9e-9ee259232850
+		summarizeBy: none
+		sourceColumn: quantidade_tipos_pagamento
+
+		annotation SummarizationSetBy = User
+
+	column maximo_parcelas
+		dataType: int64
+		lineageTag: d46532c5-1ad4-4973-8fe5-b0c10c28878e
+		summarizeBy: none
+		sourceColumn: maximo_parcelas
+
+		annotation SummarizationSetBy = User
+
+	column valor_pago_registrado
+		dataType: double
+		formatString: 0.00
+		lineageTag: 30b795f2-51ea-4624-9074-50d7f781cf82
+		summarizeBy: none
+		sourceColumn: valor_pago_registrado
+
+		annotation SummarizationSetBy = User
+
+	column diferenca_reconciliacao
+		dataType: double
+		formatString: 0.00
+		lineageTag: 6d290490-c0a3-4593-a28a-a518fc1ea384
+		summarizeBy: none
+		sourceColumn: diferenca_reconciliacao
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_avaliacoes
+		dataType: int64
+		lineageTag: d1b6dcb6-2270-41aa-b7c0-605ebb09ddff
+		summarizeBy: none
+		sourceColumn: quantidade_avaliacoes
+
+		annotation SummarizationSetBy = User
+
+	column nota_media_pedido
+		dataType: double
+		formatString: 0.00
+		lineageTag: 2996bcbd-7bc1-4f6d-9184-618ec5829421
+		summarizeBy: none
+		sourceColumn: nota_media_pedido
+
+		annotation SummarizationSetBy = User
+
+	partition fato_pedido_financeiro = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_pedido_financeiro"]}[Data]
+				in
+				    View
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,270 @@
+table resumo_desempenho_vendedor
+	lineageTag: 63e685b5-1f81-403f-aada-94418d3132c2
+
+	measure 'Vendedores Ativos' = COUNTROWS(resumo_desempenho_vendedor)
+		formatString: #,##0
+		lineageTag: 0f8f9b0d-8212-4f17-8b5c-78c7ac37ae98
+
+	measure 'Valor Bruto Vendedores' = SUM(resumo_desempenho_vendedor[valor_bruto])
+		formatString: R$ #,##0.00
+		lineageTag: 1f5d0f97-43cd-4fbe-8030-fea3b874605e
+
+	measure 'Participação Top 10 %' = DIVIDE(SUMX(FILTER(resumo_desempenho_vendedor, resumo_desempenho_vendedor[posicao_valor_itens] <= 10), resumo_desempenho_vendedor[valor_itens]), SUM(resumo_desempenho_vendedor[valor_itens]))
+		formatString: 0.00 %
+		lineageTag: 691d41da-f928-4d4e-a3ce-2dbe7fdd6314
+
+	measure 'HHI Base Observada' = MAX(resumo_desempenho_vendedor[hhi_base_observada])
+		formatString: 0.000000
+		lineageTag: cce6628d-f5a5-4f54-8c0c-eb6f401d3073
+
+	column id_vendedor
+		dataType: string
+		lineageTag: 7ca84a64-c61e-473c-9a5b-9bed1e40e647
+		summarizeBy: none
+		sourceColumn: id_vendedor
+
+		annotation SummarizationSetBy = User
+
+	column cidade_vendedor
+		dataType: string
+		lineageTag: d2634355-6b8e-4ffb-bc52-c2b248869a76
+		summarizeBy: none
+		sourceColumn: cidade_vendedor
+
+		annotation SummarizationSetBy = User
+
+	column estado_vendedor
+		dataType: string
+		lineageTag: 29d924e1-f8c7-412d-a602-d809c81e9096
+		summarizeBy: none
+		sourceColumn: estado_vendedor
+
+		annotation SummarizationSetBy = User
+
+	column posicao_valor_itens
+		dataType: int64
+		lineageTag: 37eeb797-515f-47f7-be71-05d9f09bf693
+		summarizeBy: none
+		sourceColumn: posicao_valor_itens
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_com_participacao
+		dataType: int64
+		lineageTag: dfcc4069-db92-43c6-a07a-9bb1b2494a46
+		summarizeBy: none
+		sourceColumn: pedidos_com_participacao
+
+		annotation SummarizationSetBy = User
+
+	column quantidade_itens
+		dataType: double
+		lineageTag: e0025fe1-02d2-4006-960e-3bb7fabeadc7
+		summarizeBy: none
+		sourceColumn: quantidade_itens
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_itens
+		dataType: double
+		lineageTag: be97d731-cd78-47b0-9f07-77553b49682a
+		summarizeBy: none
+		sourceColumn: valor_itens
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_frete
+		dataType: double
+		lineageTag: 296507e0-d612-4044-852d-fdff292e5016
+		summarizeBy: none
+		sourceColumn: valor_frete
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_bruto
+		dataType: double
+		lineageTag: 82303532-9f1f-454c-a626-e8bd3e7d1337
+		summarizeBy: none
+		sourceColumn: valor_bruto
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_medio_por_item
+		dataType: double
+		lineageTag: b890bc1d-b0a4-4f21-907b-df13dc169e62
+		summarizeBy: none
+		sourceColumn: valor_medio_por_item
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_medio_por_pedido_com_participacao
+		dataType: double
+		lineageTag: 8bfb72fc-9f95-4dc5-8537-951c269ad34b
+		summarizeBy: none
+		sourceColumn: valor_medio_por_pedido_com_participacao
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column participacao_valor_itens_percentual
+		dataType: double
+		lineageTag: 5c7f7cb4-d5be-41ad-a315-f763a297d94a
+		summarizeBy: none
+		sourceColumn: participacao_valor_itens_percentual
+
+		annotation SummarizationSetBy = User
+
+	column participacao_acumulada_percentual
+		dataType: double
+		lineageTag: 525fba69-dd1d-4c3b-802e-9bb5ac6689ff
+		summarizeBy: none
+		sourceColumn: participacao_acumulada_percentual
+
+		annotation SummarizationSetBy = User
+
+	column classe_abc
+		dataType: string
+		lineageTag: 9e5662b8-5a09-4c25-ba72-6d87cc143a56
+		summarizeBy: none
+		sourceColumn: classe_abc
+
+		annotation SummarizationSetBy = User
+
+	column hhi_base_observada
+		dataType: double
+		lineageTag: 451b1cfe-be28-4bc1-b094-89d5d6c8020d
+		summarizeBy: none
+		sourceColumn: hhi_base_observada
+
+		annotation SummarizationSetBy = User
+
+	column categorias_comercializadas
+		dataType: int64
+		lineageTag: 8bd22aca-b424-40c5-9db5-7542b291dfe6
+		summarizeBy: none
+		sourceColumn: categorias_comercializadas
+
+		annotation SummarizationSetBy = User
+
+	column estados_clientes_atendidos
+		dataType: int64
+		lineageTag: 2e74f211-233c-4b27-bf25-377155590ca1
+		summarizeBy: none
+		sourceColumn: estados_clientes_atendidos
+
+		annotation SummarizationSetBy = User
+
+	column cidades_clientes_atendidas
+		dataType: int64
+		lineageTag: e96b3332-2a5e-4323-9440-15354c9bbf8c
+		summarizeBy: none
+		sourceColumn: cidades_clientes_atendidas
+
+		annotation SummarizationSetBy = User
+
+	column itens_com_envio_observado
+		dataType: double
+		lineageTag: d62b0ad2-3a75-4500-a3b2-deec1403b4a5
+		summarizeBy: none
+		sourceColumn: itens_com_envio_observado
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column itens_enviados_apos_limite
+		dataType: double
+		lineageTag: 46612c92-e292-4478-a10c-b5d05dfc9969
+		summarizeBy: none
+		sourceColumn: itens_enviados_apos_limite
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taxa_itens_enviados_apos_limite_percentual
+		dataType: double
+		lineageTag: e369d875-8805-41a1-99c5-8cb98a35b548
+		summarizeBy: none
+		sourceColumn: taxa_itens_enviados_apos_limite_percentual
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_com_prazo_entrega_observado
+		dataType: int64
+		lineageTag: b19080a0-44ec-4586-8b1f-a248a4068c35
+		summarizeBy: none
+		sourceColumn: pedidos_com_prazo_entrega_observado
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_atrasados_associados
+		dataType: int64
+		lineageTag: 386c24ce-38f3-4f4c-a8c2-2af5e62833ea
+		summarizeBy: none
+		sourceColumn: pedidos_atrasados_associados
+
+		annotation SummarizationSetBy = User
+
+	column taxa_pedidos_atrasados_associados_percentual
+		dataType: double
+		lineageTag: ec0a9d37-0022-438f-be12-94a37177513c
+		summarizeBy: none
+		sourceColumn: taxa_pedidos_atrasados_associados_percentual
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_com_avaliacao_associada
+		dataType: int64
+		lineageTag: 09fd4d23-720e-47ca-b42c-8b8c85ff8dd3
+		summarizeBy: none
+		sourceColumn: pedidos_com_avaliacao_associada
+
+		annotation SummarizationSetBy = User
+
+	column nota_media_associada
+		dataType: double
+		lineageTag: 8e86c4ac-8bb4-4923-bf4a-7b0903e510bc
+		summarizeBy: none
+		sourceColumn: nota_media_associada
+
+		annotation SummarizationSetBy = User
+
+	column pedidos_com_avaliacao_negativa_associada
+		dataType: int64
+		lineageTag: eea6e128-0aad-4c9b-b1be-3efd8c5a530a
+		summarizeBy: none
+		sourceColumn: pedidos_com_avaliacao_negativa_associada
+
+		annotation SummarizationSetBy = User
+
+	column taxa_avaliacao_negativa_associada_percentual
+		dataType: double
+		lineageTag: fc2d0c40-ddd3-4893-b3c2-a4139f53e6fb
+		summarizeBy: none
+		sourceColumn: taxa_avaliacao_negativa_associada_percentual
+
+		annotation SummarizationSetBy = User
+
+	partition resumo_desempenho_vendedor = m
+		mode: import
+		source =
+				let
+				    Fonte = PostgreSQL.Database(p_servidor, p_banco, [CreateNavigationProperties=false]),
+				    View = Fonte{[Schema="analytics", Item="vw_desempenho_vendedor"]}[Data]
+				in
+				    View
+
+	annotation PBI_ResultType = Table
+

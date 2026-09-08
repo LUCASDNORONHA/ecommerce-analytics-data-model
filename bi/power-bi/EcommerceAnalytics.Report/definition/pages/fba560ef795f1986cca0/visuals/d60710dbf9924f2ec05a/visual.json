@@ -1,0 +1,212 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "d60710dbf9924f2ec05a",
+  "position": {
+    "x": 691.19999999999993,
+    "y": 239.71764705882353,
+    "z": 90,
+    "height": 440.47058823529409,
+    "width": 552.28235294117644,
+    "tabOrder": 90
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "id_vendedor"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.id_vendedor",
+              "nativeQueryRef": "id_vendedor"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "estado_vendedor"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.estado_vendedor",
+              "nativeQueryRef": "estado_vendedor"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "classe_abc"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.classe_abc",
+              "nativeQueryRef": "classe_abc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "posicao_valor_itens"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.posicao_valor_itens",
+              "nativeQueryRef": "posicao_valor_itens"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "valor_bruto"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.valor_bruto",
+              "nativeQueryRef": "valor_bruto"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "resumo_desempenho_vendedor"
+                    }
+                  },
+                  "Property": "nota_media_associada"
+                }
+              },
+              "queryRef": "resumo_desempenho_vendedor.nota_media_associada",
+              "nativeQueryRef": "nota_media_associada"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "resumo_desempenho_vendedor"
+                  }
+                },
+                "Property": "posicao_valor_itens"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Resumo dos vendedores'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#183153'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

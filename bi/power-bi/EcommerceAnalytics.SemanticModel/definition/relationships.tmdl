@@ -1,0 +1,36 @@
+relationship ef6bdbdd-9ae1-4ef4-9d98-c9ef6a4b4565
+	fromColumn: fato_pedido_financeiro.mes_compra
+	toColumn: dim_mes.mes_compra
+
+relationship 2f805fff-039f-4497-8d09-6db40a1e2390
+	fromColumn: agregado_financeiro_mensal.mes_compra
+	toColumn: dim_mes.mes_compra
+
+relationship cbd8c8f0-6eb9-46c8-9e51-a45924ac92c8
+	fromColumn: fato_vendedor_pedido.mes_compra
+	toColumn: dim_mes.mes_compra
+
+relationship 2540da87-4b08-462d-8726-db7463b1a970
+	fromColumn: fato_pedido_financeiro.data_compra
+	toColumn: dim_calendario.data
+
+relationship 3ea1eebe-e95a-451c-a19a-c7430acd77fc
+	fromColumn: fato_vendedor_pedido.data_compra
+	toColumn: dim_calendario.data
+
+relationship b10a1ea6-65c2-4cc1-b0ba-9f9c5b2e5169
+	fromColumn: fato_pedido_financeiro.estado_cliente
+	toColumn: dim_estado_cliente.estado
+
+relationship a5338348-170a-4a60-9810-6c949e7a6ec2
+	fromColumn: fato_vendedor_pedido.estado_cliente
+	toColumn: dim_estado_cliente.estado
+
+relationship d9fc13c5-1b94-4ac8-b7cd-4f194789af91
+	fromColumn: resumo_desempenho_vendedor.estado_vendedor
+	toColumn: dim_estado_vendedor.estado
+
+relationship b7709344-c3b1-4824-a52c-97e5b52b80c0
+	fromColumn: fato_vendedor_pedido.id_vendedor
+	toColumn: resumo_desempenho_vendedor.id_vendedor
+
