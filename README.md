@@ -143,6 +143,7 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── test_elt_validation.py
 │   ├── test_pipeline.py
 │   ├── test_power_bi_project.py
+│   ├── test_repository_artifacts.py
 │   └── test_raw_loader.py
 │
 ├── .github/
@@ -320,7 +321,11 @@ A documentação consolidada da carga e das transformações encontra-se em:
 
 ## Testes e qualidade
 
-O projeto possui testes automatizados para a preparação do banco, ingestão da RAW, transformação da CORE, orquestração do pipeline e validação do ELT.
+O projeto possui testes automatizados para a preparação do banco, ingestão da
+RAW, transformação da CORE, orquestração do pipeline, validação do ELT, projeto
+Power BI e integridade dos artefatos versionados. A suíte também verifica links
+locais da documentação, arquivos JSON e notebooks, além dos marcadores básicos
+dos PDFs consolidados.
 
 Execute a suíte localmente com:
 
