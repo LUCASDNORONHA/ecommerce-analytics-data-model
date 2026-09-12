@@ -38,5 +38,4 @@ com autorização explícita.
 ## Referências
 
 - [Documentação consolidada da modelagem física](../../docs/modeling/physical/physical_model.pdf)
-- [Fonte LaTeX da documentação](../../docs/modeling/physical/physical_model.tex)
 - [Modelo lógico aprovado](../logical/logical_schema.dbml)

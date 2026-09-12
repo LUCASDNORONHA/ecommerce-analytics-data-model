@@ -97,7 +97,7 @@ Não crie arquivos na raiz quando já existir um diretório próprio para o arte
 
 Não duplique o mesmo artefato desnecessariamente entre `docs/`, `models/` e diretórios de implementação.
 
-Use `docs/` para documentação destinada à leitura humana, como `.tex`, `.pdf`, justificativas, relatórios e representações explicativas.
+Use `docs/` para documentação destinada à leitura humana, como `.pdf`, justificativas, relatórios e representações explicativas.
 
 Use `models/` para fontes editáveis de modelos, esquemas, definições estruturais, DDL e demais artefatos técnicos relacionados à modelagem.
 
@@ -154,10 +154,6 @@ A representação exportada utilizada na documentação encontra-se em:
 
 A documentação correspondente encontra-se em:
 
-`docs/modeling/conceptual/conceptual_model.tex`
-
-e:
-
 `docs/modeling/conceptual/conceptual_model.pdf`
 
 As decisões conceituais foram sustentadas pelos seguintes notebooks:
@@ -193,10 +189,6 @@ A representação técnica consolidada encontra-se em:
 `models/logical/logical_schema.dbml`
 
 A documentação correspondente encontra-se em:
-
-`docs/modeling/logical/logical_model.tex`
-
-e:
 
 `docs/modeling/logical/logical_model.pdf`
 
@@ -251,10 +243,6 @@ As principais diretrizes físicas consolidadas são:
 - preservar a rastreabilidade entre os modelos conceitual, lógico e físico.
 
 A documentação consolidada encontra-se em:
-
-`docs/modeling/physical/physical_model.tex`
-
-e:
 
 `docs/modeling/physical/physical_model.pdf`
 
@@ -328,10 +316,6 @@ Os testes automatizados correspondentes encontram-se em:
 `tests/test_elt_validation.py`
 
 A documentação consolidada da etapa encontra-se em:
-
-`docs/data-loading/carga_transformacao_dados.tex`
-
-e:
 
 `docs/data-loading/carga_transformacao_dados.pdf`
 
