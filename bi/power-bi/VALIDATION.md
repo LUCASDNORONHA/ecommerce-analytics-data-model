@@ -16,6 +16,19 @@ publicada no Power BI Service.
 Os itens detalhados abaixo permanecem como checklist técnico. Verificações sem
 evidência específica registrada não são marcadas automaticamente.
 
+## Evidências automatizadas complementares
+
+A suíte `tests/test_power_bi_project.py` verifica estaticamente que:
+
+- as quatro views canônicas aparecem como fontes do modelo semântico;
+- não existe relacionamento direto entre os dois fatos por `id_pedido`;
+- o relacionamento por `id_vendedor` está declarado entre o resumo e o fato de vendedores;
+- o relatório contém cinco páginas, 42 visuais, drillthrough e filtro Top N;
+- os visuais permanecem dentro do canvas de 1280 × 720;
+- arquivos binários, cache e configurações locais do Power BI não são versionados.
+
+Essas verificações complementam, mas não substituem, os itens manuais abaixo.
+
 ## Estrutura
 
 - [x] O PBIP abre sem erro estrutural.

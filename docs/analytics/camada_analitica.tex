@@ -2,9 +2,18 @@
 
 \usepackage{fontspec}
 \usepackage[brazilian]{babel}
-\setmainfont{Arial}
-\setsansfont{Arial}
-\setmonofont{Consolas}
+\IfFontExistsTF{Arial}{
+  \setmainfont{Arial}
+  \setsansfont{Arial}
+}{
+  \setmainfont{Liberation Sans}
+  \setsansfont{Liberation Sans}
+}
+\IfFontExistsTF{Consolas}{
+  \setmonofont{Consolas}
+}{
+  \setmonofont{DejaVu Sans Mono}
+}
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{
@@ -22,6 +31,7 @@
   fvextra,
   framed
 }
+\usepackage{pdflscape}
 \usepackage[table]{xcolor}
 \usepackage{titlesec,fancyhdr,xurl,hyperref,bookmark}
 
@@ -59,16 +69,17 @@
 \setcounter{tocdepth}{2}
 \newcounter{none}
 \AtBeginEnvironment{longtable}{\footnotesize\setstretch{1.0}}
+\newcommand{\CabecalhoTabela}[1]{\textcolor{white}{\textbf{#1}}}
 
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\fancyhead[C]{
-  \colorbox{AzulCorporativo}{
-    \makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{
-      \textcolor{white}{\textbf{\ \ Camada Analítica e Extração de Inteligência}}
-    }
-  }
+\fancyhead[C]{%
+  \colorbox{AzulCorporativo}{%
+    \makebox[\dimexpr\textwidth-2\fboxsep\relax][l]{%
+      \textcolor{white}{\textbf{\ \ Camada Analítica e Extração de Inteligência}}%
+    }%
+  }%
 }
 \fancyfoot[C]{\color{CinzaEscuro}\thepage}
 
@@ -168,10 +179,10 @@ ANALYTICS}\label{docs__analytics__contrato_analitico.md__contrato-analuxedtico-d
 
 Este documento consolida o problema de negócio, os stakeholders, as
 decisões, as demandas, os casos de uso e o catálogo de indicadores que
-orientaram a fase M06 --- Camada Analítica e Extração de Inteligência.
+orientaram o desenvolvimento da Camada Analítica e Extração de Inteligência.
 
 O contrato antecedeu e orientou a implementação das consultas e
-estruturas analíticas, sem transformar as issues da fase em uma sequência
+estruturas analíticas, sem transformar as atividades em uma sequência
 mecânica. Exploração, validação de requisitos e definição de métricas se
 retroalimentaram, com alterações sustentadas por evidência e registradas
 de forma rastreável.
@@ -274,19 +285,21 @@ será tratada como evidência de causalidade.
 apoiadas}\label{docs__analytics__contrato_analitico.md__stakeholders-e-decisuxf5es-apoiadas}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3077}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2308}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedleft
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Prioridade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Stakeholder hipotético
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Interesse
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Decisões apoiadas
 \end{minipage} \\
 \midrule\noalign{}
@@ -313,6 +326,7 @@ indicadores reproduzíveis \\
 analíticas}\label{docs__analytics__contrato_analitico.md__demandas-e-perguntas-analuxedticas}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}
@@ -320,25 +334,26 @@ analíticas}\label{docs__analytics__contrato_analitico.md__demandas-e-perguntas-
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedleft
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Prioridade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Stakeholder
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Decisão
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Pergunta
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Indicadores principais
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-P0 & Financeiro/executivo & Acompanhar desempenho & Quanto foi
+P0 & Financeiro/\allowbreak executivo & Acompanhar desempenho & Quanto foi
 movimentado e como evoluiu? & Valores dos itens, frete, valor bruto,
 valor pago e crescimento \\
-P0 & Financeiro/executivo & Validar consistência & O valor pago é
+P0 & Financeiro/\allowbreak executivo & Validar consistência & O valor pago é
 compatível com itens mais frete? & Diferenças absoluta e percentual \\
 P0 & Gestão de vendedores & Identificar vendedores estratégicos & Quais
 vendedores mais contribuem? & Valor dos itens, participação e posição \\
@@ -480,6 +495,7 @@ indisponíveis ou ainda não concluídos serão analisados separadamente.
 observadas}\label{docs__analytics__contrato_analitico.md__medidas-observadas}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
@@ -487,15 +503,16 @@ observadas}\label{docs__analytics__contrato_analitico.md__medidas-observadas}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Métrica
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Fórmula
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Unidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Granularidade de origem
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Fonte
 \end{minipage} \\
 \midrule\noalign{}
@@ -568,16 +585,18 @@ vendedores}\label{docs__analytics__contrato_analitico.md__poluxedtica-de-anuxe1l
 fundamentais}\label{docs__analytics__contrato_analitico.md__muxe9tricas-fundamentais}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Métrica
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Fórmula resumida
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Interpretação
 \end{minipage} \\
 \midrule\noalign{}
@@ -771,13 +790,15 @@ distâncias percorridas.
 nomenclatura}\label{docs__analytics__contrato_analitico.md__convenuxe7uxf5es-de-nomenclatura}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Evitar
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Utilizar
 \end{minipage} \\
 \midrule\noalign{}
@@ -849,16 +870,18 @@ Toda consulta financeira deve:
 aprovados}\label{docs__analytics__contrato_analitico.md__rastreabilidade-com-os-requisitos-aprovados}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Demanda deste contrato
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Requisito existente
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Evidência produzida
 \end{minipage} \\
 \midrule\noalign{}
@@ -878,25 +901,25 @@ Consultas de controle e validação \\
 \end{longtable}
 }
 
-\subsection{Impacto no fluxo
-M06}\label{docs__analytics__contrato_analitico.md__impacto-no-fluxo-m06}
+\subsection{Impacto no desenvolvimento
+analítico}\label{docs__analytics__contrato_analitico.md__impacto-no-fluxo-m06}
 
 \begin{itemize}
 \tightlist
 \item
-  M06-01 explorou a CORE a partir das perguntas priorizadas neste
+  A elaboração das consultas básicas explorou a CORE a partir das perguntas priorizadas neste
   contrato;
 \item
-  M06-02 combinou entidades para responder aos casos de uso aprovados;
+  A elaboração das consultas analíticas combinou entidades para responder aos casos de uso aprovados;
 \item
-  M06-03 validou a cobertura dos requisitos e registrou evidências;
+  A validação dos requisitos funcionais verificou a cobertura dos requisitos e registrou evidências;
 \item
-  M06-04 validou e consolidou o catálogo preliminar de métricas;
+  A definição das métricas validou e consolidou o catálogo preliminar de métricas;
 \item
-  M06-05 persistiu somente regras reutilizáveis e semanticamente
+  A criação das views persistiu somente regras reutilizáveis e semanticamente
   estáveis;
 \item
-  M06-06 preparou datasets com nomes, granularidade e métricas
+  A preparação do consumo em SQL e Power BI organizou datasets com nomes, granularidade e métricas
   explícitos.
 \end{itemize}
 
@@ -910,7 +933,7 @@ CORE}\label{docs__analytics__evidencias_consultas_basicas_core.md__eviduxeancias
 \subsection{Finalidade}\label{docs__analytics__evidencias_consultas_basicas_core.md__finalidade}
 
 Este documento registra os principais resultados de controle obtidos
-durante a implementação das consultas básicas da etapa M06-01. Os
+durante a implementação das consultas básicas. Os
 resultados foram produzidos sobre a CORE local validada e servem para
 confirmar decisões de granularidade do contrato analítico.
 
@@ -922,9 +945,11 @@ negócio.
 executada}\label{docs__analytics__evidencias_consultas_basicas_core.md__base-executada}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lr@{}}
 \toprule\noalign{}
-Relação CORE & Registros \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Relação CORE} & \CabecalhoTabela{Registros} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -943,9 +968,11 @@ aprovado do ELT.
 pedidos}\label{docs__analytics__evidencias_consultas_basicas_core.md__status-dos-pedidos}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lrr@{}}
 \toprule\noalign{}
-Status & Pedidos & Participação \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Status} & \CabecalhoTabela{Pedidos} & \CabecalhoTabela{Participação} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1059,9 +1086,11 @@ vendedores}\label{docs__analytics__evidencias_consultas_basicas_core.md__pedidos
 Na base de pedidos entregues com itens:
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lrr@{}}
 \toprule\noalign{}
-Classificação & Pedidos & Participação \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Classificação} & \CabecalhoTabela{Pedidos} & \CabecalhoTabela{Participação} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1129,7 +1158,7 @@ CORE}\label{docs__analytics__evidencias_consultas_analiticas_core.md__eviduxeanc
 
 \subsection{Escopo}\label{docs__analytics__evidencias_consultas_analiticas_core.md__escopo}
 
-Este documento registra evidências da etapa M06-02, orientada
+Este documento registra evidências da elaboração das consultas analíticas, orientada
 prioritariamente ao desempenho financeiro e à contribuição dos
 vendedores. As consultas-fonte estão em \nolinkurl{queries/analysis/} e
 utilizam pedidos entregues como base principal.
@@ -1145,9 +1174,11 @@ A população que possui simultaneamente pedido entregue, itens e
 pagamentos contém 96.477 pedidos e 110.194 itens.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lr@{}}
 \toprule\noalign{}
-Indicador & Resultado \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Indicador} & \CabecalhoTabela{Resultado} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1185,7 +1216,7 @@ A consulta mensal:
 \end{itemize}
 
 Essa regra evita comparar automaticamente os meses de borda ou transição
-já identificados na etapa M06-01.
+já identificados na exploração das consultas básicas.
 
 \subsection{Concentração dos
 vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__concentrauxe7uxe3o-dos-vendedores}
@@ -1193,9 +1224,11 @@ vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__conc
 Foram observados 2.970 vendedores ativos em pedidos entregues.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lr@{}}
 \toprule\noalign{}
-Indicador & Resultado \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Indicador} & \CabecalhoTabela{Resultado} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1237,6 +1270,7 @@ um vendedor. Por isso:
 pagamento}\label{docs__analytics__evidencias_consultas_analiticas_core.md__formas-e-condiuxe7uxf5es-de-pagamento}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1579}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
@@ -1244,15 +1278,16 @@ pagamento}\label{docs__analytics__evidencias_consultas_analiticas_core.md__forma
   >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Tipo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Registros
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Pedidos distintos
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Valor pago registrado
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Parcelas médias
 \end{minipage} \\
 \midrule\noalign{}
@@ -1278,13 +1313,15 @@ vendedores}\label{docs__analytics__evidencias_consultas_analiticas_core.md__risc
 Na granularidade vendedor-pedido foram observadas 97.819 participações.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.4286}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5714}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Indicador associado
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft\color{white}\bfseries
 Resultado
 \end{minipage} \\
 \midrule\noalign{}
@@ -1302,7 +1339,7 @@ Avaliação negativa, nota menor ou igual a 2 & 13,25\% \\
 As taxas usam somente observações com informação disponível no
 denominador. O resultado de 8,97\% possui granularidade vendedor-pedido
 e indica a presença de ao menos um item fora do limite. A taxa calculada
-na granularidade de item é 9,32\%, conforme estabilizado na M06-05.
+na granularidade de item é 9,32\%, conforme estabilizado nas views do schema analytics.
 Envio após o limite é diretamente relacionado aos itens do vendedor.
 Atraso da entrega e avaliação pertencem ao pedido e não comprovam
 responsabilidade nem causalidade do vendedor.
@@ -1344,9 +1381,9 @@ seguintes}\label{docs__analytics__evidencias_consultas_analiticas_core.md__decis
   separar medidas diretamente atribuíveis de indicadores apenas
   associados;
 \item
-  validar fórmulas e cobertura contra os requisitos na M06-03;
+  validar fórmulas e cobertura na validação dos requisitos funcionais;
 \item
-  consolidar como métricas somente os indicadores aprovados na M06-04.
+  consolidar como métricas somente os indicadores aprovados no catálogo analítico.
 \end{itemize}
 
 \section{Matriz de validação dos requisitos
@@ -1355,8 +1392,7 @@ funcionais}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__ma
 \subsection{Finalidade}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__finalidade}
 
 Esta matriz registra como os requisitos funcionais RF01 a RF12 são
-sustentados pelo modelo CORE e pelas consultas versionadas nas etapas
-M06-01 e M06-02. A validação comprova capacidade analítica e cobertura
+sustentados pelo modelo CORE e pelas consultas básicas e analíticas versionadas. A validação comprova capacidade analítica e cobertura
 observada; não declara que toda análise possível foi implementada nem que
 um arquivo Power BI ou seu projeto visual integrem o escopo entregue.
 
@@ -1372,32 +1408,32 @@ Classificações utilizadas:
   ou a interpretação é restringida pelos dados;
 \end{itemize}
 
+\begin{landscape}
 \subsection{Matriz requisito → consulta →
 evidência}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__matriz-requisito-consulta-eviduxeancia}
-
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Requisito
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Capacidade validada
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Consulta ou artefato
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Evidência observada
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Resultado
-\end{minipage} \\
-\midrule\noalign{}
+{\def\LTcaptype{none}
+\setlength{\tabcolsep}{3pt}
+\scriptsize
+\rowcolors{2}{CinzaClaro}{white}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{1.7cm}|>{\RaggedRight\arraybackslash}p{4.1cm}|>{\RaggedRight\arraybackslash}p{5.3cm}|>{\RaggedRight\arraybackslash}p{9.7cm}|>{\RaggedRight\arraybackslash}p{2.6cm}|}
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Requisito} &
+\CabecalhoTabela{Capacidade validada} &
+\CabecalhoTabela{Consulta ou artefato} &
+\CabecalhoTabela{Evidência observada} &
+\CabecalhoTabela{Resultado} \\ \hline
+\endfirsthead
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Requisito} &
+\CabecalhoTabela{Capacidade validada} &
+\CabecalhoTabela{Consulta ou artefato} &
+\CabecalhoTabela{Evidência observada} &
+\CabecalhoTabela{Resultado} \\ \hline
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
+\hline
+\endfoot
 RF01 & Integração de clientes, pedidos, itens, produtos, vendedores,
 pagamentos, avaliações e geolocalização &
 \nolinkurl{queries/validation/05_cobertura_requisitos_funcionais.sql},
@@ -1474,6 +1510,7 @@ quatro views reutilizáveis e quatro consultas de exportação formam a base
 documentada para consumo por SQL e Power BI. & Atendido \\
 \end{longtable}
 }
+\end{landscape}
 
 \subsection{Evidências complementares da consulta de
 cobertura}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__eviduxeancias-complementares-da-consulta-de-cobertura}
@@ -1488,9 +1525,11 @@ consulta registra a quantidade relacionada e não relacionada para tornar
 essa cobertura auditável.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lrrr@{}}
 \toprule\noalign{}
-Relação validada & Origem & Relacionados & Sem relação \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Relação validada} & \CabecalhoTabela{Origem} & \CabecalhoTabela{Relacionados} & \CabecalhoTabela{Sem relação} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1550,7 +1589,7 @@ validação}\label{docs__analytics__matriz_validacao_requisitos_funcionais.md__d
   RF09 não sustenta distância percorrida nem cobertura logística formal.
 \item
   RF12 é classificado como atendido após a criação das estruturas
-  reutilizáveis e dos datasets de consumo nas issues M06-05 e M06-06.
+  reutilizáveis e dos datasets de consumo.
 \item
   Nenhuma evidência exige alterar os modelos conceitual, lógico, físico
   ou a transformação CORE já aprovados.
@@ -1610,38 +1649,34 @@ comuns}\label{docs__analytics__catalogo_metricas_analiticas.md__poluxedticas-com
   aplicado somente à apresentação de médias, taxas e percentuais.
 \end{itemize}
 
+\begin{landscape}
 \subsection{Métricas
 financeiras}\label{docs__analytics__catalogo_metricas_analiticas.md__muxe9tricas-financeiras}
-
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-ID
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Nome e finalidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Fórmula e unidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Granularidade e tempo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Filtros e exclusões
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Fontes e SQL
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Interpretação e limitações
-\end{minipage} \\
-\midrule\noalign{}
+{\def\LTcaptype{none}
+\setlength{\tabcolsep}{2pt}
+\scriptsize
+\rowcolors{2}{CinzaClaro}{white}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{1.1cm}|>{\RaggedRight\arraybackslash}p{4.0cm}|>{\RaggedRight\arraybackslash}p{3.7cm}|>{\RaggedRight\arraybackslash}p{3.5cm}|>{\RaggedRight\arraybackslash}p{3.4cm}|>{\RaggedRight\arraybackslash}p{4.0cm}|>{\RaggedRight\arraybackslash}p{3.8cm}|}
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{ID} & \CabecalhoTabela{Nome e finalidade} &
+\CabecalhoTabela{Fórmula e unidade} &
+\CabecalhoTabela{Granularidade e tempo} &
+\CabecalhoTabela{Filtros e exclusões} &
+\CabecalhoTabela{Fontes e SQL} &
+\CabecalhoTabela{Interpretação e limitações} \\ \hline
+\endfirsthead
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{ID} & \CabecalhoTabela{Nome e finalidade} &
+\CabecalhoTabela{Fórmula e unidade} &
+\CabecalhoTabela{Granularidade e tempo} &
+\CabecalhoTabela{Filtros e exclusões} &
+\CabecalhoTabela{Fontes e SQL} &
+\CabecalhoTabela{Interpretação e limitações} \\ \hline
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
+\hline
+\endfoot
 FIN01 & \textbf{Valor dos itens entregues} --- medir o valor comercial
 dos produtos & \nolinkurl{SUM(preco_item)}; BRL & Origem item; saída
 histórica, mensal ou segmento; \nolinkurl{data_compra} & Pedidos
@@ -1711,39 +1746,36 @@ representa perda, estorno ou receita cancelada; as representações não
 devem ser fundidas. \\
 \end{longtable}
 }
+\end{landscape}
 
+\begin{landscape}
 \subsection{Métricas de
 vendedores}\label{docs__analytics__catalogo_metricas_analiticas.md__muxe9tricas-de-vendedores}
-
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-ID
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Nome e finalidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Fórmula e unidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Granularidade e tempo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Filtros e exclusões
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Fontes e SQL
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Interpretação e limitações
-\end{minipage} \\
-\midrule\noalign{}
+{\def\LTcaptype{none}
+\setlength{\tabcolsep}{2pt}
+\scriptsize
+\rowcolors{2}{CinzaClaro}{white}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{1.1cm}|>{\RaggedRight\arraybackslash}p{4.0cm}|>{\RaggedRight\arraybackslash}p{3.7cm}|>{\RaggedRight\arraybackslash}p{3.5cm}|>{\RaggedRight\arraybackslash}p{3.4cm}|>{\RaggedRight\arraybackslash}p{4.0cm}|>{\RaggedRight\arraybackslash}p{3.8cm}|}
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{ID} & \CabecalhoTabela{Nome e finalidade} &
+\CabecalhoTabela{Fórmula e unidade} &
+\CabecalhoTabela{Granularidade e tempo} &
+\CabecalhoTabela{Filtros e exclusões} &
+\CabecalhoTabela{Fontes e SQL} &
+\CabecalhoTabela{Interpretação e limitações} \\ \hline
+\endfirsthead
+\hline
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{ID} & \CabecalhoTabela{Nome e finalidade} &
+\CabecalhoTabela{Fórmula e unidade} &
+\CabecalhoTabela{Granularidade e tempo} &
+\CabecalhoTabela{Filtros e exclusões} &
+\CabecalhoTabela{Fontes e SQL} &
+\CabecalhoTabela{Interpretação e limitações} \\ \hline
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
+\hline
+\endfoot
 VEN01 & \textbf{Vendedores ativos} --- medir a base com atividade
 observada & \nolinkurl{COUNT(DISTINCT id_vendedor)}; vendedores & Item,
 saída histórica ou por período; \nolinkurl{data_compra} & Ao menos um
@@ -1813,6 +1845,7 @@ pertence ao pedido e pode envolver vários vendedores; não mede
 causalidade. \\
 \end{longtable}
 }
+\end{landscape}
 
 \subsection{Resultados históricos de
 referência}\label{docs__analytics__catalogo_metricas_analiticas.md__resultados-histuxf3ricos-de-referuxeancia}
@@ -1820,9 +1853,11 @@ referência}\label{docs__analytics__catalogo_metricas_analiticas.md__resultados-
 Na base de 96.477 pedidos entregues com itens e pagamentos:
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}lr@{}}
 \toprule\noalign{}
-Métrica & Resultado \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Métrica} & \CabecalhoTabela{Resultado} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -1854,16 +1889,18 @@ de atraso associado é 8,02\% e a nota média associada é 4,14.
 controles}\label{docs__analytics__catalogo_metricas_analiticas.md__validauxe7uxe3o-e-controles}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Risco
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Controle
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Resultado
 \end{minipage} \\
 \midrule\noalign{}
@@ -1922,12 +1959,13 @@ ANALYTICS}\label{docs__analytics__estruturas_schema_analytics.md__estruturas-do-
 \subsection{Finalidade}\label{docs__analytics__estruturas_schema_analytics.md__finalidade}
 
 As views do schema \nolinkurl{analytics} estabilizam combinações e
-regras recorrentes validadas nas etapas M06-01 a M06-04. Elas reduzem
+regras recorrentes validadas pelas consultas básicas e analíticas, pela
+validação dos requisitos funcionais e pelo catálogo de métricas. Elas reduzem
 repetição, tornam explícita a granularidade de consumo e preservam
 rastreabilidade até a CORE.
 
 Não são cópias das tabelas de origem, não alteram a CORE e não
-materializam dados. A etapa M06-06 definiu os campos e relacionamentos de
+materializam dados. O contrato de consumo definiu os campos e relacionamentos de
 consumo; a criação de um arquivo Power BI e de seu projeto visual
 permanece fora do escopo.
 
@@ -1972,16 +2010,18 @@ todos os status.
 \textbf{População observada:} 99.441 linhas, sem duplicação de pedido.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Grupo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Campos
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Definição
 \end{minipage} \\
 \midrule\noalign{}
@@ -2028,16 +2068,18 @@ mês de compra, incluindo cobertura temporal e cancelamentos.
 \textbf{População observada:} 25 meses.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Grupo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Campos
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Definição
 \end{minipage} \\
 \midrule\noalign{}
@@ -2084,16 +2126,18 @@ do vendedor e informações apenas associadas ao pedido.
 \textbf{População observada:} 97.819 linhas.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Grupo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Campos
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Definição
 \end{minipage} \\
 \midrule\noalign{}
@@ -2131,16 +2175,18 @@ entregue.
 \textbf{População observada:} 2.970 linhas.
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Grupo
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Campos
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Definição
 \end{minipage} \\
 \midrule\noalign{}
@@ -2230,7 +2276,7 @@ SQL}\label{docs__analytics__consumo_power_bi_sql.md__contrato-de-consumo-no-powe
 
 \subsection{Objetivo}\label{docs__analytics__consumo_power_bi_sql.md__objetivo}
 
-Este documento consolida o contrato de consumo da M06-06. Ele organiza
+Este documento consolida o contrato de consumo em Power BI e SQL. Ele organiza
 as views aprovadas do schema \nolinkurl{analytics} como datasets para
 exploração SQL e construção futura de um modelo semântico no Power BI,
 sem copiar dados da CORE nem criar novas estruturas sem necessidade
@@ -2244,8 +2290,8 @@ entrega.
 \subsection{Decisão de
 arquitetura}\label{docs__analytics__consumo_power_bi_sql.md__decisuxe3o-de-arquitetura}
 
-As quatro views criadas na M06-05 já estabilizam as regras recorrentes e
-são as fontes canônicas de consumo. A M06-06 não cria marts adicionais
+As quatro views do schema analytics já estabilizam as regras recorrentes e
+são as fontes canônicas de consumo. O contrato de consumo não exige marts adicionais
 porque:
 
 \begin{itemize}
@@ -2272,6 +2318,7 @@ instruções SQL no conector.
 \subsection{Datasets}\label{docs__analytics__consumo_power_bi_sql.md__datasets}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
@@ -2279,15 +2326,16 @@ instruções SQL no conector.
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Nome recomendado no BI
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Fonte canônica
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Granularidade
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Chave
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Uso principal
 \end{minipage} \\
 \midrule\noalign{}
@@ -2396,16 +2444,18 @@ proibidos}\label{docs__analytics__consumo_power_bi_sql.md__relacionamentos-proib
 medidas}\label{docs__analytics__consumo_power_bi_sql.md__propriedade-das-medidas}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
+\rowcolor{AzulCorporativo}
+\begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Tema
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Dataset proprietário
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright\color{white}\bfseries
 Regra
 \end{minipage} \\
 \midrule\noalign{}
@@ -2537,9 +2587,11 @@ reimplementações em DAX devem reproduzir essa condição.
 formatação}\label{docs__analytics__consumo_power_bi_sql.md__tipos-e-formatauxe7uxe3o}
 
 {\def\LTcaptype{none} % do not increment counter
+\rowcolors{2}{CinzaClaro}{white}
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
-Grupo & Tratamento recomendado \\
+\rowcolor{AzulCorporativo}
+\CabecalhoTabela{Grupo} & \CabecalhoTabela{Tratamento recomendado} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
