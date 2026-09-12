@@ -12,11 +12,11 @@ class CleanupTests(TestCase):
             root = Path(directory)
             workspace_cache = root / "database" / "__pycache__"
             environment_cache = root / ".venv" / "lib" / "__pycache__"
-            latex_file = root / "docs" / "report.aux"
+            generated_file = root / "docs" / "report.aux"
             output_file = root / "outputs" / "report.json"
             for path in (workspace_cache, environment_cache):
                 path.mkdir(parents=True)
-            for path in (latex_file, output_file):
+            for path in (generated_file, output_file):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.touch()
 
@@ -24,7 +24,7 @@ class CleanupTests(TestCase):
                 targets = clean.collect_targets()
 
             self.assertIn(workspace_cache, targets)
-            self.assertIn(latex_file, targets)
+            self.assertIn(generated_file, targets)
             self.assertIn(root / "outputs", targets)
             self.assertNotIn(environment_cache, targets)
 

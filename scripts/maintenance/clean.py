@@ -16,11 +16,10 @@ CACHE_NAMES = {
     ".ruff_cache",
     "__pycache__",
 }
-LATEX_SUFFIXES = (
+GENERATED_DOC_SUFFIXES = (
     ".aux",
     ".bbl",
     ".blg",
-    ".fdb_latexmk",
     ".fls",
     ".lof",
     ".log",
@@ -63,7 +62,7 @@ def collect_targets() -> list[Path]:
         targets.update(
             path
             for path in docs.rglob("*")
-            if path.is_file() and path.name.endswith(LATEX_SUFFIXES)
+            if path.is_file() and path.name.endswith(GENERATED_DOC_SUFFIXES)
         )
 
     ordered = sorted(targets, key=lambda path: (len(path.parts), str(path)))

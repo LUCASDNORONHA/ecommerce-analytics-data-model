@@ -16,7 +16,7 @@ O trabalho reproduz, em escala de projeto, etapas recorrentes no desenvolvimento
 
 As fases M01 a M07 estão concluídas. O processo ELT foi implementado e validado, contemplando ingestão na camada RAW, transformação para a camada CORE, reconciliação de volumes, validações de integridade e regras de qualidade. A etapa analítica consolidou consultas, métricas, evidências, views e contratos de consumo. A M07 materializou esses contratos em um relatório Power BI e um modelo semântico versionável, organizados em PBIP, PBIR e TMDL.
 
-A fonte canônica da documentação analítica está disponível em [`docs/analytics/camada_analitica.tex`](docs/analytics/camada_analitica.tex), acompanhada da versão final em [`docs/analytics/camada_analitica.pdf`](docs/analytics/camada_analitica.pdf).
+A documentação analítica canônica está disponível em [`docs/analytics/camada_analitica.pdf`](docs/analytics/camada_analitica.pdf).
 
 ## Objetivos
 
@@ -61,22 +61,18 @@ Também não são utilizados dados pessoais sensíveis nem informações que per
 │   ├── WORKFLOW.md                  # Regras do fluxo de desenvolvimento
 │   ├── requirements/                # Análise e documentação de requisitos
 │   ├── data-loading/                # Documentação consolidada da carga e do ELT
-│   │   ├── carga_transformacao_dados.tex
 │   │   └── carga_transformacao_dados.pdf
 │   │
 │   └── modeling/
 │       ├── conceptual/              # Documentação da modelagem conceitual
-│       │   ├── conceptual_model.tex
 │       │   ├── conceptual_model.pdf
 │       │   └── mer/                 # Representação exportada do MER
 │       │
 │       ├── logical/                 # Documentação da modelagem lógica
-│       │   ├── logical_model.tex
 │       │   ├── logical_model.pdf
 │       │   └── model/               # Representação gráfica do modelo lógico
 │       │
 │       └── physical/                # Documentação consolidada da modelagem física
-│           ├── physical_model.tex
 │           └── physical_model.pdf
 │
 ├── models/
@@ -317,7 +313,6 @@ A validação verifica, entre outros aspectos:
 A documentação consolidada da carga e das transformações encontra-se em:
 
 - [carga_transformacao_dados.pdf](docs/data-loading/carga_transformacao_dados.pdf)
-- [carga_transformacao_dados.tex](docs/data-loading/carga_transformacao_dados.tex)
 
 ## Testes e qualidade
 

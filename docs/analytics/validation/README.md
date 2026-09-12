@@ -1,10 +1,9 @@
 # Validação da documentação analítica
 
-Revisão realizada em 9 de setembro de 2026 sobre `camada_analitica.tex` e o
-[PDF consolidado](../camada_analitica.pdf), compilado com XeLaTeX via latexmk.
-O resultado possui 45 páginas. A compilação terminou sem avisos de largura,
-referências ou fontes. O ambiente utilizou as fontes alternativas declaradas
-na fonte quando Arial e Consolas não estavam disponíveis.
+Revisão realizada em 9 de setembro de 2026 sobre o
+[PDF consolidado](../camada_analitica.pdf). O resultado possui 45 páginas e
+foi conferido quanto a avisos de largura, referências e fontes antes da
+publicação.
 
 As tabelas receberam cabeçalhos azuis, texto branco e linhas alternadas.
 A matriz de requisitos e os catálogos financeiro e de vendedores utilizam
